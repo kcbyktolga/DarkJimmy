@@ -7,12 +7,14 @@ namespace DarkJimmy
     public class UIManager : Singleton<UIManager>
     {
         public Menu.Menus startingMenu;
-        public const float DELAY = 3.0f;
         public GameObject postProcess;
 
-        private Menu _currentMenu;
+        public int PageIndex { get; set; }
 
+        private Menu _currentMenu;
         private Stack<Menu> _stack = new Stack<Menu>();
+        public const float DELAY = 3.0f;
+
         void Start()
         {
             Open(startingMenu);
@@ -46,7 +48,7 @@ namespace DarkJimmy
 
             var lastMenu = _stack.Peek();
 
-            if (lastMenu.menuType.Equals(Menu.Menus.MainMenu) || lastMenu.menuType.Equals(Menu.Menus.Game))
+            if (lastMenu.menuType.Equals(Menu.Menus.Lobby) || lastMenu.menuType.Equals(Menu.Menus.Play))
                 return;
             lastMenu.gameObject.SetActive(true);
         }

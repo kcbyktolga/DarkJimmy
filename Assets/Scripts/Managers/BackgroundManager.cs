@@ -26,11 +26,14 @@ namespace DarkJimmy
         }
         void FixedUpdate()
         {
+            if (player == null)
+                return;
+
             Move();
         }
 
         private void Move()
-        {
+        {           
             for (int i = 0; i < backgrounds.Count; i++)
                 backgrounds[i].Move(player);
         }
