@@ -15,10 +15,10 @@ namespace DarkJimmy.Characters.Inputs
 		public bool testTouchControlsInEditor = false;  //Should touch controls be tested?
 		public float verticalDPadThreshold = .5f;       //Threshold touch pad inputs
 		public FloatingJoystick joystick;               //Reference to Joystick
-		public TouchButton jumpButton;                  //Reference to jump TouchButton
-		public TouchButton rollButon;                   //Reference to roll TouchButton
-		public TouchButton switchButton;                //Reference to switch TouchButton
-		public TouchButton attackButton;                //Reference to attack TouchButton
+		//public TouchButton jumpButton;                  //Reference to jump TouchButton
+		//public TouchButton rollButon;                   //Reference to roll TouchButton
+		//public TouchButton switchButton;                //Reference to switch TouchButton
+		//public TouchButton attackButton;                //Reference to attack TouchButton
 		
 
 		[HideInInspector] public float horizontal=1;    //Float that stores horizontal input
@@ -120,12 +120,12 @@ namespace DarkJimmy.Characters.Inputs
 
 
 			//Accumulate jump button input
-			jumpPressed = jumpPressed || jumpButton.GetButtonDown();
-			jumpHeld = jumpHeld || jumpButton.GetButton();
+			//jumpPressed = jumpPressed || jumpButton.GetButtonDown();
+			//jumpHeld = jumpHeld || jumpButton.GetButton();
 
-			rollPressed = rollPressed || rollButon.GetButtonDown();
-			switchPressed = switchPressed || switchButton.GetButtonDown();
-			attackPressed = attackPressed || attackButton.GetButtonDown();
+			//rollPressed = rollPressed || rollButon.GetButtonDown();
+			//switchPressed = switchPressed || switchButton.GetButtonDown();
+			//attackPressed = attackPressed || attackButton.GetButtonDown();
 
 
 			//Using thumbstick, accumulate crouch input

@@ -10,20 +10,26 @@ namespace DarkJimmy.UI
         public enum Menus
         {
             None,
-            MainMenu,
+            Lobby,
             Settings,
             Shop,
-            Game,
+            Characters,
+            Stages,
+            Victory,
+            Defeat,
+            Play,
             Pause
         }
         public static Dictionary<Menus, string> MenuPaths = new Dictionary<Menus, string>
         {
-             {Menus.MainMenu, "Menus/MainMenu"},
-             {Menus.Settings, "Menus/SettingsMenu"},
-             {Menus.Shop, "Menus/ShopMenu"},
-             {Menus.Pause, "Menus/PauseMenu"},
-             {Menus.Game, "Menus/GameDisplay"},
-
+             {Menus.Lobby, "Menus/Lobby"},
+             {Menus.Settings, "Menus/Settings"},
+             {Menus.Shop, "Menus/Shop"},
+             {Menus.Characters, "Menus/Characters"},
+             {Menus.Stages, "Menus/Stages"},
+             {Menus.Victory, "Menus/Victory"},
+             {Menus.Defeat, "Menus/Defeat"},
+             {Menus.Pause, "Menus/Pause"},
         };
 
         #region Fields       
@@ -33,12 +39,10 @@ namespace DarkJimmy.UI
         public int onParamId;
 
         [Header("Components")]
-        public Transform[] buttonContainer;
         public Canvas canvas;
         public TMP_Text header;
 
         [Header("Referances")]
-        //public MenuStruct menuStruct;
         public Menus menuType;
 
         #endregion
