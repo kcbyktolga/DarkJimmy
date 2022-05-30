@@ -20,6 +20,7 @@ namespace DarkJimmy.UI
         {
             tabName.color = isOn ? focusColor : idleColor;
             focus.enabled = isOn;
+            button.interactable = !isOn;
         }
 
         public void SetTabButtonName(string name)

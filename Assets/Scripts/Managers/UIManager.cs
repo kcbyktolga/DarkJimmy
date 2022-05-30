@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using DarkJimmy.UI;
+using UnityEngine.UI;
 
 namespace DarkJimmy
 {
@@ -14,7 +15,14 @@ namespace DarkJimmy
         private Menu _currentMenu;
         private Stack<Menu> _stack = new Stack<Menu>();
         public const float DELAY = 3.0f;
+        [SerializeField]
+        private CanvasScaler canvasScaler;
 
+        private void Awake()
+        {
+            Instance = this;
+            
+        }
         void Start()
         {
             Open(startingMenu);
@@ -56,6 +64,11 @@ namespace DarkJimmy
         public Menu GetCurrentMenu()
         {
             return _currentMenu;
+        }
+
+        public Vector2 GetReferenceResolotion()
+        {
+            return Instance.canvasScaler.referenceResolution;
         }
 
     }

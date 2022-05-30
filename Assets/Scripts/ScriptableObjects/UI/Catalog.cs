@@ -13,14 +13,14 @@ namespace DarkJimmy.UI
 
         private Dictionary<PageType, string> PagePaths = new Dictionary<PageType, string>
         {
-             {PageType.Grid, "Pages/Grid"},
+             {PageType.Grid, "Pages/GridPage"},
              {PageType.Horizontal, "Pages/Horizontal"},
              {PageType.Single, "Pages/Single"},
   
         };
         private Dictionary<PageType, string> ProductPaths = new Dictionary<PageType, string>
         {
-             {PageType.Grid, "Products/Grid"},
+             {PageType.Grid, "Products/GridProduct"},
              {PageType.Horizontal, "Products/Horizontal"},
              {PageType.Single, "Products/Single"},
 

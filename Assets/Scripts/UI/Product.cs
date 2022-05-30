@@ -8,6 +8,7 @@ namespace DarkJimmy.UI
 {
     public class Product : MonoBehaviour
     {
+        [Header("Product Property")]
         [SerializeField]
         private TMP_Text productName;
         [SerializeField]
@@ -16,6 +17,13 @@ namespace DarkJimmy.UI
         private TMP_Text productTitle;
         [SerializeField]
         private Image productIcon;
+        [Header("Product Customize")]
+        [SerializeField]
+        private Image productFrame;
+        [SerializeField]
+        private Color paidColor;
+        [SerializeField]
+        private Color freeColor;
 
         public void SetProduct(ProductStruct productStruct)
         {
@@ -23,6 +31,7 @@ namespace DarkJimmy.UI
             productPrice.text = productStruct.productPrice;
             productTitle.text = productStruct.productTitle;
             productIcon.sprite = productStruct.productIcon;
+            productFrame.color = productStruct.payType.Equals(PayType.Free) ? freeColor : paidColor;
         }
     }
 

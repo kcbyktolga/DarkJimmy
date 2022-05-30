@@ -17,26 +17,22 @@ namespace DarkJimmy
         public static T Instance;
 
 
-        private void Awake()
-        {
-            //if (Instance == null)
-            //    SceneManager.activeSceneChanged += Test;
+        //private void Awake()
+        //{
+        //    //if (Instance == null)
+        //    //    SceneManager.activeSceneChanged += Test;
 
-            if (type.Equals(SingletonType.DontDestroy))
-            {
-                if (Instance == null)
-                {
-                    Instance = GetComponent<T>();
-                    DontDestroyOnLoad(gameObject);                  
-                }
-                    
-                else
-                    Destroy(gameObject);
-            }
-            else
-                Instance = GetComponent<T>();
+        //    if (type.Equals(SingletonType.DontDestroy))
+        //    {
+        //        if (Instance == null)
+        //            Instance = GetComponent<T>();
+        //        else
+        //            Destroy(gameObject);
+        //    }
+        //    else
+        //        Instance = GetComponent<T>();
            
-        }
+        //}
     }
 }
 
