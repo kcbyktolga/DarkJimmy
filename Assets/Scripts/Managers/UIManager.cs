@@ -29,8 +29,8 @@ namespace DarkJimmy
         }
         public void Open(Menu.Menus menu)
         {
-            if (_stack.Count > 1)
-                _stack.Peek().gameObject.SetActive(false);
+            //if (_stack.Count > 1)
+            //    _stack.Peek().gameObject.SetActive(false);
 
             if (Menu.MenuPaths.TryGetValue(menu, out string path))
             {
@@ -39,8 +39,8 @@ namespace DarkJimmy
                 _stack.Push(_currentMenu);
             }
 
-            if (_stack.Count.Equals(2))
-                postProcess.SetActive(true);
+            //if (_stack.Count.Equals(2))
+            //    postProcess.SetActive(true);
         }
         public void GoBack()
         {
@@ -51,14 +51,14 @@ namespace DarkJimmy
 
             Destroy(item.gameObject);
 
-            if (_stack.Count.Equals(1))
-                postProcess.SetActive(false);
+            //if (_stack.Count.Equals(1))
+            //    postProcess.SetActive(false);
 
-            var lastMenu = _stack.Peek();
+            //var lastMenu = _stack.Peek();
 
-            if (lastMenu.menuType.Equals(Menu.Menus.Lobby) || lastMenu.menuType.Equals(Menu.Menus.Play))
-                return;
-            lastMenu.gameObject.SetActive(true);
+            //if (lastMenu.menuType.Equals(Menu.Menus.Lobby) || lastMenu.menuType.Equals(Menu.Menus.Play))
+            //    return;
+            //lastMenu.gameObject.SetActive(true);
         }
 
         public Menu GetCurrentMenu()

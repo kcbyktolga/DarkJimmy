@@ -16,12 +16,15 @@ namespace DarkJimmy.UI
 
         private void Start()
         {
-            buttonName.text = menuType.ToString();
+            buttonName.text =  menuType.Equals(Menu.Menus.None) ? string.Empty : menuType.ToString();
             OnClick(Open);
         }
         private void Open()
         {
-            UIManager.Instance.Open(menuType);
+            if (menuType.Equals(Menu.Menus.None))
+                UIManager.Instance.GoBack();
+            else
+                UIManager.Instance.Open(menuType);
         }      
        
     }
