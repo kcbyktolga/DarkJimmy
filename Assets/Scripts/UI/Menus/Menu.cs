@@ -40,7 +40,7 @@ namespace DarkJimmy.UI
 
         [Header("Components")]
         public Canvas canvas;
-        public TMP_Text header;
+        public TMP_Text pageName;
 
         [Header("Referances")]
         public Menus menuType;
