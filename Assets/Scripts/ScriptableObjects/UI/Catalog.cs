@@ -11,7 +11,6 @@ namespace DarkJimmy.UI
         public TabButton tabButton;
         public List<PageStruct> pages;
 
-
         private Dictionary<PageType, string> PagePaths = new Dictionary<PageType, string>
         {
              {PageType.Grid, "Pages/Grid"},
