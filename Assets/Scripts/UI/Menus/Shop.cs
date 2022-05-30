@@ -26,18 +26,16 @@ namespace DarkJimmy.UI
         private Dictionary<int, float> GetPosition = new Dictionary<int, float>();
         HorizontalLayoutGroup horizontalLayoutGroup;
         List<RectTransform> pagesRextTransform = new List<RectTransform>();
+        List<float> scrollBarPos = new List<float>();
 
         int previousIndex = 0;
         int nextIndex = 0;
-
 
         private void Start()
         {           
             pageContent.anchoredPosition = new Vector2(0,pageContent.anchoredPosition.y);
             GeneratePageAndTabs();
-
         }
-
         public void GeneratePageAndTabs()
         {
             horizontalLayoutGroup = pageContent.GetComponent<HorizontalLayoutGroup>();
@@ -56,43 +54,27 @@ namespace DarkJimmy.UI
                     Product product = Instantiate(catalog.GetProduct(pageStruct.pageType),_page.container);
                     product.SetProduct(pageStruct.products[j]);
 
-                    horizontalLayoutGroup.enabled = false;
-                    horizontalLayoutGroup.enabled = true;
-                    Canvas.ForceUpdateCanvases();
+                    UpdateCanvas();
                 }
 
                 TabButton _tabButton = Instantiate(catalog.tabButton, tabContent);
                 _tabButton.SetTabButtonName(pageStruct.pageName);
                 _tabButton.OnClick(false,i,Selected);               
             }
-           
-            horizontalLayoutGroup.enabled = false;
-            horizontalLayoutGroup.enabled = true;
-            Canvas.ForceUpdateCanvases();
+
+            UpdateCanvas();
 
             horizontalLayoutGroup.padding.left = (int)((UIManager.Instance.GetReferenceResolotion().x - pagesRextTransform[0].rect.width) * 0.5f);
             horizontalLayoutGroup.padding.right = (int)((UIManager.Instance.GetReferenceResolotion().x - pagesRextTransform[pagesRextTransform.Count - 1].rect.width) * 0.5f);
 
-            horizontalLayoutGroup.enabled = false;
-            horizontalLayoutGroup.enabled = true;
-            Canvas.ForceUpdateCanvases();
+            UpdateCanvas();
 
-            float posX = 0;
+            CalculatePagePosition();
 
-            for (int i = 0; i < catalog.pages.Count; i++)
-            {
-                GetPosition.Add(i,posX);
-                Debug.Log(posX);
-
-                if (i >= catalog.pages.Count - 1)
-                    continue;
-
-                posX -= horizontalLayoutGroup.spacing + (pagesRextTransform[i].rect.width + pagesRextTransform[i + 1].rect.width) * 0.5f;
-            }
+            CalculateScrollBar();
 
             Selected(false,nextIndex);
         }
-
         private void Selected(bool onDrag, int index)
         {
             previousIndex = nextIndex;
@@ -106,13 +88,11 @@ namespace DarkJimmy.UI
 
             if (!onDrag)
                 StartCoroutine(nameof(PageSwipe));
-
         }
-
         private IEnumerator PageSwipe()
-        {
-            tabTime = Time.time + duration;
+        {       
             float time = 0;
+            tabTime = Time.time + duration;
             scrollRect.StopMovement();
             float currentPos = pageContent.anchoredPosition.x;
             float endPos = GetPosition[nextIndex];
@@ -129,6 +109,57 @@ namespace DarkJimmy.UI
         private TabButton GetTabButton(int index)
         {
             return tabContent.GetChild(index).GetComponent<TabButton>();
+        }
+
+        private void LateUpdate()
+        {
+            if(tabTime<Time.time)
+                Selected(true,GetCurrentIndex());
+        }
+
+        private void UpdateCanvas()
+        {
+            horizontalLayoutGroup.enabled = false;
+            horizontalLayoutGroup.enabled = true;
+            Canvas.ForceUpdateCanvases();
+        }
+        private void CalculatePagePosition()
+        {
+            float posX = 0;
+
+            for (int i = 0; i < catalog.pages.Count; i++)
+            {
+                GetPosition.Add(i, posX);
+
+                if (i >= catalog.pages.Count - 1)
+                    continue;
+
+                posX -= horizontalLayoutGroup.spacing + (pagesRextTransform[i].rect.width + pagesRextTransform[i + 1].rect.width) * 0.5f;
+            }
+        }
+        private void CalculateScrollBar()
+        {
+            for (int i = 0; i < pagesRextTransform.Count; i++)
+            {
+                float posX = pagesRextTransform[i].anchoredPosition.x + (pagesRextTransform[i].rect.width + horizontalLayoutGroup.spacing) * 0.5f;
+
+                float percent = posX / pageContent.rect.width;
+
+                scrollBarPos.Add(percent);
+            }
+        }
+        private int GetCurrentIndex()
+        {
+            if (scrollBar.value <= scrollBarPos[0])
+                return 0;
+            else if (scrollBar.value > scrollBarPos[0] && scrollBar.value <= scrollBarPos[1])
+                return 1;
+            else if (scrollBar.value > scrollBarPos[1] && scrollBar.value <= scrollBarPos[2])
+                return 2;
+            else if (scrollBar.value > scrollBarPos[2] && scrollBar.value <= scrollBarPos[3])
+                return 3;
+            else
+            return 4;
         }
     }
 
