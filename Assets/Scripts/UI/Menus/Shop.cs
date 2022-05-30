@@ -14,6 +14,11 @@ namespace DarkJimmy.UI
 
 
 
+        public void GeneratePageAndTabs()
+        {
+
+        }
+
     }
 
 }

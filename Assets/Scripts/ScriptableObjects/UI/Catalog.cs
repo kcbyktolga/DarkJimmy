@@ -8,7 +8,10 @@ namespace DarkJimmy.UI
     [CreateAssetMenu(menuName = "Data/Catalog", fileName = "Catalog")]
     public class Catalog : ScriptableObject
     {
+        public TabButton tabButton;
         public List<PageStruct> pages;
+
+
         private Dictionary<PageType, string> PagePaths = new Dictionary<PageType, string>
         {
              {PageType.Grid, "Pages/Grid"},
@@ -23,7 +26,20 @@ namespace DarkJimmy.UI
              {PageType.Single, "Products/Single"},
 
         };
+        public Page GetPage(PageType type)
+        {
+            if (PagePaths.TryGetValue(type, out string path))
+                return Resources.Load<Page>(path);
+           
+            return null;
+        }
+        public Product GetProduct(PageType type)
+        {
+            if (ProductPaths.TryGetValue(type, out string path))
+                return Resources.Load<Product>(path);
 
+            return null;
+        }
 
     }
 
