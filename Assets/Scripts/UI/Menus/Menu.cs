@@ -20,7 +20,9 @@ namespace DarkJimmy.UI
             Play,
             Pause,
             PlayService,
-            PrivacPolicy
+            PrivacyPolicy,
+            Language,
+            Credits
         }
         public static Dictionary<Menus, string> MenuPaths = new Dictionary<Menus, string>
         {

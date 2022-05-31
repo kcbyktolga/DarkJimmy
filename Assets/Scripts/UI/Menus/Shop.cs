@@ -162,6 +162,11 @@ namespace DarkJimmy.UI
             else
             return 4;
         }
+
+        private void OnDestroy()
+        {
+            UIManager.Instance.PageIndex = 0;
+        }
     }
 
 }

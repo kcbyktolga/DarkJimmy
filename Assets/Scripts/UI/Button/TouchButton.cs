@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using DarkJimmy.Manager;
 
 
 namespace DarkJimmy.UI
@@ -16,7 +17,7 @@ namespace DarkJimmy.UI
 
         private void Start()
         {
-            buttonName.text =  menuType.Equals(Menu.Menus.None) ? string.Empty : menuType.ToString();
+            buttonName.text =  menuType.Equals(Menu.Menus.None) ? string.Empty : LanguageManager.GetText(menuType.ToString());
             OnClick(Open);
         }
         private void Open()

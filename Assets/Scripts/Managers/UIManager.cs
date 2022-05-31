@@ -21,10 +21,12 @@ namespace DarkJimmy
         private void Awake()
         {
             Instance = this;
-            
+            LanguageManager.SetLanguage(LanguageManager.Language.English);
+
         }
         void Start()
         {
+            
             Open(startingMenu);
         }
         public void Open(Menu.Menus menu)

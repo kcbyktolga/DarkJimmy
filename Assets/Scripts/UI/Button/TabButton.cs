@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using DarkJimmy.Manager;
 
 namespace DarkJimmy.UI
 {
@@ -25,7 +26,7 @@ namespace DarkJimmy.UI
 
         public void SetTabButtonName(string name)
         {
-            tabName.text = name;
+            tabName.text = LanguageManager.GetText(name);
         }
     }
 
