@@ -31,8 +31,9 @@ namespace DarkJimmy.UI
         int previousIndex = 0;
         int nextIndex = 0;
 
-        private void Start()
+        public override void Start()
         {
+            base.Start();
             pageContent.anchoredPosition = new Vector2(0,pageContent.anchoredPosition.y);             
             nextIndex = UIManager.Instance.PageIndex;
             GeneratePageAndTabs();

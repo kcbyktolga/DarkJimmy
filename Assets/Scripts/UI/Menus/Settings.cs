@@ -6,8 +6,9 @@ namespace DarkJimmy.UI
 {
     public class Settings : Menu
     {
-        private void Start()
+        public override void Start()
         {
+            base.Start();
             pageName.text = LanguageManager.GetText(menuType.ToString());
         }
 

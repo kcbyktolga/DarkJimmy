@@ -10,7 +10,7 @@ namespace DarkJimmy.UI
         public enum Menus
         {
             None,
-            Lobby,
+            Lobby, 
             Settings,
             Shop,
             Characters,
@@ -55,8 +55,24 @@ namespace DarkJimmy.UI
         public virtual void Awake()
         {
             animator = GetComponent<Animator>();
-            onParamId = Animator.StringToHash("On");
+            onParamId = Animator.StringToHash("On");   
+        }
+        public virtual void Start()
+        {
+            canvas.renderMode = menuType.Equals(Menus.Lobby) || menuType.Equals(Menus.Play) ? RenderMode.ScreenSpaceCamera : RenderMode.ScreenSpaceOverlay;
 
+            if (canvas.renderMode.Equals(RenderMode.ScreenSpaceCamera))
+            {
+                while (UIManager.Instance.MainCamera == null)
+                {
+                    Debug.Log(UIManager.Instance.MainCamera);
+
+                    if (UIManager.Instance.MainCamera != null)
+                        break;
+                }
+                canvas.worldCamera = UIManager.Instance.MainCamera;
+            }
+                
         }
         public virtual void GoBack()
         {

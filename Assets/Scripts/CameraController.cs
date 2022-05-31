@@ -4,12 +4,13 @@ using UnityEngine;
 
 namespace DarkJimmy.UI
 {
-    public class Lobby : Menu
+    public class CameraController : MonoBehaviour
     {
-        public override void Start()
+        void Start()
         {
-            base.Start();
+            UIManager.Instance.MainCamera = GetComponent<Camera>();
         }
+
     }
 }
 
