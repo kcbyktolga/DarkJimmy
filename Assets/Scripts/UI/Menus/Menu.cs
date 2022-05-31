@@ -18,7 +18,9 @@ namespace DarkJimmy.UI
             Victory,
             Defeat,
             Play,
-            Pause
+            Pause,
+            PlayService,
+            PrivacPolicy
         }
         public static Dictionary<Menus, string> MenuPaths = new Dictionary<Menus, string>
         {
