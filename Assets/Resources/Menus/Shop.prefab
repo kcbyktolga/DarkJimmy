@@ -559,7 +559,6 @@ MonoBehaviour:
   canvas: {fileID: 3188465444469239466}
   pageName: {fileID: 3188465443791039696}
   menuType: 3
-  backButton: {fileID: 2283663693334300087}
   catalog: {fileID: 11400000, guid: f63ab6106f3fd7944ba6dcf1194a588b, type: 2}
   pageContent: {fileID: 3188465445541805756}
   tabContent: {fileID: 3188465445329836464}
@@ -1700,18 +1699,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ffaf1c305432aca4294b5138011c9b9e, type: 3}
---- !u!114 &2283663693334300087 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 3715047937271533840, guid: ffaf1c305432aca4294b5138011c9b9e,
-    type: 3}
-  m_PrefabInstance: {fileID: 3188465445392602279}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 358aa1c24ec67234db433f65b74bd0c5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!224 &7947486026271039138 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 4788610646470019589, guid: ffaf1c305432aca4294b5138011c9b9e,
