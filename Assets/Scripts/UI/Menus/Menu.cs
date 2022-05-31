@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using UnityEngine.UI;
 
 namespace DarkJimmy.UI
 {
@@ -44,6 +45,7 @@ namespace DarkJimmy.UI
 
         [Header("Components")]
         public Canvas canvas;
+        public CanvasScaler canvasScaler;
         public TMP_Text pageName;
 
         [Header("Referances")]
@@ -61,25 +63,17 @@ namespace DarkJimmy.UI
         {
             canvas.renderMode = menuType.Equals(Menus.Lobby) || menuType.Equals(Menus.Play) ? RenderMode.ScreenSpaceCamera : RenderMode.ScreenSpaceOverlay;
 
-            if (canvas.renderMode.Equals(RenderMode.ScreenSpaceCamera))
-            {
-                while (UIManager.Instance.MainCamera == null)
-                {
-                    Debug.Log(UIManager.Instance.MainCamera);
-
-                    if (UIManager.Instance.MainCamera != null)
-                        break;
-                }
+            if (menuType.Equals(Menus.Lobby) || menuType.Equals(Menus.Play))
                 canvas.worldCamera = UIManager.Instance.MainCamera;
-            }
-                
+
+            canvas.planeDistance = 10f;
+            canvasScaler.referenceResolution = UIManager.Instance.GetReferenceResolotion();
         }
         public virtual void GoBack()
         {
             UIManager.Instance.GoBack();
         }
         #endregion
-
     }
 }
 

@@ -35,7 +35,7 @@ namespace DarkJimmy
                 _stack.Push(_currentMenu);
             }
 
-            if (_stack.Count.Equals(2))
+            if (_stack.Count.Equals(2) && !postProcess.activeSelf && menu != Menu.Menus.Shop && menu != Menu.Menus.Stages)
                 postProcess.SetActive(true);
         }
 
