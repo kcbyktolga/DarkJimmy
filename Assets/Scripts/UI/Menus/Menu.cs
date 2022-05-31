@@ -45,7 +45,6 @@ namespace DarkJimmy.UI
 
         [Header("Components")]
         public Canvas canvas;
-        public CanvasScaler canvasScaler;
         public TMP_Text pageName;
 
         [Header("Referances")]
@@ -61,13 +60,7 @@ namespace DarkJimmy.UI
         }
         public virtual void Start()
         {
-            canvas.renderMode = menuType.Equals(Menus.Lobby) || menuType.Equals(Menus.Play) ? RenderMode.ScreenSpaceCamera : RenderMode.ScreenSpaceOverlay;
 
-            if (menuType.Equals(Menus.Lobby) || menuType.Equals(Menus.Play))
-                canvas.worldCamera = UIManager.Instance.MainCamera;
-
-            canvas.planeDistance = 10f;
-            canvasScaler.referenceResolution = UIManager.Instance.GetReferenceResolotion();
         }
         public virtual void GoBack()
         {
