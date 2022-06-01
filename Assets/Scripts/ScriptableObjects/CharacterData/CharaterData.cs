@@ -33,8 +33,6 @@ namespace DarkJimmy.Characters
 		[Header("Status Flags")]
 		public bool isOnGround;                 //Is the character on the ground?
 		public bool isJumping;                  //Is character jumping?
-		public bool isRolling;                  //Is character rolling?
-		public bool isAttackking;               //Is character attackking?
 		public bool isHeadBlocked;              //Is character blocked?
 		public bool wallCheck;                  //Is character hitting wall?;
 	}

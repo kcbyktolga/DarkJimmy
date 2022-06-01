@@ -18,18 +18,16 @@ namespace DarkJimmy.UI
         [SerializeField]
         private ScrollRect scrollRect;
         [SerializeField]
-        private Scrollbar scrollBar;
-        [SerializeField]
         private float duration = 0.5f;
 
-        private float tabTime = 0;
         private Dictionary<int, float> GetPosition = new Dictionary<int, float>();
-        HorizontalLayoutGroup horizontalLayoutGroup;
-        List<RectTransform> pagesRextTransform = new List<RectTransform>();
-        List<float> scrollBarPos = new List<float>();
+        private HorizontalLayoutGroup horizontalLayoutGroup;
+        private List<RectTransform> pagesRectTransform = new List<RectTransform>();
+        private List<float> scrollPos = new List<float>();
 
-        int previousIndex = 0;
-        int nextIndex = 0;
+        private float tabTime = 0;
+        private int previousIndex = 0;
+        private int nextIndex = 0;
 
         public override void Start()
         {
@@ -49,7 +47,7 @@ namespace DarkJimmy.UI
                 Page _page = Instantiate(catalog.GetPage(pageStruct.pageType), pageContent);
                 _page.SetPage(pageStruct.pageName);
 
-                pagesRextTransform.Add(_page.GetComponent<RectTransform>());
+                pagesRectTransform.Add(_page.GetComponent<RectTransform>());
 
                 for (int j = 0; j < pageStruct.products.Count; j++)
                 {
@@ -66,8 +64,8 @@ namespace DarkJimmy.UI
 
             UpdateCanvas();
 
-            horizontalLayoutGroup.padding.left = (int)((UIManager.Instance.GetReferenceResolotion().x - pagesRextTransform[0].rect.width) * 0.5f);
-            horizontalLayoutGroup.padding.right = (int)((UIManager.Instance.GetReferenceResolotion().x - pagesRextTransform[pagesRextTransform.Count - 1].rect.width) * 0.5f);
+            horizontalLayoutGroup.padding.left = (int)((UIManager.Instance.GetReferenceResolotion().x - pagesRectTransform[0].rect.width) * 0.5f);
+            horizontalLayoutGroup.padding.right = (int)((UIManager.Instance.GetReferenceResolotion().x - pagesRectTransform[pagesRectTransform.Count - 1].rect.width) * 0.5f);
 
             UpdateCanvas();
 
@@ -115,7 +113,7 @@ namespace DarkJimmy.UI
         private void LateUpdate()
         {
             if(tabTime<Time.time)
-                Selected(true,GetCurrentIndex());
+                Selected(true,GetCurrentIndex(pageContent.anchoredPosition.x));
         }
         private void UpdateCanvas()
         {
@@ -134,32 +132,36 @@ namespace DarkJimmy.UI
                 if (i >= catalog.pages.Count - 1)
                     continue;
 
-                posX -= horizontalLayoutGroup.spacing + (pagesRextTransform[i].rect.width + pagesRextTransform[i + 1].rect.width) * 0.5f;
+                posX -= horizontalLayoutGroup.spacing + (pagesRectTransform[i].rect.width + pagesRectTransform[i + 1].rect.width) * 0.5f;
             }
         }
         private void CalculateScrollBar()
         {
-            for (int i = 0; i < pagesRextTransform.Count; i++)
+            float posX = 0;
+            for (int i = 0; i < pagesRectTransform.Count; i++)
             {
-                float posX = pagesRextTransform[i].anchoredPosition.x + (pagesRextTransform[i].rect.width + horizontalLayoutGroup.spacing) * 0.5f;
+                if (i == 0)
+                    posX -= (pagesRectTransform[i].rect.width + horizontalLayoutGroup.spacing) * 0.5f;
+                else
+                    posX -= pagesRectTransform[i].rect.width + horizontalLayoutGroup.spacing;
 
-                float percent = posX / pageContent.rect.width;
+                Debug.Log(posX);
 
-                scrollBarPos.Add(percent);
+                scrollPos.Add(posX);
             }
         }
-        private int GetCurrentIndex()
+        private int GetCurrentIndex(float value)
         {
-            if (scrollBar.value <= scrollBarPos[0])
+            if (value >= scrollPos[0])
                 return 0;
-            else if (scrollBar.value > scrollBarPos[0] && scrollBar.value <= scrollBarPos[1])
+            else if (value < scrollPos[0] && value >= scrollPos[1])
                 return 1;
-            else if (scrollBar.value > scrollBarPos[1] && scrollBar.value <= scrollBarPos[2])
+            else if (value < scrollPos[1] && value >= scrollPos[2])
                 return 2;
-            else if (scrollBar.value > scrollBarPos[2] && scrollBar.value <= scrollBarPos[3])
+            else if (value < scrollPos[2] && value >= scrollPos[3])
                 return 3;
             else
-            return 4;
+                return 4;
         }
         private void OnDestroy()
         {

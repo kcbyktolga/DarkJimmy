@@ -8,10 +8,11 @@ namespace DarkJimmy.Characters
     public class PlayerData : CharaterData
     {
         [Header("Player Data")]
-
-        public int attackIndex;
-        public int rollForce = 5;
         public bool isWallSliding;
+        public bool blockedCheck;
+
+        public int jumpAmount;
+        public float jumpForceMultiple = 0.9f;
     }
 }
 
