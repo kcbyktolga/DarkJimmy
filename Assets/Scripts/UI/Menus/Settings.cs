@@ -9,7 +9,7 @@ namespace DarkJimmy.UI
         public override void Start()
         {
             base.Start();
-            pageName.text = LanguageManager.GetText(menuType.ToString());
+
         }
 
     }

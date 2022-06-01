@@ -112,13 +112,11 @@ namespace DarkJimmy.UI
         {
             return tabContent.GetChild(index).GetComponent<TabButton>();
         }
-
         private void LateUpdate()
         {
             if(tabTime<Time.time)
                 Selected(true,GetCurrentIndex());
         }
-
         private void UpdateCanvas()
         {
             horizontalLayoutGroup.enabled = false;
@@ -163,7 +161,6 @@ namespace DarkJimmy.UI
             else
             return 4;
         }
-
         private void OnDestroy()
         {
             UIManager.Instance.PageIndex = 0;

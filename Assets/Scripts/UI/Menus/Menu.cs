@@ -60,6 +60,8 @@ namespace DarkJimmy.UI
         }
         public virtual void Start()
         {
+            if(pageName!=null)
+                pageName.text = LanguageManager.GetText(menuType.ToString());
 
         }
         public virtual void GoBack()

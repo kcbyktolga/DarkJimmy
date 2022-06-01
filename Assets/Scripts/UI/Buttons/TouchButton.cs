@@ -12,22 +12,19 @@ namespace DarkJimmy.UI
         [Header("Touch Button Property")]
         [SerializeField]
         private Menu.Menus menuType;
-        [SerializeField]
-        private TMP_Text buttonName;
-
+ 
         private void Start()
         {
             buttonName.text =  menuType.Equals(Menu.Menus.None) ? string.Empty : LanguageManager.GetText(menuType.ToString());
-            OnClick(Open);
+            OnClick(OpenPage);
         }
-        private void Open()
+        public override void OpenPage()
         {
             if (menuType.Equals(Menu.Menus.None))
                 UIManager.Instance.GoBack();
             else
                 UIManager.Instance.Open(menuType);
-        }      
-       
+        }           
     }
 
 }

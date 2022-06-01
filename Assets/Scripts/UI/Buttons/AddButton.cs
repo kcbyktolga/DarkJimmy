@@ -10,10 +10,10 @@ namespace DarkJimmy.UI
 
         void Start()
         {
-            OnClick(pageIndex,OpenPage);
+            OnClick(OpenPage);
         }
 
-        void OpenPage(int index)
+        public override void OpenPage()
         {
             UIManager.Instance.PageIndex = pageIndex;
             UIManager.Instance.Open(Menu.Menus.Shop);

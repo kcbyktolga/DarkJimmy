@@ -7,7 +7,7 @@ namespace DarkJimmy
 {
     public static class LanguageManager
     {
-        public static Language currentLanguage;
+        public static Languages currentLanguage;
         public static bool canChanged;
         static bool initialize;
 
@@ -111,11 +111,11 @@ namespace DarkJimmy
         {
             return GetLanguage() switch
             {
-                Language.English => English,
-                Language.Spanish => Spanish,
-                Language.French => French,
-                Language.Italian => Italian,  
-                Language.Turkish => Turkish,
+                Languages.English => English,
+                Languages.Spanish => Spanish,
+                Languages.French => French,
+                Languages.Italian => Italian,  
+                Languages.Turkish => Turkish,
                 _ => German,
             };
         }
@@ -128,10 +128,10 @@ namespace DarkJimmy
             else
                 return Convert.ToBoolean(key);
         }
-        public static Language GetLanguage()
+        public static Languages GetLanguage()
         {
             string key = PlayerPrefs.GetString("Language");
-            Enum.TryParse(key, out Language language);
+            Enum.TryParse(key, out Languages language);
             return language;
         }
         public static string GetText(string key)
@@ -155,20 +155,33 @@ namespace DarkJimmy
                 SetLanguage(GetLanguage());
 
         }
-        public static void SetLanguage(Language language)
+        public static void SetLanguage(Languages language)
         {
             PlayerPrefs.SetString("Language", language.ToString());
         }
-        public enum Language
+
+        public static string GetLanguageName(string name)
         {
-            German,
-            English,
-            Spanish,
-            French,
-            Italian,
-            Turkish
+            return name switch
+            {
+                nameof(Languages.German) => "Deutsch",
+                nameof(Languages.Spanish) => "Español",
+                nameof(Languages.French) => "Français",
+                nameof(Languages.Italian) => "Italiano",
+                nameof(Languages.Turkish) => "Türkçe",
+                _ => "English",
+            };
         }
-       
+ 
+    }
+    public enum Languages
+    {
+        German,
+        English,
+        Spanish,
+        French,
+        Italian,
+        Turkish
     }
 }
 

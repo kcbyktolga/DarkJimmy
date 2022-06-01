@@ -3,12 +3,14 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 using UnityEngine.UI;
+using TMPro;
 
 namespace DarkJimmy.UI
 {
     public class BaseButton : MonoBehaviour
     {
         public Button button;
+        public TMP_Text buttonName;
         public virtual void OnClick(Action action)
         {
             button.onClick.RemoveAllListeners();
@@ -24,6 +26,12 @@ namespace DarkJimmy.UI
             button.onClick.RemoveAllListeners();
             button.onClick.AddListener(() => action.Invoke(type0, type1));
         }
+        public virtual void SetTabButtonName(string name)
+        {
+            buttonName.text = LanguageManager.GetText(name);
+        }
+        public virtual void OpenPage() { }
+
     }
 }
 
