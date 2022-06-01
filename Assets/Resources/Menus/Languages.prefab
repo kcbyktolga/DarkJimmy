@@ -190,10 +190,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: deebf944aa89d8a4f8647a7e344f1458, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  animator: {fileID: 0}
-  onParamId: 0
   canvas: {fileID: 2383208493973087836}
   pageName: {fileID: 2383208495523727767}
+  baseTransform: {fileID: 2383208495438668892}
   menuType: 12
   container: {fileID: 7152625827031165683}
   languageButton: {fileID: 1185605025545891992, guid: e2f1ce82c5c8d424fb86d6da10ac4e6a,
@@ -367,7 +366,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &2383208495438668892
 RectTransform:
   m_ObjectHideFlags: 0

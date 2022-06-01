@@ -19,8 +19,8 @@ namespace DarkJimmy.UI
         public override void Start()
         {
             base.Start();
-
             GenerateTabButton();
+            ActivateBase();
         }
 
         private void GenerateTabButton()

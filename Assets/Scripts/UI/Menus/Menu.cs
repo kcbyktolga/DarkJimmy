@@ -39,14 +39,10 @@ namespace DarkJimmy.UI
         };
 
         #region Fields       
-        [HideInInspector]
-        public Animator animator;
-        [HideInInspector]
-        public int onParamId;
-
         [Header("Components")]
         public Canvas canvas;
         public TMP_Text pageName;
+        public RectTransform baseTransform;
 
         [Header("Referances")]
         public Menus menuType;
@@ -55,17 +51,18 @@ namespace DarkJimmy.UI
         #region virtual Methods
    
         public virtual void Awake()
-        {
-            animator = GetComponent<Animator>();
-            onParamId = Animator.StringToHash("On");   
+        {           
         }
         public virtual void Start()
         {
-
             SetPageName();
             LanguageManager.onChangedLanguage += SetPageName;
         }
 
+        public virtual void ActivateBase()
+        {
+            baseTransform.gameObject.SetActive(true);
+        }
         public virtual void SetPageName()
         {
             if (pageName != null)

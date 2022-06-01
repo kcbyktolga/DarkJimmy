@@ -225,7 +225,7 @@ Animator:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3188465443800198900}
-  m_Enabled: 1
+  m_Enabled: 0
   m_Avatar: {fileID: 0}
   m_Controller: {fileID: 9100000, guid: 0e3b1d8aff8a4364d928624c47d54e61, type: 2}
   m_CullingMode: 0
@@ -574,10 +574,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8ad38c1503c4d0740bb507b1a10ba0d4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  animator: {fileID: 0}
-  onParamId: 0
   canvas: {fileID: 3188465444469239466}
   pageName: {fileID: 3188465443791039696}
+  baseTransform: {fileID: 3188465443800198901}
   menuType: 3
   catalog: {fileID: 11400000, guid: f63ab6106f3fd7944ba6dcf1194a588b, type: 2}
   pageContent: {fileID: 3188465445541805756}

@@ -9,7 +9,7 @@ namespace DarkJimmy.UI
         public override void Start()
         {
             base.Start();
-
+            ActivateBase();
         }
 
     }

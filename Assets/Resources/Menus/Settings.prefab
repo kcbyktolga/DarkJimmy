@@ -467,7 +467,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &6346532013289868456
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1401,10 +1401,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ab4a8b38f691cc546baa4e23786a0f3f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  animator: {fileID: 0}
-  onParamId: 0
   canvas: {fileID: 6346532014760169128}
   pageName: {fileID: 6346532013075046755}
+  baseTransform: {fileID: 6346532013289868456}
   menuType: 2
 --- !u!1 &6346532014802120073
 GameObject:
