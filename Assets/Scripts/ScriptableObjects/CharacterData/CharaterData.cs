@@ -19,7 +19,7 @@ namespace DarkJimmy.Characters
 		public float crouchJumpBoost = 2.5f;    //Jump boost when crouching
 		public float hangingJumpForce = 15f;    //Force of wall hanging jumo
 		public float jumpHoldForce = 1.9f;      //Incremental force when jump is held
-		public float jumpHoldDuration = .1f;    //How long the jump key can be held
+		public float blockedCheckDuration = .1f;    //How long the jump key can be held
 
 		[Header("Environment Check Properties")]
 		public float footOffset = .4f;          //X Offset of feet raycast

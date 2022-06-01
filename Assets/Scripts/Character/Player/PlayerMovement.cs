@@ -11,7 +11,9 @@ namespace DarkJimmy.Characters
 
 		float jumpTime;                         //Variable to hold jump duration
 		float coyoteTime;                       //Variable to hold coyote duration
+		float blockCheckTime;
 		float playerHeight;                     //Height of the player
+
 
 		float originalXScale;                   //Original scale on X axis
 		int direction = 1;                      //Direction player is facing
@@ -55,7 +57,11 @@ namespace DarkJimmy.Characters
 
 			//If either ray hit the ground, the player is on the ground
 			if (leftCheck || rightCheck)
+            {
 				data.isOnGround = true;
+				data.isJumping = rigidBody.velocity.y < 0;
+			}
+				
 
 			//Cast the ray to check above the player's head
 			data.isHeadBlocked = Raycast(new Vector2(0f, bodyCollider.size.y), Vector2.up, data.headClearance, data.groundLayer, Color.yellow);
@@ -68,14 +74,20 @@ namespace DarkJimmy.Characters
 			Vector2 grabDir = new Vector2(direction, 0f);
 
 			//Cast three rays to look for a wall grab
-			 data.blockedCheck = Raycast(new Vector2(data.footOffset * direction, playerHeight), grabDir, data.grabDistance, data.groundLayer, Color.magenta);
+			 RaycastHit2D blockedCheck= Raycast(new Vector2(data.footOffset * direction, 0), grabDir, data.blockCheckDistance, data.groundLayer, Color.magenta);
 
-			RaycastHit2D backTop = Raycast(new Vector2(-data.footOffset * direction, playerHeight), -direction*Vector2.right, data.grabDistance, data.groundLayer, Color.black);
-			RaycastHit2D backBottom = Raycast(new Vector2(-data.footOffset * direction, 0), -direction*Vector2.right, data.grabDistance, data.groundLayer, Color.blue);
+			if(blockedCheck && blockCheckTime < Time.time)
+				blockCheckTime = data.blockedCheckDuration + Time.time;
 
+			float backCheckDistance = blockCheckTime > Time.time ? data.grabDistance * data.backCheckMultiple : data.grabDistance;
+
+			// iswallSliding check
+			RaycastHit2D backTop = Raycast(new Vector2(-data.footOffset * direction, playerHeight), -direction*Vector2.right, backCheckDistance, data.groundLayer, Color.black);
+			RaycastHit2D backBottom = Raycast(new Vector2(-data.footOffset * direction, 0), -direction*Vector2.right, backCheckDistance, data.groundLayer, Color.blue);
 
 			data.isWallSliding = !data.isOnGround && (backTop || backBottom);
 
+			//wall check
 			RaycastHit2D forwardTop = Raycast(new Vector2(data.footOffset * direction, data.eyeHeight), grabDir, data.grabDistance,data.groundLayer, Color.cyan);
 			RaycastHit2D forwardBottom = Raycast(new Vector2(data.footOffset * direction, data.eyeHeight), grabDir, data.grabDistance, data.groundLayer, Color.cyan);
 
@@ -85,7 +97,6 @@ namespace DarkJimmy.Characters
 				horizontal *= -1;
 
 		}
-
         public override void Initialize()
         {
 			//Get a reference to the required components
@@ -121,17 +132,7 @@ namespace DarkJimmy.Characters
 		}
 		public override void MidAirMovement()
 		{
-			////Otherwise, if currently within the jump time window...
-			//else if (data.isJumping)
-			//{
-			//	//...and the jump button is held, apply an incremental force to the rigidbody...
-			//	if (input.jumpHeld)
-			//		rigidBody.AddForce(new Vector2(0f, data.jumpHoldForce), ForceMode2D.Impulse);
 
-			//	//...and if jump time is past, set isJumping to false
-			//	if (jumpTime <= Time.time)
-			//		data.isJumping = false;
-			//}
 
 			//If player is falling to fast, reduce the Y velocity to the max
 			if (rigidBody.velocity.y < data.maxFallSpeed)
