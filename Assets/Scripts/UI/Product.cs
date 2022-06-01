@@ -16,7 +16,7 @@ namespace DarkJimmy.UI
         [SerializeField]
         private TMP_Text productTitle;
         [SerializeField]
-        private Image productIcon;
+        private List<Image> productIcon;
         [Header("Product Customize")]
         [SerializeField]
         private Image productFrame;
@@ -30,8 +30,10 @@ namespace DarkJimmy.UI
             productName.text = productStruct.productName;
             productPrice.text = productStruct.productPrice;
             productTitle.text = productStruct.productTitle;
-            productIcon.sprite = productStruct.productIcon;
             productFrame.color = productStruct.payType.Equals(PayType.Free) ? freeColor : paidColor;
+
+            for (int i = 0; i < productStruct.productIcon.Count; i++)
+                productIcon[i].sprite = productStruct.productIcon[i];
         }
     }
 

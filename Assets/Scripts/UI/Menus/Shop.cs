@@ -53,7 +53,7 @@ namespace DarkJimmy.UI
 
                 for (int j = 0; j < pageStruct.products.Count; j++)
                 {
-                    Product product = Instantiate(catalog.GetProduct(pageStruct.pageType),_page.container);
+                    Product product = Instantiate(catalog.GetProduct(pageStruct.products[j].productType),_page.container);
                     product.SetProduct(pageStruct.products[j]);
 
                     UpdateCanvas();

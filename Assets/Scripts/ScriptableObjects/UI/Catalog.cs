@@ -14,15 +14,16 @@ namespace DarkJimmy.UI
         private Dictionary<PageType, string> PagePaths = new Dictionary<PageType, string>
         {
              {PageType.Grid, "Pages/GridPage"},
-             {PageType.Horizontal, "Pages/Horizontal"},
-             {PageType.Single, "Pages/Single"},
+             {PageType.Horizontal, "Pages/HorizontalPage"},
+             {PageType.Single, "Pages/SinglePage"},
   
         };
-        private Dictionary<PageType, string> ProductPaths = new Dictionary<PageType, string>
+        private Dictionary<ProductType, string> ProductPaths = new Dictionary<ProductType, string>
         {
-             {PageType.Grid, "Products/GridProduct"},
-             {PageType.Horizontal, "Products/Horizontal"},
-             {PageType.Single, "Products/Single"},
+             {ProductType.HorizontalSingle, "Products/HorizontalProductSingle"},
+             {ProductType.HorizontalDuo, "Products/HorizontalProductDuo"},
+             {ProductType.GridSingle, "Products/GridProductSingle"},
+             {ProductType.GridDuo, "Products/GridProductDuo"},
 
         };
         public Page GetPage(PageType type)
@@ -32,7 +33,7 @@ namespace DarkJimmy.UI
            
             return null;
         }
-        public Product GetProduct(PageType type)
+        public Product GetProduct(ProductType type)
         {
             if (ProductPaths.TryGetValue(type, out string path))
                 return Resources.Load<Product>(path);
@@ -56,8 +57,9 @@ namespace DarkJimmy.UI
         public string productName;
         public string productTitle;
         public string productPrice;
-        public Sprite productIcon;
         public PayType payType;
+        public ProductType productType;
+        public List<Sprite> productIcon;
     }
     public enum PayType
     {
@@ -69,6 +71,14 @@ namespace DarkJimmy.UI
         Grid,
         Horizontal,
         Single
+    }
+
+    public enum ProductType
+    {
+        GridSingle,
+        GridDuo,
+        HorizontalSingle,
+        HorizontalDuo
     }
 }
 
