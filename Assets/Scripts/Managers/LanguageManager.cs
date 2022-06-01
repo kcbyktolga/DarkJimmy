@@ -7,9 +7,12 @@ namespace DarkJimmy
 {
     public static class LanguageManager
     {
-        public static Languages currentLanguage;
+        public static Language currentLanguage;
         public static bool canChanged;
         static bool initialize;
+
+        public delegate void OnChangedLanguage();
+        public static OnChangedLanguage onChangedLanguage;
 
         private static readonly Dictionary<string, string> German = new Dictionary<string, string>
         {   //Main Menu
@@ -111,11 +114,11 @@ namespace DarkJimmy
         {
             return GetLanguage() switch
             {
-                Languages.English => English,
-                Languages.Spanish => Spanish,
-                Languages.French => French,
-                Languages.Italian => Italian,  
-                Languages.Turkish => Turkish,
+                Language.English => English,
+                Language.Spanish => Spanish,
+                Language.French => French,
+                Language.Italian => Italian,  
+                Language.Turkish => Turkish,
                 _ => German,
             };
         }
@@ -128,10 +131,10 @@ namespace DarkJimmy
             else
                 return Convert.ToBoolean(key);
         }
-        public static Languages GetLanguage()
+        public static Language GetLanguage()
         {
             string key = PlayerPrefs.GetString("Language");
-            Enum.TryParse(key, out Languages language);
+            Enum.TryParse(key, out Language language);
             return language;
         }
         public static string GetText(string key)
@@ -155,33 +158,33 @@ namespace DarkJimmy
                 SetLanguage(GetLanguage());
 
         }
-        public static void SetLanguage(Languages language)
+        public static void SetLanguage(Language language)
         {
-            PlayerPrefs.SetString("Language", language.ToString());
+            PlayerPrefs.SetString("Language", language.ToString());          
         }
 
         public static string GetLanguageName(string name)
         {
             return name switch
             {
-                nameof(Languages.German) => "Deutsch",
-                nameof(Languages.Spanish) => "Español",
-                nameof(Languages.French) => "Français",
-                nameof(Languages.Italian) => "Italiano",
-                nameof(Languages.Turkish) => "Türkçe",
+                nameof(Language.German) => "Deutsch",
+                nameof(Language.Spanish) => "Español",
+                nameof(Language.French) => "Français",
+                nameof(Language.Italian) => "Italiano",
+                nameof(Language.Turkish) => "Türkçe",
                 _ => "English",
             };
+
         }
- 
     }
-    public enum Languages
+    public enum Language
     {
         German,
         English,
         Spanish,
         French,
         Italian,
-        Turkish
+        Turkish,
     }
 }
 

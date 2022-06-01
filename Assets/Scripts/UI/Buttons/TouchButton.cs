@@ -14,9 +14,10 @@ namespace DarkJimmy.UI
         private Menu.Menus menuType;
  
         private void Start()
-        {
-            buttonName.text =  menuType.Equals(Menu.Menus.None) ? string.Empty : LanguageManager.GetText(menuType.ToString());
+        {          
             OnClick(OpenPage);
+            SetTouchButtonName();
+            LanguageManager.onChangedLanguage += SetTouchButtonName;
         }
         public override void OpenPage()
         {
@@ -25,6 +26,13 @@ namespace DarkJimmy.UI
             else
                 UIManager.Instance.Open(menuType);
         }           
+
+        private void SetTouchButtonName()
+        {
+            string name = menuType.Equals(Menu.Menus.None) ? string.Empty : LanguageManager.GetText(menuType.ToString());
+
+            SetTabButtonName(name);
+        }
     }
 
 }

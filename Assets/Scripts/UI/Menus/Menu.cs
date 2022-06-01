@@ -22,7 +22,7 @@ namespace DarkJimmy.UI
             Pause,
             PlayService,
             PrivacyPolicy,
-            Language,
+            Languages,
             Credits
         }
         public static Dictionary<Menus, string> MenuPaths = new Dictionary<Menus, string>
@@ -35,6 +35,7 @@ namespace DarkJimmy.UI
              {Menus.Victory, "Menus/Victory"},
              {Menus.Defeat, "Menus/Defeat"},
              {Menus.Pause, "Menus/Pause"},
+             {Menus.Languages, "Menus/Languages"},
         };
 
         #region Fields       
@@ -60,10 +61,17 @@ namespace DarkJimmy.UI
         }
         public virtual void Start()
         {
-            if(pageName!=null)
-                pageName.text = LanguageManager.GetText(menuType.ToString());
 
+            SetPageName();
+            LanguageManager.onChangedLanguage += SetPageName;
         }
+
+        public virtual void SetPageName()
+        {
+            if (pageName != null)
+                pageName.text = LanguageManager.GetText(menuType.ToString());
+        }
+
         public virtual void GoBack()
         {
             UIManager.Instance.GoBack();

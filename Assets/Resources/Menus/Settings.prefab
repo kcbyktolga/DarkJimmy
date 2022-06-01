@@ -612,7 +612,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "T\xFCrk\xE7e"
+  m_text: Languages
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 1da2663e6077c5a42887f1602a1bb71b, type: 2}
   m_sharedMaterial: {fileID: 4844346487353763852, guid: 1da2663e6077c5a42887f1602a1bb71b,
@@ -640,8 +640,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 60
-  m_fontSizeBase: 60
+  m_fontSize: 45
+  m_fontSizeBase: 45
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -994,8 +994,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   button: {fileID: 6346532013654804195}
-  menuType: 13
   buttonName: {fileID: 6346532014802120075}
+  menuType: 13
 --- !u!1 &6346532013685448667
 GameObject:
   m_ObjectHideFlags: 0
@@ -1206,8 +1206,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   button: {fileID: 6346532014261127297}
-  menuType: 12
   buttonName: {fileID: 6346532013339768719}
+  menuType: 12
 --- !u!1 &6346532014306319590
 GameObject:
   m_ObjectHideFlags: 0
@@ -1499,8 +1499,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 60
-  m_fontSizeBase: 60
+  m_fontSize: 45
+  m_fontSizeBase: 45
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18

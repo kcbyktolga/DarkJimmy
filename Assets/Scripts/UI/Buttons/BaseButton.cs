@@ -11,6 +11,8 @@ namespace DarkJimmy.UI
     {
         public Button button;
         public TMP_Text buttonName;
+
+  
         public virtual void OnClick(Action action)
         {
             button.onClick.RemoveAllListeners();
@@ -28,7 +30,7 @@ namespace DarkJimmy.UI
         }
         public virtual void SetTabButtonName(string name)
         {
-            buttonName.text = LanguageManager.GetText(name);
+            buttonName.text = name; //LanguageManager.GetText(name);
         }
         public virtual void OpenPage() { }
 

@@ -135,10 +135,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   button: {fileID: 1483374496943584024}
+  buttonName: {fileID: 2106543387724616733}
   focus: {fileID: 2673050370071486452}
   idleColor: {r: 0.39607844, g: 0.14117648, b: 0, a: 1}
   focusColor: {r: 1, g: 1, b: 1, a: 1}
-  tabName: {fileID: 2106543387724616733}
 --- !u!1 &5268255889355578572
 GameObject:
   m_ObjectHideFlags: 0
