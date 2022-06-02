@@ -9,7 +9,7 @@ namespace DarkJimmy.Characters
     {
         PlayerInput input;
 
-		float jumpTime;                         //Variable to hold jump duration
+		float wallJumpTime;                     //Variable to hold jump duration
 		float coyoteTime;                       //Variable to hold coyote duration
 		float blockCheckTime;
 		float playerHeight;                     //Height of the player
@@ -42,7 +42,6 @@ namespace DarkJimmy.Characters
 			//Process ground and air movements
 			GroundMovement();
 			MidAirMovement();
-
 		}
 
 		public override void PhysicsCheck()
@@ -56,10 +55,12 @@ namespace DarkJimmy.Characters
 			RaycastHit2D rightCheck = Raycast(new Vector2(data.footOffset, 0f), Vector2.down, data.groundDistance, data.groundLayer, Color.blue);
 
 			//If either ray hit the ground, the player is on the ground
-			if (leftCheck || rightCheck)
+			data.isOnGround = leftCheck || rightCheck;
+
+			if (data.isOnGround && rigidBody.velocity.y <= 0)
             {
-				data.isOnGround = true;
-				data.isJumping = rigidBody.velocity.y < 0;
+				data.isJumping = false;
+				currentJumpAmount = data.jumpAmount;
 			}
 				
 
@@ -109,6 +110,8 @@ namespace DarkJimmy.Characters
 
 			//Record the player's height from the collider
 			playerHeight = bodyCollider.size.y;
+
+			currentJumpAmount = data.jumpAmount;
 		}
         public override void GroundMovement()
         {
@@ -120,8 +123,18 @@ namespace DarkJimmy.Characters
 				FlipCharacterDirection();
 
 			//Apply the desired velocity 
-			if (data.isWallSliding)
-				rigidBody.velocity = new Vector2(-direction*1.5f, -2);
+			if (data.isWallSliding && wallJumpTime < Time.time)
+            {
+                if (input.jumpPressed )
+                {
+					wallJumpTime = data.coyoteDuration + Time.time;
+					//...add the jump force to the rigidbody...
+					Vector2 force = new Vector2(direction*5, data.jumpForce);
+					Jump(force,true);
+                }
+                else
+					rigidBody.velocity = new Vector2(-direction * 1.5f, -2);
+			}				
 			else
 				rigidBody.velocity = new Vector2(xVelocity, rigidBody.velocity.y);
 			
@@ -138,38 +151,6 @@ namespace DarkJimmy.Characters
 			if (rigidBody.velocity.y < data.maxFallSpeed)
 				rigidBody.velocity = new Vector2(rigidBody.velocity.x, data.maxFallSpeed);
 		}
-		private void CheckInput()
-        {
-			//If the jump key is pressed AND the player isn't already jumping AND EITHER
-			//the player is on the ground or within the coyote time window...
-			if (input.jumpPressed)
-			{
-				if (!data.isJumping && data.isOnGround)
-				{
-					//...The player is no longer on the groud and is jumping...
-					data.isOnGround = false;
-					data.isJumping = true;
-
-					//...add the jump force to the rigidbody...
-					rigidBody.AddForce(new Vector2(0f, data.jumpForce), ForceMode2D.Impulse);
-
-					//...and tell the Audio Manager to play the jump audio
-					//AudioManager.PlayJumpAudio();
-				}
-				else if (data.isJumping && CanDoubleJump())
-				{
-					data.isJumping = false;
-					//...add the jump force to the rigidbody...
-					rigidBody.AddForce(new Vector2(0f, data.jumpForce * data.jumpForceMultiple), ForceMode2D.Impulse);
-
-					//...and tell the Audio Manager to play the jump audio
-					//AudioManager.PlayJumpAudio();
-				}
-
-
-			}
-		}
-
 		public override void FlipCharacterDirection()
         {
 			//Turn the character by flipping the direction
@@ -184,19 +165,54 @@ namespace DarkJimmy.Characters
 			//Apply the new scale
 			transform.localScale = scale;
 		}
-
-
 		private bool CanDoubleJump()
         {
 			if(jumpEnergyCount > 0)
             {
-				if (currentJumpAmount < data.jumpAmount)
+				if (currentJumpAmount > 0)
 					return true;
 				return false;		
             }
 			return false;
         }
 
-    }
+		private void CheckInput()
+        {
+			//If the jump key is pressed AND the player isn't already jumping AND EITHER
+			//the player is on the ground or within the coyote time window...
+			if (input.jumpPressed)
+			{
+				if (!data.isJumping && data.isOnGround)
+				{
+					//...The player is no longer on the groud and is jumping...
+					data.isOnGround = false;
+					//...add the jump force to the rigidbody...
+
+					Vector2 force = new Vector2(0, data.jumpForce);
+					Jump(force,true);
+
+					//...and tell the Audio Manager to play the jump audio
+					//AudioManager.PlayJumpAudio();
+				}
+				else if (data.isJumping && CanDoubleJump())
+				{
+					currentJumpAmount--;
+					Vector2 force = new Vector2(0, data.jumpForce * data.jumpForceMultiple);
+					Jump(force,false);
+				}
+			}
+		}
+
+		private void Jump(Vector2 force, bool canJump)
+        {
+			data.isJumping = canJump;
+			rigidBody.velocity = Vector2.zero;
+			//...add the jump force to the rigidbody...
+			rigidBody.AddForce(new Vector2(0f, data.jumpForce * data.jumpForceMultiple), ForceMode2D.Impulse);
+
+			//...and tell the Audio Manager to play the jump audio
+			//AudioManager.PlayJumpAudio();
+		}
+	}
 }
 
