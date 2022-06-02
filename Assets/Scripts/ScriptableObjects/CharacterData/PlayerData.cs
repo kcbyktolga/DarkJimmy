@@ -15,7 +15,9 @@ namespace DarkJimmy.Characters
         public float jumpForceMultiple = 0.9f;
         public float backCheckMultiple = 1.5f;
         public float blockCheckDistance = 1f;
- 
+        public float jumpDuration = 1f;
+
+
     }
 }
 

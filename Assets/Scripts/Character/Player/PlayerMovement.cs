@@ -9,8 +9,8 @@ namespace DarkJimmy.Characters
     {
         PlayerInput input;
 
-		float wallJumpTime;                     //Variable to hold jump duration
-		float coyoteTime;                       //Variable to hold coyote duration
+		float wallJumpTime;                     //Variable to hold wall jump duration
+		float jumpTime;                         //Variable to hold jump duration
 		float blockCheckTime;
 		float playerHeight;                     //Height of the player
 
@@ -74,8 +74,10 @@ namespace DarkJimmy.Characters
 			//Determine the direction of the wall grab attempt
 			Vector2 grabDir = new Vector2(direction, 0f);
 
+			//float forwardGrabDistance = jumpTime < Time.time ? data.grabDistance : data.grabDistance * data.backCheckMultiple;
+			
 			//Check if there is a wall in front of the player with the rays coming out of the top and bottom corners.
-			RaycastHit2D forwardTop = Raycast(new Vector2(data.footOffset * direction, data.eyeHeight), grabDir, data.grabDistance, data.groundLayer, Color.cyan);
+			RaycastHit2D forwardTop = Raycast(new Vector2(data.footOffset * direction, bodyCollider.size.y), grabDir, data.grabDistance, data.groundLayer, Color.cyan);
 			RaycastHit2D forwardBottom = Raycast(new Vector2(data.footOffset * direction, 0), grabDir, data.grabDistance, data.groundLayer, Color.cyan);
 
 			//If there is a wall reverse the direction of the player 
@@ -200,6 +202,7 @@ namespace DarkJimmy.Characters
 		}
 		private void Jump(Vector2 force, bool canJump)
         {
+			jumpTime = data.jumpDuration + Time.time;
 			data.isJumping = canJump;
 			rigidBody.velocity = Vector2.zero;
 			//...add the jump force to the rigidbody...

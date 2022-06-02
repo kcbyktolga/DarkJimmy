@@ -110,11 +110,6 @@ namespace DarkJimmy.UI
         {
             return tabContent.GetChild(index).GetComponent<TabButton>();
         }
-        private void LateUpdate()
-        {
-            if(tabTime<Time.time)
-                Selected(true,GetCurrentIndex(pageContent.anchoredPosition.x));
-        }
         private void UpdateCanvas()
         {
             horizontalLayoutGroup.enabled = false;
@@ -135,6 +130,12 @@ namespace DarkJimmy.UI
                 posX -= horizontalLayoutGroup.spacing + (pagesRectTransform[i].rect.width + pagesRectTransform[i + 1].rect.width) * 0.5f;
             }
         }
+
+        private void LateUpdate()
+        {
+            if(tabTime<Time.time)
+                Selected(true,GetCurrentIndex(pageContent.anchoredPosition.x));
+        }
         private void CalculateScrollBar()
         {
             float posX = 0;
@@ -145,11 +146,10 @@ namespace DarkJimmy.UI
                 else
                     posX -= pagesRectTransform[i].rect.width + horizontalLayoutGroup.spacing;
 
-                Debug.Log(posX);
-
                 scrollPos.Add(posX);
             }
         }
+
         private int GetCurrentIndex(float value)
         {
             if (value >= scrollPos[0])
