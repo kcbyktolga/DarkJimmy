@@ -1,8 +1,6 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using System;
 using DarkJimmy.Characters.Inputs;
+using System.Collections;
 
 namespace DarkJimmy.Characters
 {
@@ -16,6 +14,16 @@ namespace DarkJimmy.Characters
 
     public class PlayerAnimation : MonoBehaviour
     {
+        [Header("Property")]
+        [SerializeField]
+        private Vector2 blinkTimeRange;
+        [SerializeField]
+        private Vector2 blinkDuration;
+        [SerializeField]
+        private int blinkRate=3;
+        [SerializeField]
+        private GameObject headDie;
+
         PlayerMovement movement;    //Reference to the PlayerMovement script component
         Rigidbody2D rigidBody;            //Reference to the Rigidbody2D component
         PlayerInput input;                //Reference to the PlayerInput script component
@@ -27,6 +35,7 @@ namespace DarkJimmy.Characters
         int fallParamID;                  //ID of the verticalVelocity parameter
         int dieParamID;
 
+        float blinkTime;
 
         public virtual void Start()
         {
@@ -67,7 +76,56 @@ namespace DarkJimmy.Characters
 
             //Use the absolute value of speed so that we only pass in positive numbers
             anim.SetFloat(speedParamID, Mathf.Abs(rigidBody.velocity.x));
+
+            if (!movement.data.isAlive)
+                headDie.SetActive(true);
+
+            BlinkCheck();
+       
         }
+
+        private void BlinkCheck()
+        {
+            if (blinkTime > Time.time || !movement.data.isAlive)
+                return;
+
+            StartCoroutine(nameof(Blink));
+
+        }
+
+        IEnumerator Blink()
+        {
+            blinkTime = Random.Range(blinkTimeRange.x, blinkTimeRange.y)+ Time.time;
+
+            int currentBlink = 0;
+            int targetBlink = Random.Range(0 , blinkRate);
+
+            while (currentBlink <= targetBlink)
+            {
+                float time = 0;
+                float duration = Random.Range(blinkDuration.x, blinkDuration.y);
+
+                while (time <= duration)
+                {
+                    time += Time.deltaTime;
+                    headDie.SetActive(true);
+
+                    if (!movement.data.isAlive)
+                        yield break;
+
+                    yield return null;
+                }
+
+                if (!movement.data.isAlive)
+                    yield break;
+
+                headDie.SetActive(false);
+                currentBlink++;
+                yield return new WaitForSeconds(0.1f);
+
+            }
+          
+        } 
     }
 
 

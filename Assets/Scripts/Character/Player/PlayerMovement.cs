@@ -25,6 +25,7 @@ namespace DarkJimmy.Characters
 		int currentJumpAmount;
 		public int jumpEnergyCount = 10;
 		public bool wallSliding;
+		bool isStartGame;
 
 		private void Start()
         {
@@ -36,8 +37,11 @@ namespace DarkJimmy.Characters
 			if (Input.GetKeyDown(KeyCode.Space))
 				data.isAlive = !data.isAlive;
 
+			if (Input.GetKeyDown(KeyCode.A))
+				isStartGame = true;
 
-			if (!data.isAlive)
+
+			if (!data.isAlive || !isStartGame)
 				return;
 
 			CheckInput();
@@ -128,7 +132,7 @@ namespace DarkJimmy.Characters
 		}
         public override void GroundMovement()
         {
-			float xVelocity = data.isAlive ? data.speed * horizontal: 0;
+			float xVelocity = !data.isAlive || !isStartGame ? 0: data.speed * horizontal;
 	
 			//If the sign of the velocity and direction don't match, flip the character
 			if (xVelocity * direction < 0f)
