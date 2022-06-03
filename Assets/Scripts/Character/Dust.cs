@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace DarkJimmy.Characters
 {
-    public class Impact :MonoBehaviour,IAnimationEvent
+    public class Dust :MonoBehaviour,IAnimationEvent
     {
         private Vector2 originalScale;
 
