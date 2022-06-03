@@ -44,9 +44,7 @@ namespace DarkJimmy.Characters
         }
         private void FixedUpdate()
         {
-			if (!data.isAlive)
-				return;
-
+	
 			//Check the environment to determine status
 			PhysicsCheck();
 
@@ -129,8 +127,8 @@ namespace DarkJimmy.Characters
 			data.isAlive = true;
 		}
         public override void GroundMovement()
-        {			
-			float xVelocity = data.speed * horizontal;
+        {
+			float xVelocity = data.isAlive ? data.speed * horizontal: 0;
 	
 			//If the sign of the velocity and direction don't match, flip the character
 			if (xVelocity * direction < 0f)

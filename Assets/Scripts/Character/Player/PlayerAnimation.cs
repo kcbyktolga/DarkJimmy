@@ -25,6 +25,7 @@ namespace DarkJimmy.Characters
         int groundParamID;                //ID of the isOnGround parameter
         int speedParamID;                 //ID of the speed parameter
         int fallParamID;                  //ID of the verticalVelocity parameter
+        int dieParamID;
 
 
         public virtual void Start()
@@ -36,6 +37,7 @@ namespace DarkJimmy.Characters
             groundParamID = Animator.StringToHash("isOnGround");
             speedParamID = Animator.StringToHash("speed");
             fallParamID = Animator.StringToHash("verticalVelocity");
+            dieParamID = Animator.StringToHash("isAlive");
 
             //Grab a reference to this object's parent transform
             Transform parent = transform.parent;
@@ -61,6 +63,7 @@ namespace DarkJimmy.Characters
             anim.SetBool(groundParamID, movement.data.isOnGround);
             anim.SetBool(slideParamID,movement.data.isWallSliding);
             anim.SetFloat(fallParamID, rigidBody.velocity.y);
+            anim.SetBool(dieParamID, movement.data.isAlive);
 
             //Use the absolute value of speed so that we only pass in positive numbers
             anim.SetFloat(speedParamID, Mathf.Abs(rigidBody.velocity.x));
