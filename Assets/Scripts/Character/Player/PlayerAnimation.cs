@@ -22,7 +22,7 @@ namespace DarkJimmy.Characters
         PlayerInput input;                //Reference to the PlayerInput script component
         Animator anim;                    //Reference to the Animator component
         [SerializeField]
-        private Impact impact;
+        private Dust impact;
 
         int slideParamID;                 //ID of the isAttackking parameter
         int groundParamID;                //ID of the isOnGround parameter

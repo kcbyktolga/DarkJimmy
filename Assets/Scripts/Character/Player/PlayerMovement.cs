@@ -8,16 +8,15 @@ namespace DarkJimmy.Characters
 	public class PlayerMovement : CharacterMovement<PlayerData>
     {
 		[SerializeField]
-		private Transform impactTransform;
+		private Transform dustTransform;
 		[SerializeField]
-		private GameObject impact;
-		[SerializeField]
-		private GameObject smoke;
+		private GameObject dust;
+
 		PlayerInput input;
 
 		float wallJumpTime;                     //Variable to hold wall jump duration
 		float jumpTime;                         //Variable to hold jump duration
-		float blockCheckTime;
+		float blockCheckTime;            
 		float playerHeight;                     //Height of the player
 
 
@@ -30,7 +29,7 @@ namespace DarkJimmy.Characters
 
 		int currentJumpAmount;
 		public int jumpEnergyCount = 10;
-		public bool wallSliding;
+		public int energyCount = 10;
 		bool isStartGame;
 
 		private void Start()
@@ -118,8 +117,6 @@ namespace DarkJimmy.Characters
 
 			data.isWallSliding = !data.isOnGround && (backTop || backBottom);
 
-			smoke.SetActive(data.isWallSliding);
-
 		}
         public override void Initialize()
         {
@@ -135,8 +132,9 @@ namespace DarkJimmy.Characters
 			playerHeight = bodyCollider.size.y;
 
 			currentJumpAmount = data.jumpAmount;
-
+			UIManager.Instance.updateState(State.Energy, jumpEnergyCount);
 			data.isAlive = true;
+
 		}
         public override void GroundMovement()
         {
@@ -157,7 +155,7 @@ namespace DarkJimmy.Characters
 					//...add the jump force to the rigidbody...
 					Vector2 force = new Vector2(direction*5, data.jumpForce);
 					Jump(force,true);
-					Impact();
+					Dust();
 
 				}
                 else
@@ -212,7 +210,7 @@ namespace DarkJimmy.Characters
 
 					Vector2 force = new Vector2(0, data.jumpForce);
 					Jump(force,true);
-					Impact();
+					Dust();
 
 					//...and tell the Audio Manager to play the jump audio
 					//AudioManager.PlayJumpAudio();
@@ -220,6 +218,9 @@ namespace DarkJimmy.Characters
 				else if (data.isJumping && CanDoubleJump())
 				{
 					currentJumpAmount--;
+					jumpEnergyCount--;
+
+					UIManager.Instance.updateState(State.Energy,jumpEnergyCount);
 
 					Vector2 force = new Vector2(0, data.jumpForce * data.jumpForceMultiple);
 					Jump(force,false);
@@ -237,12 +238,11 @@ namespace DarkJimmy.Characters
 			//...and tell the Audio Manager to play the jump audio
 			//AudioManager.PlayJumpAudio();
 		}
-
-		private void Impact()
+		private void Dust()
         {
-			impact.transform.localScale = new Vector2(-direction * impact.transform.localScale.x, impact.transform.localScale.y);
-			impact.transform.position = impactTransform.position;
-			impact.SetActive(true);
+			dust.transform.localScale = new Vector2(-direction * dust.transform.localScale.x, dust.transform.localScale.y);
+			dust.transform.position = dustTransform.position;
+			dust.SetActive(true);
         }
 
     }

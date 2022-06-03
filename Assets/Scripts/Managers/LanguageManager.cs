@@ -162,7 +162,6 @@ namespace DarkJimmy
         {
             PlayerPrefs.SetString("Language", language.ToString());          
         }
-
         public static string GetLanguageName(string name)
         {
             return name switch
