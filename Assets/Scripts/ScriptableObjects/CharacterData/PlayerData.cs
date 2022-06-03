@@ -16,6 +16,7 @@ namespace DarkJimmy.Characters
         public float backCheckMultiple = 1.5f;
         public float blockCheckDistance = 1f;
         public float jumpDuration = 1f;
+        public Vector2 wallSlidingSpeed;
 
 
     }

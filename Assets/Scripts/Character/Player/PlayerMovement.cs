@@ -24,6 +24,7 @@ namespace DarkJimmy.Characters
 
 		int currentJumpAmount;
 		public int jumpEnergyCount = 10;
+		public bool wallSliding;
 
 		private void Start()
         {
@@ -32,10 +33,20 @@ namespace DarkJimmy.Characters
 
         private void Update()
         {
+			if (Input.GetKeyDown(KeyCode.Space))
+				data.isAlive = !data.isAlive;
+
+
+			if (!data.isAlive)
+				return;
+
 			CheckInput();
         }
         private void FixedUpdate()
         {
+			if (!data.isAlive)
+				return;
+
 			//Check the environment to determine status
 			PhysicsCheck();
 
@@ -91,7 +102,7 @@ namespace DarkJimmy.Characters
 			if (blockedCheck && blockCheckTime < Time.time)
 				blockCheckTime = data.blockedCheckDuration + Time.time;
 
-			float backCheckDistance = blockCheckTime > Time.time ? data.grabDistance * data.backCheckMultiple : data.grabDistance;
+			float backCheckDistance = blockCheckTime > Time.time || jumpTime > Time.time ? data.grabDistance * data.backCheckMultiple : data.grabDistance;
 
 			// iswallSliding check
 			RaycastHit2D backTop = Raycast(new Vector2(-data.footOffset * direction, playerHeight), -direction*Vector2.right, backCheckDistance, data.groundLayer, Color.black);
@@ -114,6 +125,8 @@ namespace DarkJimmy.Characters
 			playerHeight = bodyCollider.size.y;
 
 			currentJumpAmount = data.jumpAmount;
+
+			data.isAlive = true;
 		}
         public override void GroundMovement()
         {			
@@ -127,16 +140,19 @@ namespace DarkJimmy.Characters
 			if (data.isWallSliding && wallJumpTime < Time.time)
             {
                 if (input.jumpPressed )
-                {
+                {				
 					currentJumpAmount = data.jumpAmount;
 					wallJumpTime = data.coyoteDuration + Time.time;
 
 					//...add the jump force to the rigidbody...
 					Vector2 force = new Vector2(direction*5, data.jumpForce);
 					Jump(force,true);
+
                 }
                 else
-					rigidBody.velocity = new Vector2(-direction * 1.5f, -2);
+					rigidBody.velocity = new Vector2(-direction * data.wallSlidingSpeed.x, data.wallSlidingSpeed.y);
+
+
 			}				
 			else
 				rigidBody.velocity = new Vector2(xVelocity, rigidBody.velocity.y);		
