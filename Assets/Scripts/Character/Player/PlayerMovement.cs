@@ -7,6 +7,10 @@ namespace DarkJimmy.Characters
 {	
 	public class PlayerMovement : CharacterMovement<PlayerData>
     {
+		[SerializeField]
+		private Transform impactTransform;
+		[SerializeField]
+		private GameObject impact;
         PlayerInput input;
 
 		float wallJumpTime;                     //Variable to hold wall jump duration
@@ -149,8 +153,9 @@ namespace DarkJimmy.Characters
 					//...add the jump force to the rigidbody...
 					Vector2 force = new Vector2(direction*5, data.jumpForce);
 					Jump(force,true);
+					Impact();
 
-                }
+				}
                 else
 					rigidBody.velocity = new Vector2(-direction * data.wallSlidingSpeed.x, data.wallSlidingSpeed.y);
 
@@ -161,8 +166,6 @@ namespace DarkJimmy.Characters
 		}
 		public override void MidAirMovement()
 		{
-
-
 			//If player is falling to fast, reduce the Y velocity to the max
 			if (rigidBody.velocity.y < data.maxFallSpeed)
 				rigidBody.velocity = new Vector2(rigidBody.velocity.x, data.maxFallSpeed);
@@ -205,6 +208,7 @@ namespace DarkJimmy.Characters
 
 					Vector2 force = new Vector2(0, data.jumpForce);
 					Jump(force,true);
+					Impact();
 
 					//...and tell the Audio Manager to play the jump audio
 					//AudioManager.PlayJumpAudio();
@@ -229,6 +233,13 @@ namespace DarkJimmy.Characters
 			//...and tell the Audio Manager to play the jump audio
 			//AudioManager.PlayJumpAudio();
 		}
+
+		private void Impact()
+        {
+			impact.transform.localScale = new Vector2(-direction * impact.transform.localScale.x, impact.transform.localScale.y);
+			impact.transform.position = impactTransform.position;
+			impact.SetActive(true);
+        }
 
     }
 }

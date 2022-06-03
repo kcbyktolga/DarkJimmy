@@ -92,22 +92,6 @@ namespace DarkJimmy.Characters
         {         
             anim.SetInteger(attackIndex,index);
         }
-
-        public int GetAttackIndex(PlayerType type)
-        {
-            switch (type)
-            {
-                case PlayerType.PlayerBow:
-                    return 0;
-                case PlayerType.PlayerSpear:
-                    return Random.Range(0, 2);
-                case PlayerType.PlayerSword:
-                   return rigidBody.velocity.y != 0 && !movement.data.isOnGround ? 2 : Random.Range(0, 2);
-                default:
-                    return -1;
-
-            }
-        }
     }
 
 }

@@ -4,14 +4,7 @@ using System.Collections;
 
 namespace DarkJimmy.Characters
 {
-    public enum PlayerType
-    {
-        Player,
-        PlayerBow,
-        PlayerSpear,
-        PlayerSword
-    }
-
+ 
     public class PlayerAnimation : MonoBehaviour
     {
         [Header("Property")]
@@ -28,6 +21,8 @@ namespace DarkJimmy.Characters
         Rigidbody2D rigidBody;            //Reference to the Rigidbody2D component
         PlayerInput input;                //Reference to the PlayerInput script component
         Animator anim;                    //Reference to the Animator component
+        [SerializeField]
+        private Impact impact;
 
         int slideParamID;                 //ID of the isAttackking parameter
         int groundParamID;                //ID of the isOnGround parameter
@@ -77,7 +72,7 @@ namespace DarkJimmy.Characters
             //Use the absolute value of speed so that we only pass in positive numbers
             anim.SetFloat(speedParamID, Mathf.Abs(rigidBody.velocity.x));
 
-            if (!movement.data.isAlive)
+            if (!movement.data.isAlive && !headDie.activeSelf)
                 headDie.SetActive(true);
 
             BlinkCheck();
