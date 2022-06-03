@@ -11,7 +11,9 @@ namespace DarkJimmy.Characters
 		private Transform impactTransform;
 		[SerializeField]
 		private GameObject impact;
-        PlayerInput input;
+		[SerializeField]
+		private GameObject smoke;
+		PlayerInput input;
 
 		float wallJumpTime;                     //Variable to hold wall jump duration
 		float jumpTime;                         //Variable to hold jump duration
@@ -115,6 +117,8 @@ namespace DarkJimmy.Characters
 			RaycastHit2D backBottom = Raycast(new Vector2(-data.footOffset * direction, 0), -direction*Vector2.right, backCheckDistance, data.groundLayer, Color.blue);
 
 			data.isWallSliding = !data.isOnGround && (backTop || backBottom);
+
+			smoke.SetActive(data.isWallSliding);
 
 		}
         public override void Initialize()
