@@ -132,7 +132,9 @@ namespace DarkJimmy.Characters
 			playerHeight = bodyCollider.size.y;
 
 			currentJumpAmount = data.jumpAmount;
-			UIManager.Instance.updateState(State.Energy, jumpEnergyCount);
+			//UIManager.Instance.updateState(Stats.Gold, LocalSaveManager.GetData(Stats.Gold));
+			//UIManager.Instance.updateState(Stats.Energy, LocalSaveManager.GetData(Stats.Energy));
+			//UIManager.Instance.updateState(Stats.Mana, LocalSaveManager.GetData(Stats.Mana));
 			data.isAlive = true;
 
 		}
@@ -160,7 +162,6 @@ namespace DarkJimmy.Characters
 				}
                 else
 					rigidBody.velocity = new Vector2(-direction * data.wallSlidingSpeed.x, data.wallSlidingSpeed.y);
-
 
 			}				
 			else
@@ -220,7 +221,7 @@ namespace DarkJimmy.Characters
 					currentJumpAmount--;
 					jumpEnergyCount--;
 
-					UIManager.Instance.updateState(State.Energy,jumpEnergyCount);
+					UIManager.Instance.updateState(Stats.Mana,jumpEnergyCount);
 
 					Vector2 force = new Vector2(0, data.jumpForce * data.jumpForceMultiple);
 					Jump(force,false);
