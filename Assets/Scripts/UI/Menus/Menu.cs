@@ -23,7 +23,10 @@ namespace DarkJimmy.UI
             PlayService,
             PrivacyPolicy,
             Languages,
-            Credits
+            Credits,
+            ProductInfo,
+            Splash,
+            Loading
         }
         public static Dictionary<Menus, string> MenuPaths = new Dictionary<Menus, string>
         {
@@ -36,6 +39,9 @@ namespace DarkJimmy.UI
              {Menus.Defeat, "Menus/Defeat"},
              {Menus.Pause, "Menus/Pause"},
              {Menus.Languages, "Menus/Languages"},
+             {Menus.ProductInfo, "Menus/ProductInfo"},
+             {Menus.Splash, "Menus/Splash"},
+             {Menus.Loading, "Menus/Loading"}
         };
 
         #region Fields       

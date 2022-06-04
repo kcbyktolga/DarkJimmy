@@ -90,10 +90,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5eed9722fa22c414396d4bb7d7b1490f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  animator: {fileID: 0}
-  onParamId: 0
   canvas: {fileID: 9201009710081753642}
   pageName: {fileID: 0}
+  baseTransform: {fileID: 0}
   menuType: 1
 --- !u!1 &9201009711753834510
 GameObject:
@@ -715,12 +714,17 @@ PrefabInstance:
     - target: {fileID: 3334896516081503295, guid: 0e779445aaf9f5948b37504c5e5f6f54,
         type: 3}
       propertyPath: m_Name
-      value: Energy
+      value: Token
       objectReference: {fileID: 0}
     - target: {fileID: 4563009629929177958, guid: 0e779445aaf9f5948b37504c5e5f6f54,
         type: 3}
       propertyPath: m_Name
       value: AddIcon
+      objectReference: {fileID: 0}
+    - target: {fileID: 6837245657741118914, guid: 0e779445aaf9f5948b37504c5e5f6f54,
+        type: 3}
+      propertyPath: stats
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8141806846756510920, guid: 0e779445aaf9f5948b37504c5e5f6f54,
         type: 3}

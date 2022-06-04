@@ -5,6 +5,7 @@ using Unity.Services.Authentication;
 using Unity.Services.CloudSave;
 using Unity.Services.Core;
 using UnityEngine;
+using GooglePlayGames;
 
 namespace DarkJimmy
 {
@@ -24,7 +25,12 @@ namespace DarkJimmy
             // it depends on (namely, Authentication), and then the user must sign in.
 
             await UnityServices.InitializeAsync();
-            await AuthenticationService.Instance.SignInAnonymouslyAsync();
+
+            if (PlayService.Instance.signIn)
+                await AuthenticationService.Instance.SignInWithGoogleAsync(((PlayGamesLocalUser)Social.localUser).GetIdToken());
+            else
+                await AuthenticationService.Instance.SignInAnonymouslyAsync();
+
 
             playerData = await RetrieveSpecificData<PlayerData>("PlayerData");
 
@@ -301,12 +307,33 @@ namespace DarkJimmy
     public class CharacterData
     {
         public string Id;
-        public int Level;
+        public float Level;
         public float Energy;
         public float Mana;
         public float ERR;
         public float MMR;
         public float Speed;
+
+        public float GetCharacterPropert(CharacterProperty property)
+        {
+            return property switch
+            {
+                CharacterProperty.Mana => Mana,
+                CharacterProperty.Speed => Speed,
+                CharacterProperty.MMr => MMR,
+                CharacterProperty.ERR => ERR,
+                _ => Energy,
+            };
+        }
+    }
+
+    public enum CharacterProperty
+    {
+        Energy,
+        Mana,
+        Speed,
+        MMr,
+        ERR
     }
 
 }

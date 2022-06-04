@@ -22,20 +22,11 @@ namespace DarkJimmy
         [SerializeField]
         private TMP_Text statsName;
         [SerializeField]
-        private Image fill;
+        private Image fill;       
+        public Color color;
 
-        [SerializeField]
-        private Color color;
         private void Start()
         {
-            if (statsName != null)
-            {
-                statsName.text = LanguageManager.GetText(stats.ToString());
-                //statsName.color = color;
-                //fill.color = color;
-            }
-                
-
             if (type.Equals(ViewType.UI))
             {
                 SetStatsValue();
@@ -74,11 +65,16 @@ namespace DarkJimmy
             statsSlider.maxValue = value;
             statsSlider.value = value;
         }
-
-
         public void SetInfoSlider(float value, float maxValue )
         {
             StartCoroutine(SetSliderValue(value,maxValue));
+        }
+        public void SetColor(Color color, string key)
+        {
+            statsName.text = LanguageManager.GetText(key);
+            statsName.color = color;
+            fill.color = color;
+            amount.color = color;
         }
         IEnumerator SetSliderValue(float value, float maxValue)
         {
@@ -90,6 +86,7 @@ namespace DarkJimmy
                 time += Time.deltaTime / duration;
                 float percent = Mathf.Lerp(0, value, time);
                 statsSlider.value = percent;
+                amount.text = $"{(int)percent}%";
                 yield return null;
             }
         }

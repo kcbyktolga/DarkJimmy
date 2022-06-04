@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace DarkJimmy.Characters
+namespace DarkJimmy
 {
     public interface IAnimationEvent
     {
