@@ -9,8 +9,7 @@ namespace DarkJimmy.UI
     public class Shop : Menu
     {
         [Header("Shop Property")]
-        [SerializeField]
-        private Catalog catalog;
+        public Catalog catalog;
         [SerializeField]
         private RectTransform pageContent;
         [SerializeField]

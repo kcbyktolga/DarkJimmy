@@ -9,14 +9,14 @@ namespace DarkJimmy
     {
         public int goldCount;
         public int keyCount;
-        public int mana;
-        public int energy;
+        public float mana;
+        public float energy;
         public int timer;
         public int token;
 
-        int maxMana;
-        int maxEnergy;
-        public int Mana 
+        float maxMana;
+        float maxEnergy;
+        public float Mana 
         { 
             get 
             { 
@@ -30,7 +30,7 @@ namespace DarkJimmy
                     mana = value;
             } 
         }
-        public int Energy
+        public float Energy
         {
             get
             {
@@ -84,8 +84,8 @@ namespace DarkJimmy
             {
                 Stats.Token => token,
                 Stats.Key => keyCount,
-                Stats.Energy => energy,
-                Stats.Mana => mana,
+                Stats.Energy => (int)energy,
+                Stats.Mana => (int)mana,
                 Stats.Timer => timer,
                 _ => goldCount,
             };

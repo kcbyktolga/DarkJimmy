@@ -302,10 +302,11 @@ namespace DarkJimmy
     {
         public string Id;
         public int Level;
-        public int Energy;
-        public int Mana;
+        public float Energy;
+        public float Mana;
         public float ERR;
         public float MMR;
+        public float Speed;
     }
 
 }

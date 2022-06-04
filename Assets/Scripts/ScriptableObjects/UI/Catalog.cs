@@ -10,6 +10,7 @@ namespace DarkJimmy.UI
     {
         public TabButton tabButton;
         public List<PageStruct> pages;
+        public List<CharacterData> characterDatas;
 
         private Dictionary<PageType, string> PagePaths = new Dictionary<PageType, string>
         {
@@ -61,6 +62,7 @@ namespace DarkJimmy.UI
         public ProductType productType;
         public List<Sprite> productIcon;
     }
+
     public enum PayType
     {
         Free,
