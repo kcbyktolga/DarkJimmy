@@ -189,7 +189,7 @@ namespace DarkJimmy.Characters
 		}
 		private bool CanDoubleJump()
         {
-			if(jumpEnergyCount > 0)
+			if(LocalSaveManager.Instance.mana > 0)
             {
 				if (currentJumpAmount > 0)
 					return true;
@@ -216,13 +216,11 @@ namespace DarkJimmy.Characters
 					//...and tell the Audio Manager to play the jump audio
 					//AudioManager.PlayJumpAudio();
 				}
-				else if (data.isJumping && CanDoubleJump())
+				else if (data.isJumping && CanDoubleJump() && !data.isWallSliding)
 				{
 					currentJumpAmount--;
-					jumpEnergyCount--;
-
-					UIManager.Instance.updateState(Stats.Mana,jumpEnergyCount);
-
+					LocalSaveManager.Instance.mana--;
+					UIManager.Instance.updateState(Stats.Mana, LocalSaveManager.Instance.mana);
 					Vector2 force = new Vector2(0, data.jumpForce * data.jumpForceMultiple);
 					Jump(force,false);
 				}

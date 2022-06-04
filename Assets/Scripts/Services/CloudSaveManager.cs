@@ -30,6 +30,22 @@ namespace DarkJimmy
 
             //await ForceDeleteSpecificData("PlayerData");
         }
+        public async void SetGem(GemType type, int amount)
+        {
+            switch (type)
+            {
+                case GemType.Gold:
+                    Instance.playerData.Gold = amount;
+                    break;
+                case GemType.Token:
+                    Instance.playerData.Token = amount;
+                    break;
+                case GemType.Key:
+                    Instance.playerData.Key = amount;
+                    break;
+            }
+            await SaveData();
+        }
         public async void AddGem(GemType type , int amount)
         {
             switch (type)

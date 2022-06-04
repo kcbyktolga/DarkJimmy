@@ -14,9 +14,43 @@ namespace DarkJimmy
         public int timer;
         public int token;
 
+        int maxMana;
+        int maxEnergy;
+        public int Mana 
+        { 
+            get 
+            { 
+                return mana; 
+            }           
+            set 
+            {
+                if (value > maxMana)
+                    mana = maxMana;
+                else
+                    mana = value;
+            } 
+        }
+        public int Energy
+        {
+            get
+            {
+                return energy;
+            }
+            set
+            {
+                if (value > maxEnergy)
+                    energy = maxEnergy;
+                else
+                    energy = value;
+            }
+        }
+
         private void Start()
         {
-           
+            goldCount = CloudSaveManager.Instance.playerData.Gold;
+            keyCount = CloudSaveManager.Instance.playerData.Key;
+            maxMana= mana = CloudSaveManager.Instance.GetCurrentCharacterData().Mana;
+            maxEnergy= energy = CloudSaveManager.Instance.GetCurrentCharacterData().Energy;
         }
 
         private void SetValue(Stats stats, int value)
@@ -33,10 +67,10 @@ namespace DarkJimmy
                     keyCount = value;
                     break;
                 case Stats.Energy:
-                    energy = value;
+                    Energy = value;
                     break;
                 case Stats.Mana:
-                    mana = value;
+                    Mana = value;
                     break;
                 case Stats.Timer:
                     timer = value;
@@ -72,7 +106,7 @@ namespace DarkJimmy
         void SaveData(Stats stats)
         {
             if (Enum.TryParse(stats.ToString(), out GemType gemType))
-                CloudSaveManager.Instance.AddGem(gemType,GetValue(stats));
+                CloudSaveManager.Instance.SetGem(gemType,GetValue(stats));
         }
     }
 
