@@ -3,6 +3,7 @@ using UnityEngine;
 using DarkJimmy.UI;
 using UnityEngine.UI;
 
+
 namespace DarkJimmy
 {
     public class UIManager : Singleton<UIManager>
@@ -15,11 +16,13 @@ namespace DarkJimmy
         private Stack<Menu> _stack = new Stack<Menu>();
         private readonly Vector2 canvasResolition =  new Vector2(2960,1440);
 
-        public delegate void UpdateState(State state,int amount);
+        public delegate void UpdateState(Stats state,int amount);  
         public UpdateState updateState;
-        private void Awake()
+        public UpdateState addCollectable;
+        public override void Awake()
         {
-            Instance = this;
+            base.Awake();
+           // Instance = this;
             LanguageManager.DefaultLanguage();
         }
         private void Start()
@@ -42,7 +45,6 @@ namespace DarkJimmy
                 _stack.Push(_currentMenu);
             }
         }
-
         public void GoBack()
         {
             if (_stack.Count.Equals(1))
