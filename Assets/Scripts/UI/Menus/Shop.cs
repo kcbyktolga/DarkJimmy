@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 
+
 namespace DarkJimmy.UI
 {
     public class Shop : Menu
