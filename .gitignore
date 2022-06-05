@@ -65,8 +65,6 @@ sysinfo.txt
 *.asset.meta
 *.png.meta
 *.psd.meta
-*.anim
-*.anim.meta
 *.apk
 *.keystore
 
