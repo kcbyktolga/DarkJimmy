@@ -17,6 +17,7 @@ namespace DarkJimmy
         private Sprite passive;
 
         public LevelTab levelTab;
+        public LevelPage levelPage;
 
         [Header("Stages")]
         public List<Stage> stages;    

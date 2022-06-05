@@ -39,7 +39,6 @@ namespace DarkJimmy.UI
             focus.SetActive(level.levelStatus.Equals(LevelStatus.Active));
 
         }
-
         IEnumerator ChangeColor(int count)
         {
             int index = 0;

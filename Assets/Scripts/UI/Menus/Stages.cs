@@ -10,13 +10,29 @@ namespace DarkJimmy.UI
         [SerializeField]
         private LevelData levelData;
         [SerializeField]
-        private RectTransform levelContainer;
-        
+        private RectTransform StageContainer;
+
+
+        private int newStageIndex = 0;
+        private int previousStageIndex = 0;
 
 
 
+        public override void Start()
+        {
+                
+        }
 
-        
+        private void GenerateTabAndLevel()
+        {
+
+        }
+
+        private void Select(int index)
+        {
+            
+        }
+
     }
 
 }
