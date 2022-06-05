@@ -23,6 +23,8 @@ namespace DarkJimmy.UI
         {
             if (menuType.Equals(Menu.Menus.None))
                 UIManager.Instance.GoBack();
+            else if (menuType.Equals(Menu.Menus.PlayService))
+                PlayService.Instance.LoginGooglePlayGames();
             else
                 UIManager.Instance.Open(menuType);
         }           

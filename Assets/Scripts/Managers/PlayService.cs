@@ -13,8 +13,11 @@ namespace DarkJimmy
         void Start()
         {
             InitializePlayGamesLogin();
+
             LoginGooglePlayGames();
         }
+
+
         void InitializePlayGamesLogin()
         {
             var config = new PlayGamesClientConfiguration.Builder()
@@ -27,11 +30,9 @@ namespace DarkJimmy
             PlayGamesPlatform.InitializeInstance(config);
             PlayGamesPlatform.DebugLogEnabled = true;
             PlayGamesPlatform.Activate();
-
-  
         }
 
-        void LoginGooglePlayGames()
+        public void LoginGooglePlayGames()
         {
             Social.localUser.Authenticate(OnGooglePlayGamesLogin);
         }

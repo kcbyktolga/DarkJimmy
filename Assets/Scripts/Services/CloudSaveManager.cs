@@ -18,6 +18,7 @@ namespace DarkJimmy
     public class CloudSaveManager : Singleton<CloudSaveManager>
     {     
         public PlayerData playerData;
+        public string userID;
         public override async void Awake()
         {
             base.Awake();
@@ -29,12 +30,15 @@ namespace DarkJimmy
             if (PlayService.Instance.signIn)
                 await AuthenticationService.Instance.SignInWithGoogleAsync(((PlayGamesLocalUser)Social.localUser).GetIdToken());
             else
+            {
                 await AuthenticationService.Instance.SignInAnonymouslyAsync();
-
-
-            playerData = await RetrieveSpecificData<PlayerData>("PlayerData");
+            }
+               
+            Instance.playerData = await RetrieveSpecificData<PlayerData>("PlayerData");
 
             //await ForceDeleteSpecificData("PlayerData");
+
+            userID = AuthenticationService.Instance.PlayerId;
         }
         public async void SetGem(GemType type, int amount)
         {
