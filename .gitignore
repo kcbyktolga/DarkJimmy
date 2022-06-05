@@ -68,6 +68,7 @@ sysinfo.txt
 *.anim
 *.anim.meta
 *.apk
+*.keystore
 
 
 # Crashlytics generated file
