@@ -2,8 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System;
+using DarkJimmy.UI;
 
-namespace DarkJimmy.UI
+namespace DarkJimmy
 {
     [CreateAssetMenu(menuName = "Data/Catalog", fileName = "Catalog")]
     public class Catalog : ScriptableObject
