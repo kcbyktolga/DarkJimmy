@@ -59,7 +59,6 @@ sysinfo.txt
 *.aab
 *.unitypackage
 *.app
-*.png
 *.psd
 *.asset
 *.asset.meta
