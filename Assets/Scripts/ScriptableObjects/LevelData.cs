@@ -6,6 +6,7 @@ using DarkJimmy.UI;
 
 namespace DarkJimmy
 {
+    [CreateAssetMenu(menuName = "Data/Levels", fileName = "Levels")]
     public class LevelData : ScriptableObject
     {
         [Header("Property")]

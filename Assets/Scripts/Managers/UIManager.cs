@@ -11,11 +11,11 @@ namespace DarkJimmy
         public Camera MainCamera { get; set; }
         public Menu.Menus startingMenu;
         public GameObject postProcess;
+
         public int PageIndex { get; set; }
         private Menu _currentMenu;
         private Stack<Menu> _stack = new Stack<Menu>();
         private readonly Vector2 canvasResolition =  new Vector2(2960,1440);
-
         public delegate void UpdateState(Stats state,float amount);  
         public UpdateState updateState;
         public UpdateState addCollectable;
@@ -26,7 +26,8 @@ namespace DarkJimmy
             LanguageManager.DefaultLanguage();
         }
         private void Start()
-        {          
+        {
+            Input.multiTouchEnabled = false;
             Open(startingMenu);
         }
         public void Open(Menu.Menus menu)

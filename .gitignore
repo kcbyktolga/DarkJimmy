@@ -62,6 +62,7 @@ sysinfo.txt
 *.psd
 *.asset
 *.asset.meta
+*.png
 *.png.meta
 *.psd.meta
 *.apk

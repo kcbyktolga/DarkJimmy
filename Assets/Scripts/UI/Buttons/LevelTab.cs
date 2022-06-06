@@ -18,25 +18,40 @@ namespace DarkJimmy.UI
         [SerializeField]
         private List<Image> stars;
         [SerializeField]
-        private float duration = 0.25f;
+        private float duration = 0.01f;
         [SerializeField]
         private Color onColor;
         [SerializeField]
         private Color offColor;
+        [SerializeField]
+        private Image background;
+        [SerializeField]
+        private Sprite active;
+        [SerializeField]
+        private Sprite passed;
+
+
 
         private void Start()
         {
             levelText.text = LanguageManager.GetText("Level");
         }
 
-        public void SetLevelTab(int index, Level level)
+        public override void OpenPage()
         {
-            levelIndex.text = $"{index}";
+            Debug.Log("here");
+        }
+        public void SetLevelTab(int index, Level level, bool isLocked)
+        {
+            levelIndex.text = $"{index+1}";
 
             if (level.levelStatus.Equals(LevelStatus.Passed))
                 StartCoroutine(ChangeColor(level.rankCount));
 
-            focus.SetActive(level.levelStatus.Equals(LevelStatus.Active));
+            background.sprite = level.levelStatus.Equals(LevelStatus.Passed) ? passed : active;
+
+   
+            focus.SetActive(level.levelStatus.Equals(LevelStatus.Active) && !isLocked);
 
         }
         IEnumerator ChangeColor(int count)
@@ -47,10 +62,11 @@ namespace DarkJimmy.UI
             {
                 float time = 0;
   
-                while (time <= duration)
+                while (time <= 1)
                 {
                     time += Time.deltaTime/duration;
-                    stars[index].color = Color.Lerp(offColor,onColor,time);
+                    Color color = Color.Lerp(offColor, onColor, time);
+                    stars[index].color = color;
                     yield return null;
                 }
 
@@ -58,6 +74,10 @@ namespace DarkJimmy.UI
                 yield return null;
             }
         }  
+
+
+
+
     }
 }
 

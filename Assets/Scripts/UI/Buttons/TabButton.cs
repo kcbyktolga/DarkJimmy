@@ -20,6 +20,7 @@ namespace DarkJimmy.UI
             focus.enabled = isOn;
             button.interactable = !isOn;
         }
+     
     }
 
 }
