@@ -17,11 +17,17 @@ namespace DarkJimmy
     }
     public class CloudSaveManager : Singleton<CloudSaveManager>
     {
+        [Header("References")]
+        [SerializeField]
+        private LevelData levelData;
+        public PlayerData PlayerDatas;
+        public string userID;
+
+
         public int WorldIndex { get; set; }
         public int LevelIndex { get; set; }
-        public PlayerData PlayerDatas;
+        
 
-        public string userID;
         public override async void Awake()
         {
             base.Awake();
@@ -33,10 +39,9 @@ namespace DarkJimmy
             if ( PlayService.Instance !=null && PlayService.Instance.signIn)
                 await AuthenticationService.Instance.SignInWithGoogleAsync(((PlayGamesLocalUser)Social.localUser).GetIdToken());
             else
-            {
                 await AuthenticationService.Instance.SignInAnonymouslyAsync();
-            }
-               
+
+
             Instance.PlayerDatas = await RetrieveSpecificData<PlayerData>("PlayerData");
 
             Instance.PlayerDatas.PlayerId = AuthenticationService.Instance.PlayerId;
@@ -51,7 +56,12 @@ namespace DarkJimmy
 
         public Level GetLevel()
         {
-            return PlayerDatas.Stages[WorldIndex].levels[LevelIndex];
+            return HasLevel() ? PlayerDatas.Stages[WorldIndex].levels[LevelIndex] : levelData.stages[WorldIndex].levels[LevelIndex];
+        }
+
+        private bool HasLevel()
+        {
+            return WorldIndex < PlayerDatas.Stages.Count && LevelIndex < PlayerDatas.Stages[PlayerDatas.Stages.Count-1].levels.Count;
         }
 
         public async void SetGem(GemType type, int amount)
@@ -296,14 +306,10 @@ namespace DarkJimmy
                 Debug.LogError(e);
             }
         }
-
-
-
         private async void OnDestroy()
         {
           await  SaveData();
         }
-
     }
 
     public enum GemType

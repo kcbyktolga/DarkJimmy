@@ -13,23 +13,13 @@ namespace DarkJimmy.UI
         private RectTransform stageContent;
         [SerializeField]
         private LevelPage pagePrefab;
-        //[SerializeField]
-        //private BaseButton next;
-        //[SerializeField]
-        //private BaseButton previous;
-
-       // public List<float> GetPosition = new List<float>();
-
-
+    
         public override void Start()
         {
             data = levelData;
             Count = levelData.stages.Count;
             base.Start();
 
-            //next.OnClick(true, 1, Move);
-            //previous.OnClick(true, -1, Move);
-            SetMoveButton();
             Generate();
             OnSelect(Index);
         }
@@ -84,11 +74,6 @@ namespace DarkJimmy.UI
             previousTab.SetTabButton(false);
             nextTab.SetTabButton(true);
         }
-        //private void SetMoveButton()
-        //{
-        //    previous.gameObject.SetActive(Index != 0);
-        //    next.gameObject.SetActive(Index != data.stages.Count - 1);
-        //}
 
     }
 

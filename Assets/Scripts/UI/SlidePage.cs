@@ -18,6 +18,8 @@ namespace DarkJimmy.UI
         {
             next.OnClick(true, 1, Move);
             previous.OnClick(true, -1, Move);
+
+            SetMoveButton();
         }
 
         public override void Generate()

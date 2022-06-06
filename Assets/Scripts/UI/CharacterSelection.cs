@@ -14,6 +14,7 @@ namespace DarkJimmy.UI
             Count = data.GetAllCharacterCount;
             base.Start();
             Generate();
+
         }
 
         public override void Generate()
@@ -29,7 +30,7 @@ namespace DarkJimmy.UI
                 GetPosition.Add(posX);
                 posX -= tab.GetComponent<RectTransform>().rect.width;         
             }
-            SetMoveButton();
+            
         }
 
         public override void OnSelect(int index)
