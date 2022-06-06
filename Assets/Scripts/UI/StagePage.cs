@@ -69,7 +69,7 @@ namespace DarkJimmy.UI
 
             SetStageTab();
             SetMoveButton();
-            StartCoroutine(Slide(stageContent,GetPosition));
+            StartCoroutine(Slide(stageContent,GetPosition[NextIndex]));
         }
         private void SetStageTab()
         {

@@ -15,12 +15,12 @@ namespace DarkJimmy.UI
         [SerializeField]
         private List<Color> colorList;
     
-        private Shop shop;
+        private ShopPage shop;
  
         public override void Start()
         {
-            shop = FindObjectOfType<Shop>();
-            Catalog catalog = shop.catalog;
+            shop = FindObjectOfType<ShopPage>();
+            Catalog catalog = shop.data;
             int count = Enum.GetNames(typeof(CharacterProperty)).Length;
 
             for (int i = 0; i < count; i++)

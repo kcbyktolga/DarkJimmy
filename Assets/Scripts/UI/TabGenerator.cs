@@ -35,13 +35,11 @@ namespace DarkJimmy.UI
             return tabs[index];
         }
 
-        public virtual IEnumerator Slide(RectTransform content, List<float> GetPosition )
+        public virtual IEnumerator Slide(RectTransform content, float endPos )
         {
             float time = 0;
-            //tabTime = Time.time + duration;
-
             float currentPos = content.anchoredPosition.x;
-            float endPos = GetPosition[Index];
+           // float endPos = GetPosition[Index];
 
             while (time <= 1)
             {
