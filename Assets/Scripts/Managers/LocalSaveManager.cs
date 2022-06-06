@@ -47,8 +47,8 @@ namespace DarkJimmy
 
         private void Start()
         {
-            goldCount = CloudSaveManager.Instance.playerData.Gold;
-            keyCount = CloudSaveManager.Instance.playerData.Key;
+            goldCount = CloudSaveManager.Instance.PlayerDatas.Gold;
+            keyCount = CloudSaveManager.Instance.PlayerDatas.Key;
             maxMana= mana = CloudSaveManager.Instance.GetCurrentCharacterData().Mana;
             maxEnergy= energy = CloudSaveManager.Instance.GetCurrentCharacterData().Energy;
         }

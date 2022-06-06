@@ -26,7 +26,8 @@ namespace DarkJimmy.UI
             Credits,
             ProductInfo,
             Splash,
-            Loading
+            Loading,
+            LevelPopup
         }
         public static Dictionary<Menus, string> MenuPaths = new Dictionary<Menus, string>
         {
@@ -41,7 +42,8 @@ namespace DarkJimmy.UI
              {Menus.Languages, "Menus/Languages"},
              {Menus.ProductInfo, "Menus/ProductInfo"},
              {Menus.Splash, "Menus/Splash"},
-             {Menus.Loading, "Menus/Loading"}
+             {Menus.Loading, "Menus/Loading"},
+             {Menus.LevelPopup, "Menus/LevelPopup"}
         };
 
         #region Fields       

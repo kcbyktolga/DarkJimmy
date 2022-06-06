@@ -20,7 +20,6 @@ namespace DarkJimmy.UI
                 levelTab.SetLevelTab(i,data.levels[i], data.stageIsLocked);
                 tabs.Add(levelTab);
                 levelTab.OnClick(i,OnSelect);
-
             }
         }
 
@@ -30,6 +29,8 @@ namespace DarkJimmy.UI
            // LevelTab previous = GetTab(PreviousIndex);
 
             LevelTab next = GetTab(NextIndex);
+
+            CloudSaveManager.Instance.LevelIndex = index;
 
             next.OpenPage();
 

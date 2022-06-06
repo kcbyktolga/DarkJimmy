@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace DarkJimmy.UI
 {
-    public class StagePage : TabGenerator<StageTab, LevelData>
+    public class StagePage: SlidePage<StageTab,LevelData>
     {
         [Header("Stage Property")]
         [SerializeField]
@@ -13,19 +13,22 @@ namespace DarkJimmy.UI
         private RectTransform stageContent;
         [SerializeField]
         private LevelPage pagePrefab;
-        [SerializeField]
-        private BaseButton next;
-        [SerializeField]
-        private BaseButton previous;
+        //[SerializeField]
+        //private BaseButton next;
+        //[SerializeField]
+        //private BaseButton previous;
 
-        private List<float> GetPosition = new List<float>();
+       // public List<float> GetPosition = new List<float>();
 
-        private void Start()
+
+        public override void Start()
         {
             data = levelData;
+            Count = levelData.stages.Count;
+            base.Start();
 
-            next.OnClick(true, 1, Move);
-            previous.OnClick(true, -1, Move);
+            //next.OnClick(true, 1, Move);
+            //previous.OnClick(true, -1, Move);
             SetMoveButton();
             Generate();
             OnSelect(Index);
@@ -33,9 +36,9 @@ namespace DarkJimmy.UI
         public override void Generate()
         {
             float _posX = 0;
-            for (int i = 0; i < data.stages.Count; i++)
-            {
 
+            for (int i = 0; i < levelData.stages.Count; i++)
+            {
                 StageTab stageTab = Instantiate(prefab, container);
                 stageTab.SetStage(data.stages[i]);
                 stageTab.OnClick(i, OnSelect);
@@ -56,7 +59,7 @@ namespace DarkJimmy.UI
             Index = NextIndex;
             Move(false, NextIndex);
         }
-        private void Move(bool onClick, int amount)
+        public override void Move(bool onClick, int amount)
         {
             if (onClick)
             {
@@ -76,16 +79,16 @@ namespace DarkJimmy.UI
             StageTab previousTab = GetTab(PreviousIndex);
             StageTab nextTab = GetTab(NextIndex);
 
+            CloudSaveManager.Instance.WorldIndex = NextIndex;
+
             previousTab.SetTabButton(false);
             nextTab.SetTabButton(true);
         }
-        private void SetMoveButton()
-        {
-            previous.gameObject.SetActive(Index != 0);
-            next.gameObject.SetActive(Index != data.stages.Count - 1);
-        }
-
-   
+        //private void SetMoveButton()
+        //{
+        //    previous.gameObject.SetActive(Index != 0);
+        //    next.gameObject.SetActive(Index != data.stages.Count - 1);
+        //}
 
     }
 

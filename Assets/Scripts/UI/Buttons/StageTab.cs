@@ -18,11 +18,10 @@ namespace DarkJimmy.UI
         {
             focus.enabled = isOn;
             button.interactable = !isOn;
-            Debug.Log("here");
         }
         public void SetStage(Stage stage )
         {
-            stageIcon.sprite = stage.stageIcon;
+            stageIcon.sprite = stage.GetStageIcon();
             stageLocked.gameObject.SetActive(stage.stageIsLocked);
         }
 

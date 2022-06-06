@@ -16,8 +16,11 @@ namespace DarkJimmy
         SystemData
     }
     public class CloudSaveManager : Singleton<CloudSaveManager>
-    {     
-        public PlayerData playerData;
+    {
+        public int WorldIndex { get; set; }
+        public int LevelIndex { get; set; }
+        public PlayerData PlayerDatas;
+
         public string userID;
         public override async void Awake()
         {
@@ -27,31 +30,42 @@ namespace DarkJimmy
 
             await UnityServices.InitializeAsync();
 
-            if (PlayService.Instance.signIn)
+            if ( PlayService.Instance !=null && PlayService.Instance.signIn)
                 await AuthenticationService.Instance.SignInWithGoogleAsync(((PlayGamesLocalUser)Social.localUser).GetIdToken());
             else
             {
                 await AuthenticationService.Instance.SignInAnonymouslyAsync();
             }
                
-            Instance.playerData = await RetrieveSpecificData<PlayerData>("PlayerData");
+            Instance.PlayerDatas = await RetrieveSpecificData<PlayerData>("PlayerData");
+
+            Instance.PlayerDatas.PlayerId = AuthenticationService.Instance.PlayerId;
+
+           // await SaveData();
 
             //await ForceDeleteSpecificData("PlayerData");
 
-            userID = AuthenticationService.Instance.PlayerId;
+            //await RetrieveEverything();
+
         }
+
+        public Level GetLevel()
+        {
+            return PlayerDatas.Stages[WorldIndex].levels[LevelIndex];
+        }
+
         public async void SetGem(GemType type, int amount)
         {
             switch (type)
             {
                 case GemType.Gold:
-                    Instance.playerData.Gold = amount;
+                    Instance.PlayerDatas.Gold = amount;
                     break;
                 case GemType.Token:
-                    Instance.playerData.Token = amount;
+                    Instance.PlayerDatas.Token = amount;
                     break;
                 case GemType.Key:
-                    Instance.playerData.Key = amount;
+                    Instance.PlayerDatas.Key = amount;
                     break;
             }
             await SaveData();
@@ -61,13 +75,13 @@ namespace DarkJimmy
             switch (type)
             {
                 case GemType.Gold:
-                    Instance.playerData.Gold += amount;
+                    Instance.PlayerDatas.Gold += amount;
                     break;
                 case GemType.Token:
-                    Instance.playerData.Token += amount;
+                    Instance.PlayerDatas.Token += amount;
                     break;
                 case GemType.Key:
-                    Instance.playerData.Key += amount;
+                    Instance.PlayerDatas.Key += amount;
                     break;            
             }
             await SaveData();
@@ -77,13 +91,13 @@ namespace DarkJimmy
             switch (type)
             {
                 case GemType.Gold:
-                    Instance.playerData.Gold -= price;                   
+                    Instance.PlayerDatas.Gold -= price;                   
                     break;
                 case GemType.Token:
-                    Instance.playerData.Token -= price;
+                    Instance.PlayerDatas.Token -= price;
                     break;
                 case GemType.Key:
-                    Instance.playerData.Key -= price;
+                    Instance.PlayerDatas.Key -= price;
                     break;
             }
 
@@ -97,25 +111,24 @@ namespace DarkJimmy
         {
             return type switch
             {
-                GemType.Token => Instance.playerData.Token,
-                GemType.Key => Instance.playerData.Key,
-                _ => Instance.playerData.Gold,
+                GemType.Token => Instance.PlayerDatas.Token,
+                GemType.Key => Instance.PlayerDatas.Key,
+                _ => Instance.PlayerDatas.Gold,
             };
         }
         public int GetCurrentCharacter()
         {
-            return Instance.playerData.CurrentCharacter;
+            return Instance.PlayerDatas.CurrentCharacter;
         }
         public CharacterData GetCurrentCharacterData()
         {
-            return Instance.playerData.Characters[Instance.playerData.CurrentCharacter];
+            return Instance.PlayerDatas.Characters[Instance.PlayerDatas.CurrentCharacter];
         }
-
 
         [ContextMenu("Save")]
         private async Task SaveData()
         {
-            await ForceSaveObjectData("PlayerData", playerData);
+            await ForceSaveObjectData("PlayerData", PlayerDatas);
         }
         private async Task ListAllKeys()
         {
@@ -216,8 +229,8 @@ namespace DarkJimmy
                 }
                 else
                 {
-                    playerData.PlayerId = AuthenticationService.Instance.PlayerId;
-                    await ForceSaveObjectData("PlayerData", playerData);
+                    PlayerDatas.PlayerId = AuthenticationService.Instance.PlayerId;
+                    await ForceSaveObjectData("PlayerData", PlayerDatas);
                 }
             }
             catch (CloudSaveValidationException e)
@@ -242,7 +255,7 @@ namespace DarkJimmy
                 // If you wish to load only a subset of keys rather than everything, you
                 // can call a method LoadAsync and pass a HashSet of keys into it.
                 var results = await CloudSaveService.Instance.Data.LoadAllAsync();
-
+              
                 Debug.Log($"Elements loaded!");
 
                 foreach (var element in results)
@@ -284,6 +297,13 @@ namespace DarkJimmy
             }
         }
 
+
+
+        private async void OnDestroy()
+        {
+          await  SaveData();
+        }
+
     }
 
     public enum GemType
@@ -305,9 +325,15 @@ namespace DarkJimmy
         public bool IsAccept;
         public bool IsRemoveAds;
         public List<CharacterData> Characters;
+        public List<Stage> Stages;    
+
+        public int GetAllCharacterCount
+        {
+            get { return Characters.Count; }
+        }
     }
 
-    [System.Serializable]
+    [Serializable]
     public class CharacterData
     {
         public string Id;
@@ -318,13 +344,13 @@ namespace DarkJimmy
         public float MMR;
         public float Speed;
 
-        public float GetCharacterPropert(CharacterProperty property)
+        public float GetCharacterProperty(CharacterProperty property)
         {
             return property switch
             {
                 CharacterProperty.Mana => Mana,
                 CharacterProperty.Speed => Speed,
-                CharacterProperty.MMr => MMR,
+                CharacterProperty.MMR => MMR,
                 CharacterProperty.ERR => ERR,
                 _ => Energy,
             };
@@ -336,8 +362,12 @@ namespace DarkJimmy
         Energy,
         Mana,
         Speed,
-        MMr,
+        MMR,
         ERR
     }
 
 }
+
+   
+
+

@@ -31,26 +31,41 @@ namespace DarkJimmy
                 LevelStatus.Passive => passive,
                 _ => passed,
             };
-        }
-        
-
+        }     
     }
 
     [Serializable]
     public class Stage
     {
+        [Header("Stage Settings")]      
+        [SerializeField]
+        private Sprite stageIcon;
+
+        [Header("Stage Property")]
         public string stageName;
-        public bool stageIsLocked=true;
-        public Sprite stageIcon;
+        public bool stageIsLocked=true;      
         public List<Level> levels;
+
+
+        public Sprite GetStageIcon()
+        {
+            return stageIcon;
+        }
     }
 
     [Serializable]
     public class Level
     {
+        [Header("Level Settings")]
+     
+        [Header("Level Property")]
+        public string levelName;
         public LevelStatus levelStatus;
         public int rankCount;
-
+        public int keyCount;
+        public int goldCount;
+        public int currentScore;
+        public int maxScore;
     }
     public enum LevelStatus
     {
@@ -58,5 +73,18 @@ namespace DarkJimmy
         Active,
         Passive
     }
+
+ 
+    public class LevelSettings
+    {
+    
+    }
+
+    public class StageSettings
+    {
+
+        public Sprite stageIcon;
+    }
+
 }
 

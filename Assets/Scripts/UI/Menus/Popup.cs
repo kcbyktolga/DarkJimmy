@@ -27,7 +27,7 @@ namespace DarkJimmy.UI
             {
                 StateUIView _stats = Instantiate(stats, statsContent);
                 _stats.SetColor(colorList[i],((CharacterProperty)i).ToString());
-                _stats.SetInfoSlider(catalog.characterDatas[0].GetCharacterPropert((CharacterProperty)i),100);       
+                _stats.SetInfoSlider(catalog.characterDatas[0].GetCharacterProperty((CharacterProperty)i),100);       
             }
         }
 
