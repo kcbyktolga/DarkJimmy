@@ -12,8 +12,8 @@ namespace DarkJimmy.UI
         public T prefab;
         public A data;
         public List<T> tabs;
-       
         public RectTransform container;
+        public float duration = 0.5f;
 
         public virtual int NextIndex { get; set; } = 0;
         public virtual int PreviousIndex { get; set; } = 0;
@@ -33,6 +33,24 @@ namespace DarkJimmy.UI
         public virtual T GetTab(int index)
         {
             return tabs[index];
+        }
+
+        public virtual IEnumerator Slide(RectTransform content, List<float> GetPosition )
+        {
+            float time = 0;
+            //tabTime = Time.time + duration;
+
+            float currentPos = content.anchoredPosition.x;
+            float endPos = GetPosition[Index];
+
+            while (time <= 1)
+            {
+                time += Time.deltaTime / duration;
+                float posX = Mathf.Lerp(currentPos, endPos, time);
+                content.anchoredPosition = new Vector2(posX, content.anchoredPosition.y);
+
+                yield return null;
+            }
         }
 
     }

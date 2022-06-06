@@ -400,7 +400,7 @@ PrefabInstance:
     - target: {fileID: 3188465444469239479, guid: 18b8b0f3a260af44c8c63d29586364ec,
         type: 3}
       propertyPath: m_RootOrder
-      value: 2
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3188465444469239479, guid: 18b8b0f3a260af44c8c63d29586364ec,
         type: 3}
@@ -2949,7 +2949,7 @@ PrefabInstance:
     - target: {fileID: 6346532014760169125, guid: c2ddb73fabb83b447bc974ca967e77ca,
         type: 3}
       propertyPath: m_RootOrder
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6346532014760169125, guid: c2ddb73fabb83b447bc974ca967e77ca,
         type: 3}
@@ -4328,13 +4328,18 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!1001 &4897844970043146438
+--- !u!1001 &1483614242163456436
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
     m_TransformParent: {fileID: 8536292635308339342}
     m_Modifications:
+    - target: {fileID: 4897844968428184104, guid: d00bba77372202d4b8d5baff487107c6,
+        type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 363
+      objectReference: {fileID: 0}
     - target: {fileID: 4897844969996462214, guid: d00bba77372202d4b8d5baff487107c6,
         type: 3}
       propertyPath: m_Pivot.x
@@ -4348,7 +4353,7 @@ PrefabInstance:
     - target: {fileID: 4897844969996462214, guid: d00bba77372202d4b8d5baff487107c6,
         type: 3}
       propertyPath: m_RootOrder
-      value: 0
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 4897844969996462214, guid: d00bba77372202d4b8d5baff487107c6,
         type: 3}
@@ -4445,10 +4450,15 @@ PrefabInstance:
       propertyPath: m_Name
       value: Stages
       objectReference: {fileID: 0}
+    - target: {fileID: 4897844969996462329, guid: d00bba77372202d4b8d5baff487107c6,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4897844970324429178, guid: d00bba77372202d4b8d5baff487107c6,
         type: 3}
       propertyPath: m_SizeDelta.x
-      value: 0
+      value: 1286
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d00bba77372202d4b8d5baff487107c6, type: 3}
@@ -4577,7 +4587,12 @@ PrefabInstance:
     - target: {fileID: 8536292636079344879, guid: 8ed26d7c09adb8b4f8f3f947ef0268ac,
         type: 3}
       propertyPath: m_Enabled
-      value: 0
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8536292636079344879, guid: 8ed26d7c09adb8b4f8f3f947ef0268ac,
+        type: 3}
+      propertyPath: startingMenu
+      value: 5
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 8ed26d7c09adb8b4f8f3f947ef0268ac, type: 3}
