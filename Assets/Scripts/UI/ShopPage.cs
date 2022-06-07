@@ -35,23 +35,23 @@ namespace DarkJimmy.UI
         }
         public override void Generate()
         {
-            for (int i = 0; i < data.pages.Count; i++)
+            for (int i = 0; i < globalData.pages.Count; i++)
             {
-                PageStruct pageStruct = data.pages[i];
+                PageStruct pageStruct = globalData.pages[i];
 
                 TabButton tab = Instantiate(prefab, container);
                 tab.SetTabButtonName(pageStruct.pageName);
                 tab.OnClick(false, i, OnSelect);
                 tabs.Add(tab);
 
-                Page page = Instantiate(data.GetPage(pageStruct.pageType), pageContent);
+                Page page = Instantiate(globalData.GetPage(pageStruct.pageType), pageContent);
                 page.SetPage(pageStruct.pageName);
 
                 pagesRectTransform.Add(page.GetComponent<RectTransform>());
 
                 for (int j = 0; j < pageStruct.products.Count; j++)
                 {
-                    Product product = Instantiate(data.GetProduct(pageStruct.products[j].productType), page.container);
+                    Product product = Instantiate(globalData.GetProduct(pageStruct.products[j].productType), page.container);
                     product.SetProduct(pageStruct.products[j]);
 
                     UpdateCanvas();
@@ -99,12 +99,12 @@ namespace DarkJimmy.UI
         {
             float posX = 0;
 
-            for (int i = 0; i < data.pages.Count; i++)
+            for (int i = 0; i < globalData.pages.Count; i++)
             {
                 //  GetPosX.Add(i, posX);
                 GetPosition.Add(posX);
 
-                if (i >= data.pages.Count - 1)
+                if (i >= globalData.pages.Count - 1)
                     continue;
 
                 posX -= horizontalLayoutGroup.spacing + (pagesRectTransform[i].rect.width + pagesRectTransform[i + 1].rect.width) * 0.5f;

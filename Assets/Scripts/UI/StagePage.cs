@@ -15,8 +15,8 @@ namespace DarkJimmy.UI
     
         public override void Start()
         {
-            data = CloudSaveManager.Instance.PlayerDatas;
-            Count = data.Stages.Count;
+            globalData = CloudSaveManager.Instance.PlayerDatas;         
+            Count = globalData.Stages.Count;
             base.Start();
 
             Generate();
@@ -26,16 +26,17 @@ namespace DarkJimmy.UI
         {
             float _posX = 0;
 
-            for (int i = 0; i < data.Stages.Count; i++)
+            for (int i = 0; i < globalData.Stages.Count; i++)
             {
                 StageTab stageTab = Instantiate(prefab, container);
-                stageTab.SetStage(data.Stages[i]);
+                stageTab.SetStage(globalData.Stages[i],CloudSaveManager.Instance.GetSystemData().Stages[i].GetStageIcon());
                 stageTab.OnClick(i, OnSelect);
                 tabs.Add(stageTab);
 
                 LevelPage page = Instantiate(pagePrefab, stageContent);
-                page.data = data.Stages[i];
-
+                page.globalData = globalData.Stages[i];
+                page.localData = CloudSaveManager.Instance.GetSystemData().Stages[i];
+                
                 GetPosition.Add(_posX);
                 _posX -= UIManager.Instance.GetReferenceResolotion().x;
 
@@ -53,7 +54,7 @@ namespace DarkJimmy.UI
             if (onClick)
             {
                 Index += amount;
-                Index = Mathf.Clamp(Index, 0, data.Stages.Count - 1);
+                Index = Mathf.Clamp(Index, 0, globalData.Stages.Count - 1);
 
                 PreviousIndex = NextIndex;
                 NextIndex = Index;

@@ -20,7 +20,7 @@ namespace DarkJimmy.UI
         public override void Start()
         {
             shop = FindObjectOfType<ShopPage>();
-            Catalog catalog = shop.data;
+            Catalog catalog = shop.globalData;
             int count = Enum.GetNames(typeof(CharacterProperty)).Length;
 
             for (int i = 0; i < count; i++)

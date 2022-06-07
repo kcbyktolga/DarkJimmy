@@ -21,12 +21,14 @@ namespace DarkJimmy
         [SerializeField]
         private SystemData systemData;
         public PlayerData PlayerDatas;
+        [SerializeField]
+        private SystemProperty system;
         public string userID;
         public int WorldIndex = 0;
         public int LevelIndex = 0;
-        
-        
 
+        public delegate void UpdateStage(Stage stage);
+        public UpdateStage updateStage;
         public override async void Awake()
         {
             base.Awake();
@@ -57,11 +59,11 @@ namespace DarkJimmy
 
         }
 
+        #region Player Data Methods
         private bool HasLevel()
         {
-            return WorldIndex < PlayerDatas.Stages.Count && LevelIndex < PlayerDatas.Stages[PlayerDatas.Stages.Count-1].levels.Count;
+            return WorldIndex < PlayerDatas.Stages.Count && LevelIndex < PlayerDatas.Stages[PlayerDatas.Stages.Count - 1].levels.Count;
         }
-   
         public bool CanSpendGem(GemType type, int price)
         {
             return GetGemCount(type) >= price;
@@ -70,7 +72,7 @@ namespace DarkJimmy
         {
             return Instance.PlayerDatas.CurrentCharacterIndex;
         }
-        public int GetGemCount(GemType type )
+        public int GetGemCount(GemType type)
         {
             return type switch
             {
@@ -102,7 +104,7 @@ namespace DarkJimmy
                     break;
             }
         }
-        public void AddGem(GemType type , int amount)
+        public void AddGem(GemType type, int amount)
         {
             switch (type)
             {
@@ -114,7 +116,7 @@ namespace DarkJimmy
                     break;
                 case GemType.Key:
                     Instance.PlayerDatas.Key += amount;
-                    break;            
+                    break;
             }
         }
         public void SpendGem(GemType type, int price)
@@ -122,7 +124,7 @@ namespace DarkJimmy
             switch (type)
             {
                 case GemType.Gold:
-                    Instance.PlayerDatas.Gold -= price;                   
+                    Instance.PlayerDatas.Gold -= price;
                     break;
                 case GemType.Token:
                     Instance.PlayerDatas.Token -= price;
@@ -132,6 +134,8 @@ namespace DarkJimmy
                     break;
             }
         }
+        #endregion
+
 
 
         [ContextMenu("Update Level")]
@@ -189,7 +193,6 @@ namespace DarkJimmy
 
             SetLevel(level);
         }
-
         public void SetLevel(Level level)
         {
             GetLevelList(WorldIndex)[LevelIndex] = level;
@@ -197,15 +200,41 @@ namespace DarkJimmy
             Debug.Log($"{level.levelId} li level güncellendi");
         }
 
+        public SystemData GetSystemData()
+        {
+            return systemData;
+        }
         private int GetStagesCount()
         {
             return Instance.PlayerDatas.Stages.Count;
-        }
-       
+        }    
         private List<Level> GetLevelList(int index)
         {
             return Instance.PlayerDatas.Stages[index].levels;
         }
+
+        #region System 
+        public Sprite GetLevelSprite(LevelStatus status)
+        {
+            return status switch
+            {
+                LevelStatus.Active => system.active,
+                LevelStatus.Passive => system.passive,
+                _ => system.passed,
+            };
+        }
+        public Sprite GetPaySprite(GemType type)
+        {
+            return type switch
+            {
+                GemType.Token => system.token,
+                GemType.Key => system.key,
+                _ => system.gold,
+            };
+        }
+
+        #endregion
+
 
         #region Main Methods  
         [ContextMenu("Save")]
@@ -413,6 +442,21 @@ namespace DarkJimmy
         {
             get { return Characters.Count; }
         }
+    }
+
+    [Serializable]
+    public class SystemProperty
+    {
+        [Header("Button Sprites")]
+        public Sprite passed;
+        public Sprite active;
+        public Sprite passive;
+
+        [Header("Gem Sprites")]
+        public Sprite gold;
+        public Sprite token;
+        public Sprite key;
+
     }
 
 }

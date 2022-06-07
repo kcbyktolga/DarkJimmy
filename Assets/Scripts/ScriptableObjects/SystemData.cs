@@ -9,31 +9,11 @@ namespace DarkJimmy
     [CreateAssetMenu(menuName = "Data/System Data", fileName = "System Data")]
     public class SystemData : ScriptableObject
     {
-        [Header("Property")]
-        [SerializeField]
-        private Sprite passed;
-        [SerializeField]
-        private Sprite active;
-        [SerializeField]
-        private Sprite passive;
-
-        public LevelTab levelTab;
-        public LevelPage levelPage;
 
         [Header("Stages")]
         public List<Stage> Stages;
         [Header("Characters")]
         public List<CharacterData> CharacterDatas;
-        
-        public Sprite GetLevelSprite(LevelStatus status)
-        {
-            return status switch
-            {
-                LevelStatus.Active => active,
-                LevelStatus.Passive => passive,
-                _ => passed,
-            };
-        }     
 
         [ContextMenu("Set Level Id")]
         public void SetLevel()
@@ -54,6 +34,10 @@ namespace DarkJimmy
         [Header("Stage Settings")]      
         [SerializeField]
         private Sprite stageIcon;
+        [SerializeField]
+        private int stagePrice;
+        [SerializeField]
+        private GemType payType;
 
         [Header("Stage Property")]
         public string stageName;
@@ -63,6 +47,15 @@ namespace DarkJimmy
         public Sprite GetStageIcon()
         {
             return stageIcon;
+        }     
+        public int GetStagePrice()
+        {
+            return stagePrice;
+        }
+
+        public GemType GetPayType()
+        {
+            return payType;
         }
     }
 
@@ -120,5 +113,6 @@ namespace DarkJimmy
         Active,
         Passive
     }
+
 }
 

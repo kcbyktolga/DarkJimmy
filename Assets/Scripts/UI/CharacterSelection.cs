@@ -8,9 +8,9 @@ namespace DarkJimmy.UI
     {
         public override void Start()
         {
-            data = CloudSaveManager.Instance.PlayerDatas;
-            Count = data.GetAllCharacterCount;
-            Index = data.CurrentCharacterIndex;
+            globalData = CloudSaveManager.Instance.PlayerDatas;
+            Count = globalData.GetAllCharacterCount;
+            Index = globalData.CurrentCharacterIndex;
             base.Start();
             Generate();
         }
@@ -33,7 +33,7 @@ namespace DarkJimmy.UI
         {
             base.Move(onClick, amount);
 
-            data.CurrentCharacterIndex = Index;
+            globalData.CurrentCharacterIndex = Index;
         }
 
         public override void OnSelect(int index)

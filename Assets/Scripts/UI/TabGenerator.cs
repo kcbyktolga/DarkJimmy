@@ -10,7 +10,8 @@ namespace DarkJimmy.UI
     {
         [Header("Components")]
         public T prefab;
-        public A data;
+        public A globalData;
+        public A localData;
         public List<T> tabs;
         public RectTransform container;
         public float duration = 0.5f;

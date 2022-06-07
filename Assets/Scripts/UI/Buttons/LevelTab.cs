@@ -39,10 +39,7 @@ namespace DarkJimmy.UI
 
         public override void OpenPage()
         {
-            string text = $"World Index: {CloudSaveManager.Instance.WorldIndex}, Level Index: {CloudSaveManager.Instance.LevelIndex}";
-
             UIManager.Instance.Open(Menu.Menus.LevelPopup);
-
         }
         public void SetLevelTab(int index, Level level, bool isLocked)
         {
