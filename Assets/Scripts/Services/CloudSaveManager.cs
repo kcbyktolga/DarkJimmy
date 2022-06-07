@@ -45,6 +45,10 @@ namespace DarkJimmy
 
             Instance.PlayerDatas.PlayerId = AuthenticationService.Instance.PlayerId;
 
+            SyncStages();
+
+
+
            // await SaveData();
 
             //await ForceDeleteSpecificData("PlayerData");
@@ -57,10 +61,7 @@ namespace DarkJimmy
         {
             return WorldIndex < PlayerDatas.Stages.Count && LevelIndex < PlayerDatas.Stages[PlayerDatas.Stages.Count-1].levels.Count;
         }
-        private bool HasStages()
-        {
-            return WorldIndex < PlayerDatas.Stages.Count;
-        }
+   
         public bool CanSpendGem(GemType type, int price)
         {
             return GetGemCount(type) >= price;
@@ -132,6 +133,61 @@ namespace DarkJimmy
             }
         }
 
+        [ContextMenu("Update Level")]
+        private void SyncStages()
+        {
+            if (GetStagesCount() != levelData.stages.Count)
+            {
+                int startIndex = GetLockedFirstStage();
+
+                int _count = GetStagesCount() - startIndex;
+                int Count = GetStagesCount();
+
+                // Instance.PlayerDatas.Stages.RemoveRange(startIndex, Count);
+
+                for (int i = startIndex+1; i < Count; i++)
+                {
+                    int index= startIndex + 1;
+                    Instance.PlayerDatas.Stages.RemoveAt(index);
+                }
+               
+                Debug.Log("Seviyeler Sýfýrlandý");
+
+                for (int i = startIndex + 1; i < Instance.levelData.stages.Count; i++)
+                {
+                    Debug.Log(i);
+                    Stage stage = Instance.levelData.stages[i];
+                    Instance.PlayerDatas.Stages.Add(stage);                    
+                }
+
+                Debug.Log("Seviyeler güncellendi");
+
+                return;
+            }
+
+            Debug.Log("Seviyeler güncel");
+        }
+
+        private int GetLockedFirstStage()
+        {
+            int index = 0;
+
+            if (GetStagesCount() == 0)
+                return 0;
+
+            for (int i = 0; i < Instance.PlayerDatas.Stages.Count; i++)
+            {
+
+                if (Instance.PlayerDatas.Stages[i].stageIsLocked)
+                    break;
+
+                index =i; 
+            }
+              
+            Debug.Log( $"Baþlatýcý {index}");
+            return index;
+        }
+
         [ContextMenu("Set Default")]
         public void SetDefualt()
         {
@@ -145,21 +201,21 @@ namespace DarkJimmy
             SetLevel(level);
         }
 
-
-
         public void SetLevel(Level level)
         {
             GetLevelList(WorldIndex)[LevelIndex] = level;
 
             Debug.Log($"{level.levelId} li level güncellendi");
         }
-        private List<Stage> GetStageList()
+
+        private int GetStagesCount()
         {
-            return PlayerDatas.Stages;
+            return Instance.PlayerDatas.Stages.Count;
         }
+       
         private List<Level> GetLevelList(int index)
         {
-            return PlayerDatas.Stages[index].levels;
+            return Instance.PlayerDatas.Stages[index].levels;
         }
 
         #region Main Methods  
