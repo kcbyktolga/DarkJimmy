@@ -19,7 +19,7 @@ namespace DarkJimmy
     {
         [Header("References")]
         [SerializeField]
-        private LevelData levelData;
+        private SystemData systemData;
         public PlayerData PlayerDatas;
         public string userID;
         public int WorldIndex = 0;
@@ -85,7 +85,7 @@ namespace DarkJimmy
         }
         public Level GetLevel()
         {
-            return HasLevel() ? PlayerDatas.Stages[WorldIndex].levels[LevelIndex] : levelData.stages[WorldIndex].levels[LevelIndex];
+            return HasLevel() ? PlayerDatas.Stages[WorldIndex].levels[LevelIndex] : systemData.Stages[WorldIndex].levels[LevelIndex];
         }
         public void SetGem(GemType type, int amount)
         {
@@ -133,41 +133,29 @@ namespace DarkJimmy
             }
         }
 
+
         [ContextMenu("Update Level")]
         private void SyncStages()
         {
-            if (GetStagesCount() != levelData.stages.Count)
+            if (GetStagesCount() != systemData.Stages.Count)
             {
                 int startIndex = GetLockedFirstStage();
-
-                int _count = GetStagesCount() - startIndex;
                 int Count = GetStagesCount();
-
-                // Instance.PlayerDatas.Stages.RemoveRange(startIndex, Count);
 
                 for (int i = startIndex+1; i < Count; i++)
                 {
-                    int index= startIndex + 1;
-                    Instance.PlayerDatas.Stages.RemoveAt(index);
+                    Instance.PlayerDatas.Stages.RemoveAt(startIndex+1);
                 }
-               
-                Debug.Log("Seviyeler Sýfýrlandý");
 
-                for (int i = startIndex + 1; i < Instance.levelData.stages.Count; i++)
+                for (int i = startIndex + 1; i < Instance.systemData.Stages.Count; i++)
                 {
-                    Debug.Log(i);
-                    Stage stage = Instance.levelData.stages[i];
+                    Stage stage = Instance.systemData.Stages[i];
                     Instance.PlayerDatas.Stages.Add(stage);                    
                 }
 
-                Debug.Log("Seviyeler güncellendi");
-
                 return;
             }
-
-            Debug.Log("Seviyeler güncel");
         }
-
         private int GetLockedFirstStage()
         {
             int index = 0;
@@ -189,14 +177,15 @@ namespace DarkJimmy
         }
 
         [ContextMenu("Set Default")]
-        public void SetDefualt()
+        private void SetDefualt()
         {
-            PlayerDatas.Stages = levelData.stages;
+            PlayerDatas.Stages = systemData.Stages;
+            PlayerDatas.Characters = systemData.CharacterDatas;
         }
         [ContextMenu("Sett Level")]
         public void SetLevel()
         {
-            Level level = levelData.stages[WorldIndex].levels[LevelIndex];
+            Level level = systemData.Stages[WorldIndex].levels[LevelIndex];
 
             SetLevel(level);
         }
@@ -324,6 +313,7 @@ namespace DarkJimmy
                 else
                 {
                     PlayerDatas.PlayerId = AuthenticationService.Instance.PlayerId;
+                    SetDefualt();
                     await ForceSaveObjectData("PlayerData", PlayerDatas);
                 }
             }
@@ -418,43 +408,11 @@ namespace DarkJimmy
         public bool IsRemoveAds;
         public List<CharacterData> Characters;      
         public List<Stage> Stages;  
-        
+      
         public int GetAllCharacterCount
         {
             get { return Characters.Count; }
         }
-    }
-
-    [Serializable]
-    public class CharacterData
-    {
-        public string Id;
-        public float Level;
-        public float Energy;
-        public float Mana;
-        public float ERR;
-        public float MMR;
-        public float Speed;
-
-        public float GetCharacterProperty(CharacterProperty property)
-        {
-            return property switch
-            {
-                CharacterProperty.Mana => Mana,
-                CharacterProperty.Speed => Speed,
-                CharacterProperty.MMR => MMR,
-                CharacterProperty.ERR => ERR,
-                _ => Energy,
-            };
-        }
-    }
-    public enum CharacterProperty
-    {
-        Energy,
-        Mana,
-        Speed,
-        MMR,
-        ERR
     }
 
 }
