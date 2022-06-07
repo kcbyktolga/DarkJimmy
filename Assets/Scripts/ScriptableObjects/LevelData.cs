@@ -21,7 +21,7 @@ namespace DarkJimmy
         public LevelPage levelPage;
 
         [Header("Stages")]
-        public List<Stage> stages;    
+        public List<Stage> stages; 
         
         public Sprite GetLevelSprite(LevelStatus status)
         {
@@ -32,6 +32,18 @@ namespace DarkJimmy
                 _ => passed,
             };
         }     
+
+        [ContextMenu("Set Level Id")]
+        public void SetLevel()
+        {
+            for (int i = 0; i < stages.Count; i++)
+            {
+                for (int j = 0; j < stages[i].levels.Count; j++)
+                {
+                    stages[i].levels[j].levelId = $"{i}{j}";
+                }   
+            }
+        }
     }
 
     [Serializable]
@@ -46,7 +58,6 @@ namespace DarkJimmy
         public bool stageIsLocked=true;      
         public List<Level> levels;
 
-
         public Sprite GetStageIcon()
         {
             return stageIcon;
@@ -57,8 +68,9 @@ namespace DarkJimmy
     public class Level
     {
         [Header("Level Settings")]
-     
+
         [Header("Level Property")]
+        public string levelId;
         public string levelName;
         public LevelStatus levelStatus;
         public int rankCount;
@@ -73,18 +85,5 @@ namespace DarkJimmy
         Active,
         Passive
     }
-
- 
-    public class LevelSettings
-    {
-    
-    }
-
-    public class StageSettings
-    {
-
-        public Sprite stageIcon;
-    }
-
 }
 

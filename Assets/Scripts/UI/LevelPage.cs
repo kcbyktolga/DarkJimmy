@@ -13,9 +13,17 @@ namespace DarkJimmy.UI
         {
             pageName.text = LanguageManager.GetText(data.stageName);
 
+            bool priority = false;
+
             for (int i = 0; i < data.levels.Count; i++)
             {
                 LevelTab levelTab = Instantiate(prefab, container);
+
+                if (data.levels[i].levelStatus.Equals(LevelStatus.Passive) && !priority)
+                {
+                    data.levels[i].levelStatus = LevelStatus.Active;
+                    priority = true;
+                }
 
                 levelTab.SetLevelTab(i,data.levels[i], data.stageIsLocked);
                 tabs.Add(levelTab);

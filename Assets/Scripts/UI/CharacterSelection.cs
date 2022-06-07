@@ -10,6 +10,7 @@ namespace DarkJimmy.UI
         {
             data = CloudSaveManager.Instance.PlayerDatas;
             Count = data.GetAllCharacterCount;
+            Index = data.CurrentCharacterIndex;
             base.Start();
             Generate();
         }
@@ -26,8 +27,13 @@ namespace DarkJimmy.UI
 
                 GetPosition.Add(posX);
                 posX -= tab.GetComponent<RectTransform>().rect.width;         
-            }
-            
+            }       
+        }
+        public override void Move(bool onClick, int amount)
+        {
+            base.Move(onClick, amount);
+
+            data.CurrentCharacterIndex = Index;
         }
 
         public override void OnSelect(int index)

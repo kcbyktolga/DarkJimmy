@@ -4,11 +4,10 @@ using UnityEngine;
 
 namespace DarkJimmy.UI
 {
-    public class StagePage: SlidePage<StageTab,LevelData>
+    public class StagePage: SlidePage<StageTab,PlayerData>
     {
         [Header("Stage Property")]
-        [SerializeField]
-        private LevelData levelData;
+   
         [SerializeField]
         private RectTransform stageContent;
         [SerializeField]
@@ -16,8 +15,8 @@ namespace DarkJimmy.UI
     
         public override void Start()
         {
-            data = levelData;
-            Count = levelData.stages.Count;
+            data = CloudSaveManager.Instance.PlayerDatas;
+            Count = data.Stages.Count;
             base.Start();
 
             Generate();
@@ -27,15 +26,15 @@ namespace DarkJimmy.UI
         {
             float _posX = 0;
 
-            for (int i = 0; i < levelData.stages.Count; i++)
+            for (int i = 0; i < data.Stages.Count; i++)
             {
                 StageTab stageTab = Instantiate(prefab, container);
-                stageTab.SetStage(data.stages[i]);
+                stageTab.SetStage(data.Stages[i]);
                 stageTab.OnClick(i, OnSelect);
                 tabs.Add(stageTab);
 
                 LevelPage page = Instantiate(pagePrefab, stageContent);
-                page.data = data.stages[i];
+                page.data = data.Stages[i];
 
                 GetPosition.Add(_posX);
                 _posX -= UIManager.Instance.GetReferenceResolotion().x;
@@ -54,7 +53,7 @@ namespace DarkJimmy.UI
             if (onClick)
             {
                 Index += amount;
-                Index = Mathf.Clamp(Index, 0, data.stages.Count - 1);
+                Index = Mathf.Clamp(Index, 0, data.Stages.Count - 1);
 
                 PreviousIndex = NextIndex;
                 NextIndex = Index;

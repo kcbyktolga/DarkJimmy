@@ -22,10 +22,9 @@ namespace DarkJimmy
         private LevelData levelData;
         public PlayerData PlayerDatas;
         public string userID;
-
-
-        public int WorldIndex { get; set; }
-        public int LevelIndex { get; set; }
+        public int WorldIndex = 0;
+        public int LevelIndex = 0;
+        
         
 
         public override async void Awake()
@@ -54,17 +53,40 @@ namespace DarkJimmy
 
         }
 
-        public Level GetLevel()
-        {
-            return HasLevel() ? PlayerDatas.Stages[WorldIndex].levels[LevelIndex] : levelData.stages[WorldIndex].levels[LevelIndex];
-        }
-
         private bool HasLevel()
         {
             return WorldIndex < PlayerDatas.Stages.Count && LevelIndex < PlayerDatas.Stages[PlayerDatas.Stages.Count-1].levels.Count;
         }
-
-        public async void SetGem(GemType type, int amount)
+        private bool HasStages()
+        {
+            return WorldIndex < PlayerDatas.Stages.Count;
+        }
+        public bool CanSpendGem(GemType type, int price)
+        {
+            return GetGemCount(type) >= price;
+        }
+        public int GetCurrentCharacter()
+        {
+            return Instance.PlayerDatas.CurrentCharacterIndex;
+        }
+        public int GetGemCount(GemType type )
+        {
+            return type switch
+            {
+                GemType.Token => Instance.PlayerDatas.Token,
+                GemType.Key => Instance.PlayerDatas.Key,
+                _ => Instance.PlayerDatas.Gold,
+            };
+        }
+        public CharacterData GetCurrentCharacterData()
+        {
+            return Instance.PlayerDatas.Characters[Instance.PlayerDatas.CurrentCharacterIndex];
+        }
+        public Level GetLevel()
+        {
+            return HasLevel() ? PlayerDatas.Stages[WorldIndex].levels[LevelIndex] : levelData.stages[WorldIndex].levels[LevelIndex];
+        }
+        public void SetGem(GemType type, int amount)
         {
             switch (type)
             {
@@ -78,9 +100,8 @@ namespace DarkJimmy
                     Instance.PlayerDatas.Key = amount;
                     break;
             }
-            await SaveData();
         }
-        public async void AddGem(GemType type , int amount)
+        public void AddGem(GemType type , int amount)
         {
             switch (type)
             {
@@ -94,9 +115,8 @@ namespace DarkJimmy
                     Instance.PlayerDatas.Key += amount;
                     break;            
             }
-            await SaveData();
         }
-        public async void SpendGem(GemType type, int price)
+        public void SpendGem(GemType type, int price)
         {
             switch (type)
             {
@@ -110,31 +130,39 @@ namespace DarkJimmy
                     Instance.PlayerDatas.Key -= price;
                     break;
             }
-
-            await SaveData();
-        }
-        public bool CanSpendGem(GemType type, int price)
-        {
-            return GetGemCount(type) >= price;
-        }
-        public int GetGemCount(GemType type )
-        {
-            return type switch
-            {
-                GemType.Token => Instance.PlayerDatas.Token,
-                GemType.Key => Instance.PlayerDatas.Key,
-                _ => Instance.PlayerDatas.Gold,
-            };
-        }
-        public int GetCurrentCharacter()
-        {
-            return Instance.PlayerDatas.CurrentCharacter;
-        }
-        public CharacterData GetCurrentCharacterData()
-        {
-            return Instance.PlayerDatas.Characters[Instance.PlayerDatas.CurrentCharacter];
         }
 
+        [ContextMenu("Set Default")]
+        public void SetDefualt()
+        {
+            PlayerDatas.Stages = levelData.stages;
+        }
+        [ContextMenu("Sett Level")]
+        public void SetLevel()
+        {
+            Level level = levelData.stages[WorldIndex].levels[LevelIndex];
+
+            SetLevel(level);
+        }
+
+
+
+        public void SetLevel(Level level)
+        {
+            GetLevelList(WorldIndex)[LevelIndex] = level;
+
+            Debug.Log($"{level.levelId} li level güncellendi");
+        }
+        private List<Stage> GetStageList()
+        {
+            return PlayerDatas.Stages;
+        }
+        private List<Level> GetLevelList(int index)
+        {
+            return PlayerDatas.Stages[index].levels;
+        }
+
+        #region Main Methods  
         [ContextMenu("Save")]
         private async Task SaveData()
         {
@@ -310,6 +338,8 @@ namespace DarkJimmy
         {
           await  SaveData();
         }
+        #endregion
+
     }
 
     public enum GemType
@@ -319,20 +349,20 @@ namespace DarkJimmy
         Key
     }
 
-    [System.Serializable]
+    [Serializable]
     public class PlayerData
     {
         public string PlayerId;        
         public int Gold = 0;
         public int Token = 0;
         public int Key = 0;
-        public int CurrentLevel;
-        public int CurrentCharacter;
+        public int CurrentLevelIndex;
+        public int CurrentCharacterIndex;
         public bool IsAccept;
         public bool IsRemoveAds;
-        public List<CharacterData> Characters;
-        public List<Stage> Stages;    
-
+        public List<CharacterData> Characters;      
+        public List<Stage> Stages;  
+        
         public int GetAllCharacterCount
         {
             get { return Characters.Count; }
@@ -362,7 +392,6 @@ namespace DarkJimmy
             };
         }
     }
-
     public enum CharacterProperty
     {
         Energy,
