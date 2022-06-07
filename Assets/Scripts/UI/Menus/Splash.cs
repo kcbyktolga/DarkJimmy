@@ -1,7 +1,5 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 namespace DarkJimmy.UI
 {
     public class Splash : Menu
@@ -11,12 +9,12 @@ namespace DarkJimmy.UI
 
         public override void Start()
         {
-            StartCoroutine(nameof(Skip));
+            StartCoroutine(Skip(Menus.Loading.ToString()));
         }
-        IEnumerator Skip()
+        public virtual IEnumerator Skip(string sceneName)
         {
             yield return new WaitForSeconds(duration);
-            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
+            SceneManager.LoadScene(sceneName);
         }
 
     }

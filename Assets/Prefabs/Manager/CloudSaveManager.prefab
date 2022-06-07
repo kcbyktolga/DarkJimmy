@@ -44,7 +44,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   type: 0
-  playerData:
+  levelData: {fileID: 11400000, guid: b2f4acfb48d42b44eacea9d7213197ff, type: 2}
+  PlayerDatas:
     PlayerId: 
     Gold: 0
     Token: 0
@@ -54,3 +55,5 @@ MonoBehaviour:
     IsAccept: 0
     IsRemoveAds: 0
     Characters: []
+    Stages: []
+  userID: 

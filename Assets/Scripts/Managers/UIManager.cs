@@ -51,15 +51,19 @@ namespace DarkJimmy
             if (_stack.Count.Equals(1))
                 return;
 
-            var item = _stack.Pop();
+            Menu item = _stack.Pop();
 
             Destroy(item.gameObject);
 
-            var lastMenu = _stack.Peek();
+            Menu lastMenu = _stack.Peek();
 
             if (lastMenu.menuType.Equals(Menu.Menus.Lobby) || lastMenu.menuType.Equals(Menu.Menus.Play))
                 return;
             lastMenu.gameObject.SetActive(true);
+        }
+        public int GetStackCount()
+        {
+            return _stack.Count;
         }
         public Menu GetCurrentMenu()
         {

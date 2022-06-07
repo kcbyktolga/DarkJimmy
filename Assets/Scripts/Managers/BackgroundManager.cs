@@ -10,8 +10,9 @@ namespace DarkJimmy
         public BackgroundsType backgroundType;
         public List<BackgroundElement> backgrounds;
 
-        PlayerMovement player;
-
+       [SerializeField] 
+       private Transform target;
+ 
         void Start()
         {
             Initialize();
@@ -19,14 +20,12 @@ namespace DarkJimmy
 
         private void Initialize()
         {
-            player = FindObjectOfType<PlayerMovement>();
-
             for (int i = 0; i < backgrounds.Count; i++)
                 backgrounds[i].SetBackground(backgroundType);
         }
         void FixedUpdate()
         {
-            if (player == null)
+            if (target == null)
                 return;
 
             Move();
@@ -35,7 +34,7 @@ namespace DarkJimmy
         private void Move()
         {           
             for (int i = 0; i < backgrounds.Count; i++)
-                backgrounds[i].Move(player);
+                backgrounds[i].Move(target);
         }
     }
 
@@ -47,7 +46,6 @@ namespace DarkJimmy
         public List<float> startPosx = new List<float>();
         private float diffX;
 
-  
         public void SetBackground(BackgroundsType type)
         {
             diffX = Vector2.Distance(backgrounds[0].transform.position, backgrounds[1].transform.position);
@@ -59,25 +57,23 @@ namespace DarkJimmy
             }
                
         }
-
-        public void Move(PlayerMovement player)
+        public void Move(Transform target)
         {
             for (int i = 0; i < backgrounds.Count; i++)
             {             
-                if (player.transform.position.x> startPosx[i] + diffX)
+                if (target.position.x> startPosx[i] + diffX)
                 {
-                    backgrounds[i].transform.position = new Vector3(startPosx[i] +diffX*2,backgrounds[i].transform.position.y,backgrounds[i].transform.position.z);
+                    backgrounds[i].transform.position = new Vector3(startPosx[i] + diffX * 2, backgrounds[i].transform.position.y, backgrounds[i].transform.position.z);
 
                     startPosx[i] = backgrounds[i].transform.position.x;
                 }
-                else if(player.transform.position.x < startPosx[i] - diffX)
+                else if(target.position.x < startPosx[i] - diffX)
                 {
                     backgrounds[i].transform.position = new Vector3(startPosx[i] - diffX*2, backgrounds[i].transform.position.y, backgrounds[i].transform.position.z);
 
                     startPosx[i] = backgrounds[i].transform.position.x;
                 }
-            }
-           
+            }          
         }
     }
     public enum BackgroundsType

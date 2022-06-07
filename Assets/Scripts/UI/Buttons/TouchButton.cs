@@ -1,9 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using TMPro;
-using DarkJimmy.Manager;
-
 
 namespace DarkJimmy.UI
 {
@@ -22,9 +19,16 @@ namespace DarkJimmy.UI
         public override void OpenPage()
         {
             if (menuType.Equals(Menu.Menus.None))
-                UIManager.Instance.GoBack();
+            {
+                if (SceneManager.GetActiveSceneName().Equals(Menu.Menus.Stages.ToString())&&UIManager.Instance.GetStackCount().Equals(1))
+                    SceneManager.LoadScene(Menu.Menus.Lobby.ToString());
+                else
+                    UIManager.Instance.GoBack();
+            }             
             else if (menuType.Equals(Menu.Menus.PlayService))
                 PlayService.Instance.LoginGooglePlayGames();
+            else if (menuType.Equals(Menu.Menus.Stages))
+                SceneManager.LoadScene(menuType.ToString());
             else
                 UIManager.Instance.Open(menuType);
         }           
