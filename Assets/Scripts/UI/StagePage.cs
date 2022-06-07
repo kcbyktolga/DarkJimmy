@@ -74,7 +74,6 @@ namespace DarkJimmy.UI
             previousTab.SetTabButton(false);
             nextTab.SetTabButton(true);
         }
-
     }
 
 }

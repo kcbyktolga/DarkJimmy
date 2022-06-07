@@ -28,7 +28,6 @@ namespace DarkJimmy.UI
             stageIcon.sprite = sprite;
             stageLocked.gameObject.SetActive(stage.stageIsLocked);
         }
-
         private void UpdateStageTab(Stage stage)
         {
             stageLocked.gameObject.SetActive(stage.stageIsLocked);
