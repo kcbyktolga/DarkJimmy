@@ -7,8 +7,7 @@ namespace DarkJimmy.UI
 {
     public class ShopPage : TabGenerator<TabButton,Catalog>
     {
-        [Header("Shop Page Property")]
-        //public Catalog catalog;
+        [Header("Shop Page Property")]    
         [SerializeField]
         private RectTransform pageContent;
         [SerializeField]
@@ -24,7 +23,6 @@ namespace DarkJimmy.UI
 
         void Start()
         {
-           // data = catalog;
             horizontalLayoutGroup = pageContent.GetComponent<HorizontalLayoutGroup>();
 
             pageContent.anchoredPosition = new Vector2(0, pageContent.anchoredPosition.y);

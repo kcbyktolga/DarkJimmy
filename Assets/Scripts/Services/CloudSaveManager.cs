@@ -76,8 +76,7 @@ namespace DarkJimmy
         {
             return type switch
             {
-                GemType.Token => Instance.PlayerDatas.Token,
-                GemType.Key => Instance.PlayerDatas.Key,
+                GemType.Dimaond => Instance.PlayerDatas.Diamond,
                 _ => Instance.PlayerDatas.Gold,
             };
         }
@@ -96,11 +95,8 @@ namespace DarkJimmy
                 case GemType.Gold:
                     Instance.PlayerDatas.Gold = amount;
                     break;
-                case GemType.Token:
-                    Instance.PlayerDatas.Token = amount;
-                    break;
-                case GemType.Key:
-                    Instance.PlayerDatas.Key = amount;
+                case GemType.Dimaond:
+                    Instance.PlayerDatas.Diamond = amount;
                     break;
             }
         }
@@ -111,11 +107,8 @@ namespace DarkJimmy
                 case GemType.Gold:
                     Instance.PlayerDatas.Gold += amount;
                     break;
-                case GemType.Token:
-                    Instance.PlayerDatas.Token += amount;
-                    break;
-                case GemType.Key:
-                    Instance.PlayerDatas.Key += amount;
+                case GemType.Dimaond:
+                    Instance.PlayerDatas.Diamond += amount;
                     break;
             }
         }
@@ -126,11 +119,8 @@ namespace DarkJimmy
                 case GemType.Gold:
                     Instance.PlayerDatas.Gold -= price;
                     break;
-                case GemType.Token:
-                    Instance.PlayerDatas.Token -= price;
-                    break;
-                case GemType.Key:
-                    Instance.PlayerDatas.Key -= price;
+                case GemType.Dimaond:
+                    Instance.PlayerDatas.Diamond -= price;
                     break;
             }
         }
@@ -227,8 +217,7 @@ namespace DarkJimmy
         {
             return type switch
             {
-                GemType.Token => system.token,
-                GemType.Key => system.key,
+                GemType.Dimaond => system.token,
                 _ => system.gold,
             };
         }
@@ -420,8 +409,7 @@ namespace DarkJimmy
     public enum GemType
     {
         Gold,
-        Token,
-        Key
+        Dimaond,
     }
 
     [Serializable]
@@ -429,7 +417,7 @@ namespace DarkJimmy
     {
         public string PlayerId;        
         public int Gold = 0;
-        public int Token = 0;
+        public int Diamond = 0;
         public int Key = 0;
         public int CurrentLevelIndex;
         public int CurrentCharacterIndex;
