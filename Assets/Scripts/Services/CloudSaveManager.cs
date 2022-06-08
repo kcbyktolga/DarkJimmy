@@ -43,11 +43,12 @@ namespace DarkJimmy
                 await AuthenticationService.Instance.SignInAnonymouslyAsync();
 
 
-            Instance.PlayerDatas = await RetrieveSpecificData<PlayerData>("PlayerData");
+            PlayerDatas = await RetrieveSpecificData<PlayerData>("PlayerData");
 
-            Instance.PlayerDatas.PlayerId = AuthenticationService.Instance.PlayerId;
+            userID = PlayerDatas.PlayerId;
 
-            SyncStages();
+            // remote config.
+            //SyncStages();
 
 
 
@@ -93,10 +94,10 @@ namespace DarkJimmy
             switch (type)
             {
                 case GemType.Gold:
-                    Instance.PlayerDatas.Gold = amount;
+                    PlayerDatas.Gold = amount;
                     break;
                 case GemType.Dimaond:
-                    Instance.PlayerDatas.Diamond = amount;
+                    PlayerDatas.Diamond = amount;
                     break;
             }
         }
@@ -105,10 +106,10 @@ namespace DarkJimmy
             switch (type)
             {
                 case GemType.Gold:
-                    Instance.PlayerDatas.Gold += amount;
+                    PlayerDatas.Gold += amount;
                     break;
                 case GemType.Dimaond:
-                    Instance.PlayerDatas.Diamond += amount;
+                    PlayerDatas.Diamond += amount;
                     break;
             }
         }
@@ -117,10 +118,10 @@ namespace DarkJimmy
             switch (type)
             {
                 case GemType.Gold:
-                    Instance.PlayerDatas.Gold -= price;
+                    PlayerDatas.Gold -= price;
                     break;
                 case GemType.Dimaond:
-                    Instance.PlayerDatas.Diamond -= price;
+                    PlayerDatas.Diamond -= price;
                     break;
             }
         }
@@ -138,13 +139,13 @@ namespace DarkJimmy
 
                 for (int i = startIndex+1; i < Count; i++)
                 {
-                    Instance.PlayerDatas.Stages.RemoveAt(startIndex+1);
+                    PlayerDatas.Stages.RemoveAt(startIndex+1);
                 }
 
                 for (int i = startIndex + 1; i < Instance.systemData.Stages.Count; i++)
                 {
                     Stage stage = Instance.systemData.Stages[i];
-                    Instance.PlayerDatas.Stages.Add(stage);                    
+                    PlayerDatas.Stages.Add(stage);                    
                 }
 
                 return;
@@ -157,10 +158,10 @@ namespace DarkJimmy
             if (GetStagesCount() == 0)
                 return 0;
 
-            for (int i = 0; i < Instance.PlayerDatas.Stages.Count; i++)
+            for (int i = 0; i < PlayerDatas.Stages.Count; i++)
             {
 
-                if (Instance.PlayerDatas.Stages[i].stageIsLocked)
+                if (PlayerDatas.Stages[i].stageIsLocked)
                     break;
 
                 index =i; 

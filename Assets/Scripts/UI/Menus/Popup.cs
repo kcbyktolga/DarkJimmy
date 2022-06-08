@@ -19,15 +19,14 @@ namespace DarkJimmy.UI
  
         public override void Start()
         {
-            shop = FindObjectOfType<ShopPage>();
-            Catalog catalog = shop.globalData;
+            SystemData system = CloudSaveManager.Instance.GetSystemData();
             int count = Enum.GetNames(typeof(CharacterProperty)).Length;
 
             for (int i = 0; i < count; i++)
             {
                 StateUIView _stats = Instantiate(stats, statsContent);
                 _stats.SetColor(colorList[i],((CharacterProperty)i).ToString());
-                _stats.SetInfoSlider(catalog.characterDatas[0].GetCharacterProperty((CharacterProperty)i),100);       
+                _stats.SetInfoSlider(system.CharacterDatas[0].GetCharacterProperty((CharacterProperty)i),100);       
             }
         }
 

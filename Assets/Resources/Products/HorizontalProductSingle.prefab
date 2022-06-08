@@ -307,6 +307,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 886f455124e31844e9b0deb904f42ea9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  purchaseButton: {fileID: 5522125644990925428}
   productName: {fileID: 546804583356448743}
   productPrice: {fileID: 546804584683374971}
   productTitle: {fileID: 546804585030567210}
@@ -495,6 +496,7 @@ GameObject:
   - component: {fileID: 546804584773029459}
   - component: {fileID: 546804584773029468}
   - component: {fileID: 546804584773029469}
+  - component: {fileID: 5522125644990925428}
   m_Layer: 5
   m_Name: PriceButton
   m_TagString: Untagged
@@ -604,6 +606,22 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &5522125644990925428
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 546804584773029471}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9b17613b69a937c4dae1c21291eec041, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  button: {fileID: 546804584773029469}
+  buttonName: {fileID: 0}
+  priceIcon: {fileID: 0}
+  productId: 
 --- !u!1 &546804585030567188
 GameObject:
   m_ObjectHideFlags: 0

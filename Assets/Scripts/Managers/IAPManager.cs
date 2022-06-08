@@ -9,14 +9,12 @@ namespace DarkJimmy
     {
         [SerializeField]
         private Catalog productCatalog;
+
         public IStoreController controller;
         StandardPurchasingModule module;
         ConfigurationBuilder builder;
 
-
-        public Dictionary<string, ProductStruct> Products = new Dictionary<string, ProductStruct>();
-        Dictionary<string, UI.PurchaseButton> ShopButtons = new Dictionary<string, UI.PurchaseButton>();
-
+   
         private void Start()
         {
             CreateCatalog();
@@ -34,15 +32,16 @@ namespace DarkJimmy
                 {                  
                     ProductStruct ps = page.products[j];
 
+
                     if (ps.payType.Equals(PayType.Free))
                         continue;
 
-                    Products.Add(ps.productId, ps);
                     builder.AddProduct(ps.productId,ps.productType);                    
                 }
             }
 
             UnityPurchasing.Initialize(this, builder);
+
         }
         public void OnPurchase(Product product)
         {
@@ -70,7 +69,19 @@ namespace DarkJimmy
         }
         public PurchaseProcessingResult ProcessPurchase(PurchaseEventArgs purchaseEvent)
         {
-            throw new System.NotImplementedException();
+            string id = purchaseEvent.purchasedProduct.definition.id;
+
+            if (GetProduct(id).availableToPurchase)
+            {
+                Debug.Log(id);
+ 
+                return PurchaseProcessingResult.Complete;
+            }
+            else
+            {
+                Debug.Log("Burda olmamam lazým");
+                return PurchaseProcessingResult.Pending;
+            }
         }
 
     }

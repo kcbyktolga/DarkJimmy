@@ -59,7 +59,8 @@ namespace DarkJimmy
                     if (product.payType.Equals(PayType.Free))
                         continue;
 
-                    GetProductStruct.Add(product);
+                    ps.products[j].productId = $"com.rhombeusgaming.{i}{j}";
+
                 }
             }
         }
@@ -74,7 +75,7 @@ namespace DarkJimmy
         public List<ProductStruct> products;
     }
     [Serializable]
-    public struct ProductStruct
+    public class ProductStruct
     {
         public string productId;
         public string productName;

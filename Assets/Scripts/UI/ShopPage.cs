@@ -18,12 +18,11 @@ namespace DarkJimmy.UI
         private List<float> scrollPos = new List<float>();
         private List<float> GetPosition = new List<float>();
         private float tabTime = 0;
-        private IAPManager iapManager;
+       
         private List<Product> productList = new List<Product>();
 
         void Start()
         {
-            iapManager = IAPManager.Instance;
             horizontalLayoutGroup = pageContent.GetComponent<HorizontalLayoutGroup>();
 
             pageContent.anchoredPosition = new Vector2(0, pageContent.anchoredPosition.y);
@@ -46,23 +45,19 @@ namespace DarkJimmy.UI
                 Page page = Instantiate(globalData.GetPage(pageStruct.pageType), pageContent);
                 page.SetPage(pageStruct.pageName);
 
+                GridLayoutGroup grid = page.container.GetComponent<GridLayoutGroup>();
+
+                if(grid != null && pageStruct.pageType.Equals(PageType.Grid))
+                    grid.constraintCount = pageStruct.products.Count / 2;
+
                 pagesRectTransform.Add(page.GetComponent<RectTransform>());
 
                 for (int j = 0; j < pageStruct.products.Count; j++)
                 {
                     ProductStruct productStruct = pageStruct.products[j];
                     Product product = Instantiate(globalData.GetProduct(productStruct.productShape), page.container);
-                    product.SetProduct(pageStruct.products[j]);
+                    product.SetProduct(productStruct);
                     UpdateCanvas();
-
-                    if (productStruct.payType.Equals(PayType.Free))
-                    {
-
-                    }
-                    else
-                    {
-                        productList.Add(product);
-                    }
                 }
             }
 
@@ -77,14 +72,6 @@ namespace DarkJimmy.UI
 
             CalculateScrollBar();
 
-
-
-            for (int i = 0; i < productList.Count; i++)
-            {
-                string id = productList[i].purchaseButton.productId;
-
-               
-            }
         }
 
         private void LateUpdate()
