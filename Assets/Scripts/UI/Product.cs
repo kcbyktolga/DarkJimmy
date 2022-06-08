@@ -9,6 +9,7 @@ namespace DarkJimmy.UI
     public class Product : MonoBehaviour
     {
         [Header("Product Property")]
+        public  PurchaseButton purchaseButton;
         [SerializeField]
         private TMP_Text productName;
         [SerializeField]
@@ -31,9 +32,15 @@ namespace DarkJimmy.UI
             productPrice.text = productStruct.productPrice;
             productTitle.text = productStruct.productTitle;
             productFrame.color = productStruct.payType.Equals(PayType.Free) ? freeColor : paidColor;
+            purchaseButton.productId = productStruct.productId;
 
             for (int i = 0; i < productStruct.productIcon.Count; i++)
                 productIcon[i].sprite = productStruct.productIcon[i];
+        }
+
+        public void SetProductDefinetion()
+        {
+
         }
     }
 

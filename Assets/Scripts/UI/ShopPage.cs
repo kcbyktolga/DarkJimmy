@@ -15,14 +15,15 @@ namespace DarkJimmy.UI
 
         private HorizontalLayoutGroup horizontalLayoutGroup;
         private List<RectTransform> pagesRectTransform = new List<RectTransform>();
-        //private Dictionary<int, float> GetPosX = new Dictionary<int, float>();
         private List<float> scrollPos = new List<float>();
         private List<float> GetPosition = new List<float>();
-
         private float tabTime = 0;
+        private IAPManager iapManager;
+        private List<Product> productList = new List<Product>();
 
         void Start()
         {
+            iapManager = IAPManager.Instance;
             horizontalLayoutGroup = pageContent.GetComponent<HorizontalLayoutGroup>();
 
             pageContent.anchoredPosition = new Vector2(0, pageContent.anchoredPosition.y);
@@ -49,10 +50,19 @@ namespace DarkJimmy.UI
 
                 for (int j = 0; j < pageStruct.products.Count; j++)
                 {
-                    Product product = Instantiate(globalData.GetProduct(pageStruct.products[j].productType), page.container);
+                    ProductStruct productStruct = pageStruct.products[j];
+                    Product product = Instantiate(globalData.GetProduct(productStruct.productShape), page.container);
                     product.SetProduct(pageStruct.products[j]);
-
                     UpdateCanvas();
+
+                    if (productStruct.payType.Equals(PayType.Free))
+                    {
+
+                    }
+                    else
+                    {
+                        productList.Add(product);
+                    }
                 }
             }
 
@@ -66,6 +76,15 @@ namespace DarkJimmy.UI
             CalculatePagePosition();
 
             CalculateScrollBar();
+
+
+
+            for (int i = 0; i < productList.Count; i++)
+            {
+                string id = productList[i].purchaseButton.productId;
+
+               
+            }
         }
 
         private void LateUpdate()

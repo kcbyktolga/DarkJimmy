@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 using DarkJimmy.UI;
+using UnityEngine.Purchasing;
+
 
 namespace DarkJimmy
 {
@@ -11,8 +13,8 @@ namespace DarkJimmy
     {
         public TabButton tabButton;
         public List<PageStruct> pages;
-        public List<CharacterData> characterDatas;
-
+        public List<ProductStruct> GetProductStruct;
+    
         private Dictionary<PageType, string> PagePaths = new Dictionary<PageType, string>
         {
              {PageType.Grid, "Pages/GridPage"},
@@ -20,12 +22,12 @@ namespace DarkJimmy
              {PageType.Single, "Pages/SinglePage"},
   
         };
-        private Dictionary<ProductType, string> ProductPaths = new Dictionary<ProductType, string>
+        private Dictionary<ProductShape, string> ProductPaths = new Dictionary<ProductShape, string>
         {
-             {ProductType.HorizontalSingle, "Products/HorizontalProductSingle"},
-             {ProductType.HorizontalDuo, "Products/HorizontalProductDuo"},
-             {ProductType.GridSingle, "Products/GridProductSingle"},
-             {ProductType.GridDuo, "Products/GridProductDuo"},
+             {ProductShape.HorizontalSingle, "Products/HorizontalProductSingle"},
+             {ProductShape.HorizontalDuo, "Products/HorizontalProductDuo"},
+             {ProductShape.GridSingle, "Products/GridProductSingle"},
+             {ProductShape.GridDuo, "Products/GridProductDuo"},
 
         };
         public Page GetPage(PageType type)
@@ -35,12 +37,31 @@ namespace DarkJimmy
            
             return null;
         }
-        public Product GetProduct(ProductType type)
+        public UI.Product GetProduct(ProductShape type)
         {
             if (ProductPaths.TryGetValue(type, out string path))
-                return Resources.Load<Product>(path);
+                return Resources.Load<UI.Product>(path);
 
             return null;
+        }
+
+        [ContextMenu("Set Product ID")]
+        private void SetProductId()
+        {
+            for (int i = 0; i < pages.Count; i++)
+            {
+                PageStruct ps = pages[i];
+
+                for (int j = 0; j < ps.products.Count; j++)
+                {
+                    ProductStruct product = ps.products[j];
+
+                    if (product.payType.Equals(PayType.Free))
+                        continue;
+
+                    GetProductStruct.Add(product);
+                }
+            }
         }
 
     }
@@ -60,6 +81,7 @@ namespace DarkJimmy
         public string productTitle;
         public string productPrice;
         public PayType payType;
+        public ProductShape productShape;
         public ProductType productType;
         public List<Sprite> productIcon;
     }
@@ -76,7 +98,7 @@ namespace DarkJimmy
         Single
     }
 
-    public enum ProductType
+    public enum ProductShape
     {
         GridSingle,
         GridDuo,
