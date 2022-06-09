@@ -21,8 +21,6 @@ namespace DarkJimmy.UI
         {
             pageName.text = LanguageManager.GetText(globalData.stageName);
 
-            
-
             lockPanel.SetActive(globalData.stageIsLocked);
 
             if (globalData.stageIsLocked)
@@ -49,9 +47,6 @@ namespace DarkJimmy.UI
                 tabs.Add(levelTab);
                 levelTab.OnClick(i, OnSelect);
             }
-
-
-
         }
 
         private void UpdateLevelTab()
@@ -78,7 +73,7 @@ namespace DarkJimmy.UI
                 lockPanel.SetActive(false);
                 globalData.stageIsLocked = false;
 
-                CloudSaveManager.Instance.updateStage(globalData);
+                CloudSaveManager.Instance.updateStage();
                 UpdateLevelTab();
             }
 

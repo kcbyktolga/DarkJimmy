@@ -77,10 +77,11 @@ namespace DarkJimmy
     [Serializable]
     public class ProductStruct
     {
+        public TypeofProduct typeOfProduct;
+        public int amount;
         public string productId;
         public string productName;
         public string productTitle;
-        public string productPrice;
         public PayType payType;
         public ProductShape productShape;
         public ProductType productType;
@@ -106,5 +107,15 @@ namespace DarkJimmy
         HorizontalSingle,
         HorizontalDuo
     }
+
+    public enum TypeofProduct
+    {
+        Gold,
+        Diamond,
+        Premium,
+        Costume,
+        Offers
+    }
+
 }
 

@@ -27,7 +27,7 @@ namespace DarkJimmy
         public int WorldIndex = 0;
         public int LevelIndex = 0;
 
-        public delegate void UpdateStage(Stage stage);
+        public delegate void UpdateStage();
         public UpdateStage updateStage;
         public override async void Awake()
         {
@@ -77,7 +77,7 @@ namespace DarkJimmy
         {
             return type switch
             {
-                GemType.Dimaond => Instance.PlayerDatas.Diamond,
+                GemType.Diamond => Instance.PlayerDatas.Diamond,
                 _ => Instance.PlayerDatas.Gold,
             };
         }
@@ -96,7 +96,7 @@ namespace DarkJimmy
                 case GemType.Gold:
                     PlayerDatas.Gold = amount;
                     break;
-                case GemType.Dimaond:
+                case GemType.Diamond:
                     PlayerDatas.Diamond = amount;
                     break;
             }
@@ -108,10 +108,13 @@ namespace DarkJimmy
                 case GemType.Gold:
                     PlayerDatas.Gold += amount;
                     break;
-                case GemType.Dimaond:
+                case GemType.Diamond:
                     PlayerDatas.Diamond += amount;
                     break;
             }
+
+            if (Enum.TryParse(type.ToString(), out Stats stats))
+                UIManager.Instance.updateState(stats, GetGemCount(type));
         }
         public void SpendGem(GemType type, int price)
         {
@@ -120,11 +123,15 @@ namespace DarkJimmy
                 case GemType.Gold:
                     PlayerDatas.Gold -= price;
                     break;
-                case GemType.Dimaond:
+                case GemType.Diamond:
                     PlayerDatas.Diamond -= price;
                     break;
             }
+
+            if (Enum.TryParse(type.ToString(), out Stats stats))
+                UIManager.Instance.updateState(stats, GetGemCount(type));
         }
+
         #endregion
 
 
@@ -218,7 +225,7 @@ namespace DarkJimmy
         {
             return type switch
             {
-                GemType.Dimaond => system.token,
+                GemType.Diamond => system.token,
                 _ => system.gold,
             };
         }
@@ -410,7 +417,7 @@ namespace DarkJimmy
     public enum GemType
     {
         Gold,
-        Dimaond,
+        Diamond,
     }
 
     [Serializable]
@@ -423,7 +430,7 @@ namespace DarkJimmy
         public int CurrentLevelIndex;
         public int CurrentCharacterIndex;
         public bool IsAccept;
-        public bool IsRemoveAds;
+        public bool HasPremium;
         public List<CharacterData> Characters;      
         public List<Stage> Stages;  
       

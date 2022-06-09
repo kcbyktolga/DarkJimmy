@@ -14,10 +14,6 @@ namespace DarkJimmy.UI
         [SerializeField]
         private Image stageIcon;
 
-        private void Start()
-        {
-            CloudSaveManager.Instance.updateStage += UpdateStageTab;
-        }
         public override void SetTabButton(bool isOn)
         {
             focus.enabled = isOn;
@@ -28,11 +24,10 @@ namespace DarkJimmy.UI
             stageIcon.sprite = sprite;
             stageLocked.gameObject.SetActive(stage.stageIsLocked);
         }
-        private void UpdateStageTab(Stage stage)
+        private void UpdateStageTab()
         {
-            stageLocked.gameObject.SetActive(stage.stageIsLocked);
+            stageLocked.gameObject.SetActive(false);
         }
-
     }
 
 }

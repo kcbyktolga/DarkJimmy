@@ -95,7 +95,7 @@ namespace DarkJimmy
     public enum Stats
     {
         Gold,
-        Token,
+        Diamond,
         Key,
         Energy,
         Mana,

@@ -13,10 +13,12 @@ namespace DarkJimmy
         public IStoreController controller;
         StandardPurchasingModule module;
         ConfigurationBuilder builder;
-
+        CloudSaveManager saveManager;
+        Dictionary<string, ProductStruct> GetProductStruct = new Dictionary<string, ProductStruct>();
    
         private void Start()
         {
+            saveManager = CloudSaveManager.Instance;
             CreateCatalog();
         }
         private void CreateCatalog()
@@ -36,7 +38,8 @@ namespace DarkJimmy
                     if (ps.payType.Equals(PayType.Free))
                         continue;
 
-                    builder.AddProduct(ps.productId,ps.productType);                    
+                    builder.AddProduct(ps.productId,ps.productType);
+                    GetProductStruct.Add(ps.productId,ps);
                 }
             }
 
@@ -48,7 +51,6 @@ namespace DarkJimmy
             if (product.availableToPurchase && product != null)
             {
                 controller.InitiatePurchase(product);
-                Debug.Log("store acýldý");
             }
             else
                 Debug.Log("satýn alýnmadý");
@@ -76,8 +78,32 @@ namespace DarkJimmy
 
             if (GetProduct(id).availableToPurchase)
             {
-                Debug.Log(id);
- 
+                ProductStruct ps = GetProductStruct[id];
+
+                switch (ps.typeOfProduct)
+                {
+                    case TypeofProduct.Gold:
+                        saveManager.AddGem(GemType.Gold, ps.amount);
+                        break;
+                    case TypeofProduct.Diamond:
+                        saveManager.AddGem(GemType.Diamond, ps.amount);
+                        break;
+                    case TypeofProduct.Premium:
+                        saveManager.PlayerDatas.HasPremium = true;
+                        Debug.Log("Hadi iyisin premýum oldun aq :D");
+                        break;
+                    case TypeofProduct.Costume:                   
+                        Debug.Log($"{ps.productName}: Data ya eklenecek");
+                        break;
+                    case TypeofProduct.Offers:
+                        break;
+                    default:
+                        break;
+                }
+
+
+
+
                 return PurchaseProcessingResult.Complete;
             }
             else
@@ -85,6 +111,12 @@ namespace DarkJimmy
                 Debug.Log("Burda olmamam lazým");
                 return PurchaseProcessingResult.Pending;
             }
+        }
+
+
+        private void AddGem(Stats stats,GemType type,int amount)
+        {
+            
         }
 
     }

@@ -12,7 +12,7 @@ namespace DarkJimmy
         public float mana;
         public float energy;
         public int timer;
-        public int token;
+        public int diamond;
 
         float maxMana;
         float maxEnergy;
@@ -60,8 +60,8 @@ namespace DarkJimmy
                 case Stats.Gold:
                     goldCount = value;
                     break;
-                case Stats.Token:
-                    token = value;
+                case Stats.Diamond:
+                    diamond = value;
                     break;
                 case Stats.Key:
                     keyCount = value;
@@ -82,7 +82,7 @@ namespace DarkJimmy
         {
             return stats switch
             {
-                Stats.Token => token,
+                Stats.Diamond => diamond,
                 Stats.Key => keyCount,
                 Stats.Energy => (int)energy,
                 Stats.Mana => (int)mana,
