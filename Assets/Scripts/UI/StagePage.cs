@@ -36,6 +36,7 @@ namespace DarkJimmy.UI
                 LevelPage page = Instantiate(pagePrefab, stageContent);
                 page.globalData = globalData.Stages[i];
                 page.localData = CloudSaveManager.Instance.GetSystemData().Stages[i];
+                page.PageIndex = i;
                 
                 GetPosition.Add(_posX);
                 _posX -= UIManager.Instance.GetReferenceResolotion().x;

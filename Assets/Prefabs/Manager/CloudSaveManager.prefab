@@ -48,12 +48,12 @@ MonoBehaviour:
   PlayerDatas:
     PlayerId: 
     Gold: 0
-    Token: 0
+    Diamond: 0
     Key: 0
     CurrentLevelIndex: 0
     CurrentCharacterIndex: 0
     IsAccept: 0
-    IsRemoveAds: 0
+    HasPremium: 0
     Characters: []
     Stages: []
   system:
@@ -63,6 +63,8 @@ MonoBehaviour:
     gold: {fileID: 21300000, guid: 6970d6d54ba521e4cb09a0dc1e3b2dbe, type: 3}
     token: {fileID: 6161683761483300999, guid: f41a43224cac9734ca5fb8e6ca0aaaca, type: 3}
     key: {fileID: 21300000, guid: e9958a692226a90499bb7001427a427d, type: 3}
+    paidSprite: {fileID: 21300000, guid: 0b6f8cc58028cd24c99d1b1cf2feac96, type: 3}
+    freeSprite: {fileID: 21300000, guid: dae4f662c279b66469644fb5037bcb78, type: 3}
   userID: 
   WorldIndex: 0
   LevelIndex: 0

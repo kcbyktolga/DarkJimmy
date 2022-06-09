@@ -22,16 +22,12 @@ namespace DarkJimmy.UI
         [Header("Product Customize")]
         [SerializeField]
         private Image productFrame;
-        [SerializeField]
-        private Color paidColor;
-        [SerializeField]
-        private Color freeColor;
 
         public void SetProduct(ProductStruct productStruct)
         {
             productName.text = productStruct.productName;
             productTitle.text = productStruct.productTitle;
-            productFrame.color = productStruct.payType.Equals(PayType.Free) ? freeColor : paidColor;
+            productFrame.sprite = CloudSaveManager.Instance.GetGridProductSprite(productStruct.payType);
 
 
             for (int i = 0; i < productStruct.productIcon.Count; i++)
@@ -39,7 +35,7 @@ namespace DarkJimmy.UI
 
             if (productStruct.payType.Equals(PayType.Free))
             {
-
+                productPrice.text = LanguageManager.GetText(productStruct.payType.ToString());
             }
             else
             {
@@ -51,11 +47,6 @@ namespace DarkJimmy.UI
                 productPrice.text = product.metadata.localizedPriceString;
 
             }
-        }
-
-        private void OnPurchaseComplete(UnityEngine.Purchasing.Product product)
-        {
-            Debug.Log(product);
         }
     }
 

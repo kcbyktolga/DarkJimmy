@@ -16,6 +16,7 @@ namespace DarkJimmy.UI
         [SerializeField]
         private TMP_Text description;
       
+        public int PageIndex { get; set; }
 
         public override void Generate()
         {
@@ -68,16 +69,23 @@ namespace DarkJimmy.UI
         {
             if (CloudSaveManager.Instance.CanSpendGem(localData.GetPayType(),localData.GetStagePrice()))
             {
-                CloudSaveManager.Instance.SpendGem(localData.GetPayType(),localData.GetStagePrice());
+                if (CloudSaveManager.Instance.CanUnlockStage(PageIndex))
+                {
+                    CloudSaveManager.Instance.SpendGem(localData.GetPayType(), localData.GetStagePrice());
 
-                lockPanel.SetActive(false);
-                globalData.stageIsLocked = false;
+                    lockPanel.SetActive(false);
+                    globalData.stageIsLocked = false;
 
-                CloudSaveManager.Instance.updateStage();
-                UpdateLevelTab();
+                    CloudSaveManager.Instance.updateStage(globalData);
+                    UpdateLevelTab();
+                }
+                else
+                {
+                    Debug.Log("Bir önceki seviyeyi aç!");
+                }
+               
             }
 
-            Debug.Log("Yetersiz Bakiye");
         }
 
 

@@ -27,7 +27,7 @@ namespace DarkJimmy
         public int WorldIndex = 0;
         public int LevelIndex = 0;
 
-        public delegate void UpdateStage();
+        public delegate void UpdateStage(Stage stage);
         public UpdateStage updateStage;
         public override async void Awake()
         {
@@ -45,7 +45,7 @@ namespace DarkJimmy
 
             PlayerDatas = await RetrieveSpecificData<PlayerData>("PlayerData");
 
-            userID = PlayerDatas.PlayerId;
+            Instance.userID = PlayerDatas.PlayerId;
 
             // remote config.
             //SyncStages();
@@ -54,9 +54,9 @@ namespace DarkJimmy
 
            // await SaveData();
 
-            //await ForceDeleteSpecificData("PlayerData");
+           //  await ForceDeleteSpecificData("PlayerData");
 
-            //await RetrieveEverything();
+           //await RetrieveEverything();
 
         }
 
@@ -71,25 +71,25 @@ namespace DarkJimmy
         }
         public int GetCurrentCharacter()
         {
-            return Instance.PlayerDatas.CurrentCharacterIndex;
+            return PlayerDatas.CurrentCharacterIndex;
         }
         public int GetGemCount(GemType type)
         {
             return type switch
             {
-                GemType.Diamond => Instance.PlayerDatas.Diamond,
-                _ => Instance.PlayerDatas.Gold,
+                GemType.Diamond => PlayerDatas.Diamond,
+                _ => PlayerDatas.Gold,
             };
         }
         public CharacterData GetCurrentCharacterData()
         {
-            return Instance.PlayerDatas.Characters[Instance.PlayerDatas.CurrentCharacterIndex];
+            return PlayerDatas.Characters[PlayerDatas.CurrentCharacterIndex];
         }
         public Level GetLevel()
         {
             return HasLevel() ? PlayerDatas.Stages[WorldIndex].levels[LevelIndex] : systemData.Stages[WorldIndex].levels[LevelIndex];
         }
-        public void SetGem(GemType type, int amount)
+        public async void SetGem(GemType type, int amount)
         {
             switch (type)
             {
@@ -100,8 +100,9 @@ namespace DarkJimmy
                     PlayerDatas.Diamond = amount;
                     break;
             }
+            await SaveData();
         }
-        public void AddGem(GemType type, int amount)
+        public async void AddGem(GemType type, int amount)
         {
             switch (type)
             {
@@ -115,8 +116,10 @@ namespace DarkJimmy
 
             if (Enum.TryParse(type.ToString(), out Stats stats))
                 UIManager.Instance.updateState(stats, GetGemCount(type));
+
+           await SaveData();
         }
-        public void SpendGem(GemType type, int price)
+        public async void SpendGem(GemType type, int price)
         {
             switch (type)
             {
@@ -130,14 +133,14 @@ namespace DarkJimmy
 
             if (Enum.TryParse(type.ToString(), out Stats stats))
                 UIManager.Instance.updateState(stats, GetGemCount(type));
+
+            await SaveData();
         }
 
         #endregion
 
-
-
         [ContextMenu("Update Level")]
-        private void SyncStages()
+        private async void SyncStages()
         {
             if (GetStagesCount() != systemData.Stages.Count)
             {
@@ -155,8 +158,14 @@ namespace DarkJimmy
                     PlayerDatas.Stages.Add(stage);                    
                 }
 
-                return;
             }
+
+         await  SaveData();
+        }
+
+        public bool CanUnlockStage(int index) 
+        {
+            return !PlayerDatas.Stages[index - 1].stageIsLocked;
         }
         private int GetLockedFirstStage()
         {
@@ -191,24 +200,24 @@ namespace DarkJimmy
 
             SetLevel(level);
         }
-        public void SetLevel(Level level)
+        public async void SetLevel(Level level)
         {
             GetLevelList(WorldIndex)[LevelIndex] = level;
 
-            Debug.Log($"{level.levelId} li level güncellendi");
+            await SaveData();
+   
         }
-
         public SystemData GetSystemData()
         {
             return systemData;
         }
         private int GetStagesCount()
         {
-            return Instance.PlayerDatas.Stages.Count;
+            return PlayerDatas.Stages.Count;
         }    
         private List<Level> GetLevelList(int index)
         {
-            return Instance.PlayerDatas.Stages[index].levels;
+            return PlayerDatas.Stages[index].levels;
         }
 
         #region System 
@@ -229,7 +238,14 @@ namespace DarkJimmy
                 _ => system.gold,
             };
         }
-
+        public Sprite GetGridProductSprite(PayType type)
+        {
+            return type switch
+            {
+                PayType.Free => system.freeSprite,
+                _ => system.paidSprite,
+            };
+        }
         #endregion
 
 
@@ -341,6 +357,14 @@ namespace DarkJimmy
                     PlayerDatas.PlayerId = AuthenticationService.Instance.PlayerId;
                     SetDefualt();
                     await ForceSaveObjectData("PlayerData", PlayerDatas);
+
+                    PlayerDatas = await RetrieveSpecificData<PlayerData>("PlayerData");
+                    Instance.userID = PlayerDatas.PlayerId;
+
+                    Debug.Log("Burdayýýým aaq");
+
+                    return await RetrieveSpecificData<T>(key);
+
                 }
             }
             catch (CloudSaveValidationException e)
@@ -356,6 +380,7 @@ namespace DarkJimmy
                 Debug.LogError(e);
             }
 
+            Debug.Log("Burda deðilim");
             return default;
         }
         private async Task RetrieveEverything()
@@ -406,10 +431,10 @@ namespace DarkJimmy
                 Debug.LogError(e);
             }
         }
-        private async void OnDestroy()
-        {
-          await  SaveData();
-        }
+        //private async void OnDestroy()
+        //{
+        // //await  SaveData();
+        //}
         #endregion
 
     }
@@ -452,6 +477,10 @@ namespace DarkJimmy
         public Sprite gold;
         public Sprite token;
         public Sprite key;
+
+        [Header("Grid Product Sprite")]
+        public Sprite paidSprite;
+        public Sprite freeSprite;
 
     }
 
