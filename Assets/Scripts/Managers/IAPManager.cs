@@ -46,7 +46,10 @@ namespace DarkJimmy
         public void OnPurchase(Product product)
         {
             if (product.availableToPurchase && product != null)
+            {
                 controller.InitiatePurchase(product);
+                Debug.Log("store acýldý");
+            }
             else
                 Debug.Log("satýn alýnmadý");
         }
