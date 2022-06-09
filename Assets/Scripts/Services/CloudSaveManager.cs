@@ -9,12 +9,11 @@ using GooglePlayGames;
 
 namespace DarkJimmy
 {
-    public enum DataType
+    public enum PopupType
     {
-        PlayerData,
-        GameData,
-        SystemData
+        
     }
+
     public class CloudSaveManager : Singleton<CloudSaveManager>
     {
         [Header("References")]
@@ -23,9 +22,11 @@ namespace DarkJimmy
         public PlayerData PlayerDatas;
         [SerializeField]
         private SystemProperty system;
-        public string userID;
-        public int WorldIndex = 0;
-        public int LevelIndex = 0;
+        public string UserId { get; set; }
+        public int WorldIndex { get; set; } = 0;
+        public int LevelIndex { get; set; } = 0;
+        public int Index { get; set; } = 0;
+        public PopupType PopupType { get; set; }
 
         public delegate void UpdateStage(Stage stage);
         public UpdateStage updateStage;
@@ -45,7 +46,7 @@ namespace DarkJimmy
 
             PlayerDatas = await RetrieveSpecificData<PlayerData>("PlayerData");
 
-            Instance.userID = PlayerDatas.PlayerId;
+            Instance.UserId = PlayerDatas.PlayerId;
 
             // remote config.
             //SyncStages();
@@ -359,7 +360,7 @@ namespace DarkJimmy
                     await ForceSaveObjectData("PlayerData", PlayerDatas);
 
                     PlayerDatas = await RetrieveSpecificData<PlayerData>("PlayerData");
-                    Instance.userID = PlayerDatas.PlayerId;
+                    Instance.UserId = PlayerDatas.PlayerId;
 
                     Debug.Log("Burdayýýým aaq");
 

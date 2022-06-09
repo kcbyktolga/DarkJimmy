@@ -9,7 +9,8 @@ namespace DarkJimmy.UI
         [Header("Touch Button Property")]
         [SerializeField]
         private Menu.Menus menuType;
- 
+
+        public string Name { get; set; } = string.Empty;
         private void Start()
         {          
             OnClick(OpenPage);
@@ -30,15 +31,16 @@ namespace DarkJimmy.UI
             else if (menuType.Equals(Menu.Menus.Stages))
                 SceneManager.LoadScene(menuType.ToString());
             else
-                UIManager.Instance.Open(menuType);
+                UIManager.Instance.OpenMenu(menuType);
         }           
 
         private void SetTouchButtonName()
         {
-            string name = menuType.Equals(Menu.Menus.None) ? string.Empty : LanguageManager.GetText(menuType.ToString());
+            string name = menuType.Equals(Menu.Menus.None) ? Name : LanguageManager.GetText(menuType.ToString());
 
             SetTabButtonName(name);
         }
+
     }
 
 }

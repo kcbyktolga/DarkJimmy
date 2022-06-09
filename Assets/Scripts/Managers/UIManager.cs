@@ -8,32 +8,31 @@ namespace DarkJimmy
 {
     public class UIManager : Singleton<UIManager>
     {
-        public Camera MainCamera { get; set; }
-        public Menu.Menus startingMenu;
-        public GameObject postProcess;
-
+        [SerializeField]
+        private Menu.Menus startingMenu;
         public int PageIndex { get; set; }
-        private Menu _currentMenu;
-        private Stack<Menu> _stack = new Stack<Menu>();
+
+
+        private Menu currentMenu;
+        private Menu lastMenu;
+        private Stack<Menu> menuStack = new Stack<Menu>();
+        
         private readonly Vector2 canvasResolition =  new Vector2(2960,1440);
+
         public delegate void UpdateState(Stats state,float amount);  
         public UpdateState updateState;
         public UpdateState addCollectable;
-        public override void Awake()
-        {
-            base.Awake();
-           // Instance = this;
-            LanguageManager.DefaultLanguage();
-        }
+
         private void Start()
         {
             Input.multiTouchEnabled = false;
-            Open(startingMenu);
+            OpenMenu(startingMenu);
         }
-        public void Open(Menu.Menus menu)
+        public void OpenMenu(Menu.Menus menu)
         {
-            if (_stack.Count > 1)
-                _stack.Peek().gameObject.SetActive(false);
+
+            if (menuStack.Count > 1)
+                lastMenu = menuStack.Peek();
 
             if (Menu.MenuPaths.TryGetValue(menu, out string path))
             {
@@ -42,32 +41,45 @@ namespace DarkJimmy
                 if (prefab == null)
                     return;
 
-                _currentMenu = Instantiate(prefab, transform);
-                _stack.Push(_currentMenu);
+                currentMenu = Instantiate(prefab, transform);
+                menuStack.Push(currentMenu);
+
+                if (currentMenu.menuRank.Equals(Menu.MenuRank.Seconder))
+                    lastMenu.gameObject.SetActive(false);
+
             }
+        }
+        public void OpenPopup()
+        {
+
         }
         public void GoBack()
         {
-            if (_stack.Count.Equals(1))
+            if (menuStack.Count.Equals(1))
                 return;
 
-            Menu item = _stack.Pop();
+            Menu item = menuStack.Pop();
 
             Destroy(item.gameObject);
 
-            Menu lastMenu = _stack.Peek();
+            Menu lastMenu = menuStack.Peek();
 
             if (lastMenu.menuType.Equals(Menu.Menus.Lobby) || lastMenu.menuType.Equals(Menu.Menus.Play))
                 return;
-            lastMenu.gameObject.SetActive(true);
+
+            if(!lastMenu.gameObject.activeSelf)
+                lastMenu.gameObject.SetActive(true);
+
         }
+        public void Cancel()
+        {
+
+        }
+
+
         public int GetStackCount()
         {
-            return _stack.Count;
-        }
-        public Menu GetCurrentMenu()
-        {
-            return _currentMenu;
+            return menuStack.Count;
         }
         public Vector2 GetReferenceResolotion()
         {

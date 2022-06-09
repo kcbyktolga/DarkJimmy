@@ -16,7 +16,7 @@ namespace DarkJimmy.UI
         public override void OpenPage()
         {
             UIManager.Instance.PageIndex = pageIndex;
-            UIManager.Instance.Open(Menu.Menus.Shop);
+            UIManager.Instance.OpenMenu(Menu.Menus.Shop);
         }   
     }
 }

@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace DarkJimmy.UI
 {
-    public class LevelPopup : Menu
+    public class LevelPrevious : Menu
     {
         public override void Start()
         {

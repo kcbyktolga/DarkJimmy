@@ -39,7 +39,7 @@ namespace DarkJimmy.UI
 
         public override void OpenPage()
         {
-            UIManager.Instance.Open(Menu.Menus.LevelPopup);
+            UIManager.Instance.OpenMenu(Menu.Menus.LevelPrevious);
         }
         public void SetLevelTab(int index, Level level, bool isLocked)
         {

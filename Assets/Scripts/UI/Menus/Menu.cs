@@ -8,10 +8,11 @@ namespace DarkJimmy.UI
 {
     public abstract class Menu : MonoBehaviour
     {
+        #region Collections
         public enum Menus
         {
             None,
-            Lobby, 
+            Lobby,
             Settings,
             Shop,
             Characters,
@@ -24,10 +25,24 @@ namespace DarkJimmy.UI
             PrivacyPolicy,
             Languages,
             Credits,
-            ProductInfo,
+            CharacterPrevious,
             Splash,
             Loading,
-            LevelPopup
+            LevelPrevious,
+
+            // Popups
+            PurchaseProcess,
+            Waiting,
+            StageUpProcess,
+            ConnectedError,
+            Disconnet,
+            AppUpdate,
+ 
+        }
+        public enum MenuRank
+        {
+            Primer,
+            Seconder
         }
         public static Dictionary<Menus, string> MenuPaths = new Dictionary<Menus, string>
         {
@@ -40,33 +55,31 @@ namespace DarkJimmy.UI
              {Menus.Defeat, "Menus/Defeat"},
              {Menus.Pause, "Menus/Pause"},
              {Menus.Languages, "Menus/Languages"},
-             {Menus.ProductInfo, "Menus/ProductInfo"},
+             {Menus.CharacterPrevious, "Menus/ProductInfo"},
              {Menus.Splash, "Menus/Splash"},
              {Menus.Loading, "Menus/Loading"},
-             {Menus.LevelPopup, "Menus/LevelPopup"}
+             {Menus.LevelPrevious, "Menus/LevelPopup"},
+
+            //Popups
+            {Menus.PurchaseProcess, "Popups/PurchaseProcessPopup"}
         };
 
+        #endregion
         #region Fields       
         [Header("Components")]
         public Canvas canvas;
         public TMP_Text pageName;
         public RectTransform baseTransform;
-
         [Header("Referances")]
         public Menus menuType;
-
+        public MenuRank menuRank;
         #endregion
         #region virtual Methods
-   
-        public virtual void Awake()
-        {           
-        }
         public virtual void Start()
         {
             SetPageName();
             LanguageManager.onChangedLanguage += SetPageName;
         }
-
         public virtual void ActivateBase()
         {
             baseTransform.gameObject.SetActive(true);
@@ -76,10 +89,13 @@ namespace DarkJimmy.UI
             if (pageName != null)
                 pageName.text = LanguageManager.GetText(menuType.ToString());
         }
-
         public virtual void GoBack()
         {
             UIManager.Instance.GoBack();
+        }
+        public virtual void Cancel()
+        {
+            UIManager.Instance.Cancel();
         }
         #endregion
     }

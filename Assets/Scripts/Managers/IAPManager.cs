@@ -10,11 +10,12 @@ namespace DarkJimmy
         [SerializeField]
         private Catalog productCatalog;
 
-        public IStoreController controller;
-        StandardPurchasingModule module;
-        ConfigurationBuilder builder;
-        CloudSaveManager saveManager;
-        Dictionary<string, ProductStruct> GetProductStruct = new Dictionary<string, ProductStruct>();
+        private IStoreController controller;
+        private StandardPurchasingModule module;
+        private ConfigurationBuilder builder;
+        private CloudSaveManager saveManager;
+        private Dictionary<string, ProductStruct> GetProductStruct = new Dictionary<string, ProductStruct>();
+
    
         private void Start()
         {
@@ -23,7 +24,7 @@ namespace DarkJimmy
         }
         private void CreateCatalog()
         {
-            module = StandardPurchasingModule.Instance(AppStore.GooglePlay);
+            module = StandardPurchasingModule.Instance(AppStore.fake);
             builder = ConfigurationBuilder.Instance(module);
 
             for (int i = 0; i < productCatalog.pages.Count; i++)
@@ -50,7 +51,8 @@ namespace DarkJimmy
         {
             if (product.availableToPurchase && product != null)
             {
-                controller.InitiatePurchase(product);
+                // controller.InitiatePurchase(product);
+                UIManager.Instance.OpenMenu(UI.Menu.Menus.PurchaseProcess);
             }
             else
                 Debug.Log("satýn alýnmadý");
@@ -70,7 +72,7 @@ namespace DarkJimmy
         }
         public void OnPurchaseFailed(Product product, PurchaseFailureReason failureReason)
         {
-            
+            UIManager.Instance.OpenMenu(UI.Menu.Menus.PurchaseProcess);
         }
         public PurchaseProcessingResult ProcessPurchase(PurchaseEventArgs purchaseEvent)
         {
@@ -92,17 +94,15 @@ namespace DarkJimmy
                         saveManager.PlayerDatas.HasPremium = true;
                         Debug.Log("Hadi iyisin premýum oldun aq :D");
                         break;
-                    case TypeofProduct.Costume:                   
-                        Debug.Log($"{ps.productName}: Data ya eklenecek");
+                    case TypeofProduct.Costume:
+                       // saveManager.Index = ps.amount;
+
                         break;
                     case TypeofProduct.Offers:
                         break;
                     default:
                         break;
                 }
-
-
-
 
                 return PurchaseProcessingResult.Complete;
             }
@@ -112,13 +112,6 @@ namespace DarkJimmy
                 return PurchaseProcessingResult.Pending;
             }
         }
-
-
-        private void AddGem(Stats stats,GemType type,int amount)
-        {
-            
-        }
-
     }
 }
 

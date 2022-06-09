@@ -6,7 +6,7 @@ using System;
 
 namespace DarkJimmy.UI
 {
-    public class Popup : Menu
+    public class CharacterPrevious : Menu
     {
         [SerializeField]
         private StateUIView stats;
@@ -14,9 +14,7 @@ namespace DarkJimmy.UI
         private RectTransform statsContent;
         [SerializeField]
         private List<Color> colorList;
-    
-        private ShopPage shop;
- 
+         
         public override void Start()
         {
             SystemData system = CloudSaveManager.Instance.GetSystemData();
@@ -29,8 +27,6 @@ namespace DarkJimmy.UI
                 _stats.SetInfoSlider(system.CharacterDatas[0].GetCharacterProperty((CharacterProperty)i),100);       
             }
         }
-
-
     }
 }
 
