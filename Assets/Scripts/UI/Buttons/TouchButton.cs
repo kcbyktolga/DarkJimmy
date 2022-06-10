@@ -10,13 +10,13 @@ namespace DarkJimmy.UI
         [SerializeField]
         private Menu.Menus menuType;
 
-        public string Name { get; set; } = string.Empty;
-        private void Start()
-        {          
+        private void Awake()
+        {
             OnClick(OpenPage);
             SetTouchButtonName();
             LanguageManager.onChangedLanguage += SetTouchButtonName;
         }
+       
         public override void OpenPage()
         {
             if (menuType.Equals(Menu.Menus.None))
@@ -36,9 +36,15 @@ namespace DarkJimmy.UI
 
         private void SetTouchButtonName()
         {
-            string name = menuType.Equals(Menu.Menus.None) ? Name : LanguageManager.GetText(menuType.ToString());
+            string name = menuType.Equals(Menu.Menus.None) ? string.Empty : LanguageManager.GetText(menuType.ToString());
 
             SetTabButtonName(name);
+        }
+
+        public void SetName(string name)
+        {
+            if (buttonName != null)
+                buttonName.text = name;
         }
 
     }

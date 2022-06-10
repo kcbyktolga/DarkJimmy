@@ -11,9 +11,20 @@ namespace DarkJimmy.UI
             base.Start();
 
             if (popupButton != null)
-                popupButton.Name = LanguageManager.GetText("Update");
+                popupButton.SetName(LanguageManager.GetText("Update"));
 
-            popupButton.OnClick(CloudSaveManager.Instance.AplicationURL,UIManager.Instance.OpenUrl);
+            popupButton.OnClick(CloudSaveManager.Instance.AplicationURL,OpenUrl);
+
+        }
+
+        private void OpenUrl(string address)
+        {
+            UIManager.Instance.OpenUrl(address);
+
+            if (Application.isEditor)
+                GoBack();
+            else
+                Application.Quit();
         }
     }
 

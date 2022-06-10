@@ -11,7 +11,9 @@ namespace DarkJimmy.UI
             base.Start();
 
             if(popupButton!=null)
-                popupButton.Name=(LanguageManager.GetText("Okay"));
+                popupButton.SetName(LanguageManager.GetText("Okay"));
+
+            
 
         }
     }

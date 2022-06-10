@@ -176,7 +176,7 @@ namespace DarkJimmy
         {
             return !PlayerDatas.Stages[index - 1].stageIsLocked;
         }
-        private int GetLockedFirstStage()
+        public int GetLockedFirstStage()
         {
             int index = 0;
 

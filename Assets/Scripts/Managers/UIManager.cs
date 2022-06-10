@@ -77,6 +77,8 @@ namespace DarkJimmy
         }
         public void OpenUrl(string address)
         {
+            Debug.Log(address);
+
             if (string.IsNullOrEmpty(address))
                 return;
 

@@ -81,7 +81,7 @@ namespace DarkJimmy.UI
                 }
                 else
                 {
-                    Debug.Log("Bir önceki seviyeyi aç!");
+                    UIManager.Instance.OpenMenu(Menu.Menus.StageLockOrientation);
                 }
                
             }
