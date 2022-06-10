@@ -538,7 +538,7 @@ Animator:
   m_GameObject: {fileID: 6346532013289868455}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: dedbe6960c9ef5c4e822c6ffe8287e31, type: 2}
+  m_Controller: {fileID: 9100000, guid: db6c802bfc66c48489036621cbbe873b, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -1405,6 +1405,7 @@ MonoBehaviour:
   pageName: {fileID: 6346532013075046755}
   baseTransform: {fileID: 6346532013289868456}
   menuType: 2
+  menuRank: 0
 --- !u!1 &6346532014802120073
 GameObject:
   m_ObjectHideFlags: 0

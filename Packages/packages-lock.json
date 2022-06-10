@@ -158,26 +158,26 @@
       "url": "https://packages.unity.com"
     },
     "com.unity.remote-config": {
-      "version": "3.0.0-pre.3",
+      "version": "3.1.0",
       "depth": 0,
       "source": "registry",
       "dependencies": {
-        "com.unity.nuget.newtonsoft-json": "2.0.0",
+        "com.unity.nuget.newtonsoft-json": "3.0.2",
         "com.unity.modules.unitywebrequest": "1.0.0",
-        "com.unity.remote-config-runtime": "3.0.0-pre.8"
+        "com.unity.remote-config-runtime": "3.1.0"
       },
       "url": "https://packages.unity.com"
     },
     "com.unity.remote-config-runtime": {
-      "version": "3.0.0-pre.8",
+      "version": "3.1.0",
       "depth": 1,
       "source": "registry",
       "dependencies": {
-        "com.unity.nuget.newtonsoft-json": "2.0.0",
+        "com.unity.nuget.newtonsoft-json": "3.0.2",
         "com.unity.modules.unitywebrequest": "1.0.0",
         "com.unity.modules.unityanalytics": "1.0.0",
-        "com.unity.services.core": "1.1.0-pre.8",
-        "com.unity.services.authentication": "1.0.0-pre.4"
+        "com.unity.services.core": "1.4.0",
+        "com.unity.services.authentication": "2.0.0"
       },
       "url": "https://packages.unity.com"
     },
