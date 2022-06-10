@@ -23,23 +23,31 @@ namespace DarkJimmy.UI
         [SerializeField]
         private Image productFrame;
 
-        public void SetProduct(ProductStruct productStruct)
+        public void SetProduct(ProductStruct ps)
         {
-            productName.text = productStruct.productName;
-            productTitle.text = productStruct.productTitle;
-            productFrame.sprite = CloudSaveManager.Instance.GetGridProductSprite(productStruct.payType);
+            string _productName = string.Empty;
 
-
-            for (int i = 0; i < productStruct.productIcon.Count; i++)
-                productIcon[i].sprite = productStruct.productIcon[i];
-
-            if (productStruct.payType.Equals(PayType.Free))
+            if (ps.typeOfProduct.Equals(TypeofProduct.Gold) || ps.typeOfProduct.Equals(TypeofProduct.Diamond))
             {
-                productPrice.text = LanguageManager.GetText(productStruct.payType.ToString());
+                _productName = $"{CloudSaveManager.Instance.StringFormat(ps.amount)} {LanguageManager.GetText(ps.typeOfProduct.ToString())}";
+            }
+            else
+                _productName = LanguageManager.GetText(ps.productName);
+
+            productTitle.text = productName.text = _productName;
+            productFrame.sprite = CloudSaveManager.Instance.GetGridProductSprite(ps.payType);
+
+
+            for (int i = 0; i < ps.productIcon.Count; i++)
+                productIcon[i].sprite = ps.productIcon[i];
+
+            if (ps.payType.Equals(PayType.Free))
+            {
+                productPrice.text = LanguageManager.GetText(ps.payType.ToString());
             }
             else
             {
-                string id = string.IsNullOrEmpty(productStruct.productId) ? "com.rhombeusgaming.premium" : productStruct.productId;
+                string id = string.IsNullOrEmpty(ps.productId) ? "com.rhombeusgaming.premium" : ps.productId;
 
                 UnityEngine.Purchasing.Product product = IAPManager.Instance.GetProduct(id);
                 purchaseButton.OnClick(product,IAPManager.Instance.OnPurchase);

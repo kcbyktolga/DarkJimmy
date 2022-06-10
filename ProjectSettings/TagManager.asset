@@ -22,7 +22,7 @@ TagManager:
   - Collectable
   - Ground
   - PP
-  - 
+  - Foreground
   - 
   - 
   - 
@@ -61,4 +61,7 @@ TagManager:
     locked: 0
   - name: SeconderMenu
     uniqueID: 205433455
+    locked: 0
+  - name: Foreground
+    uniqueID: 1111408575
     locked: 0

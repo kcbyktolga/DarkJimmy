@@ -30,7 +30,9 @@ namespace DarkJimmy.UI
         }
         public virtual void SetTabButtonName(string name)
         {
-            buttonName.text = name; //LanguageManager.GetText(name);
+            if(buttonName!=null)
+                buttonName.text = LanguageManager.GetText(name);
+
         }
         public virtual void OpenPage() { }
 

@@ -7,7 +7,6 @@ namespace DarkJimmy.UI
     public class StagePage: SlidePage<StageTab,PlayerData>
     {
         [Header("Stage Property")]
-   
         [SerializeField]
         private RectTransform stageContent;
         [SerializeField]

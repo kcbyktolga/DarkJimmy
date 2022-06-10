@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System;
+using DarkJimmy.UI;
 
 namespace DarkJimmy
 {
@@ -45,6 +46,33 @@ namespace DarkJimmy
             {"PrivacyPolicy","Privacy Policy"},
             {"Languages","Languages"},
             {"Credits","Credits"},
+
+             //Others
+            {"Free","Free"},
+            {"Go","Go"},
+            {"Update","Update"},
+            {"Okay","Okay"},
+
+            //Shop 
+            {"Gold","Gold"},
+            {"Diamond","Dýamond"},
+            {"Diamonds","Dýamonds"},
+            {"Golds","Golds"},
+            {"Offers","Offers"},
+            {"Premium","Premýum"},
+            {"Costumes","Costumes"},
+
+
+
+            //Popups
+            {"PurchaseProcess","Purchase failed."},
+            {"Waiting","Waiting."},
+            {"StageUpProcess","Credits"},
+            {"ConnectedError","Connected Error!"},
+            {"Disconnect","Disconnect"},
+            {"AppUpdate","New update available, Please update the app."},
+            {"ShopOrientation","Your balance is not enough. Would you like to go to the store?"},
+            {"StageLockOrientation","Unlock previous adventure first!"}
         };
         private static readonly Dictionary<string, string> French = new Dictionary<string, string>
         {   //Main Menu
@@ -109,6 +137,31 @@ namespace DarkJimmy
             {"PrivacyPolicy","Gizlilik Politikasý"},
             {"Languages","Diller"},
             {"Credits","Krediler"},
+
+            //Others
+            {"Free","Ücretsiz"},
+            {"Go","Git"},
+            {"Update","Güncelle"},
+            {"Okay","Tamam"},
+
+            //Shop
+            {"Gold","Altýn"},
+            {"Diamond","Elmas"},
+            {"Diamonds","Elmaslar"},
+            {"Golds","Altýnlar"},
+            {"Offers","Teklýfler"},
+            {"Premium","Premýum"},
+            {"Costumes","Kostumler"},
+
+            //Popups
+            {"PurchaseProcess","Satýn alma baþarýsýz oldu."},
+            {"Waiting","Lütfen bekleyin.."},
+            {"StageUpProcess","Credits"},
+            {"ConnectedError","Baðlantý Hatasý!"},
+            {"Disconnect","Baðlantý yok!"},
+            {"AppUpdate","Yeni güncelleme mevcut. Lütfen uygulamayý güncelleyin."},
+            {"ShopOrientation","Bakiyeniz yeterli deðil. Maðazaya gitmek istiyor musunuz?"},
+            {"StageLockOrientation","Ýlk olarak önceki macerayý aç!"}
         };
         private static Dictionary<string, string> GetDictionary()
         {

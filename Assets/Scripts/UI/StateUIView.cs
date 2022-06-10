@@ -25,8 +25,10 @@ namespace DarkJimmy
         private Image fill;       
         public Color color;
 
+        CloudSaveManager csm;
         private void Start()
         {
+            csm = CloudSaveManager.Instance;
             if (type.Equals(ViewType.UI))
             {
                 SetStatsValue();
@@ -39,8 +41,8 @@ namespace DarkJimmy
             if (this.stats != state)
                 return;
 
-            if(this.amount !=null)
-                this.amount.text = amount.ToString();
+            if (this.amount != null)
+                this.amount.text = csm.StringFormat((int)amount);
 
             if (statsSlider != null)
                 statsSlider.value = amount;
@@ -49,13 +51,13 @@ namespace DarkJimmy
         void SetStatsValue()
         {         
             if (Enum.TryParse(stats.ToString(), out GemType gemType))
-                amount.text = CloudSaveManager.Instance.GetGemCount(gemType).ToString();
+                amount.text = csm.StringFormat(csm.GetGemCount(gemType));
             else
             {
                 if (stats.Equals(Stats.Energy))
-                    SetSlider(CloudSaveManager.Instance.GetCurrentCharacterData().Energy);
+                    SetSlider(csm.GetCurrentCharacterData().Energy);
                 else if (stats.Equals(Stats.Mana))
-                    SetSlider(CloudSaveManager.Instance.GetCurrentCharacterData().Mana);
+                    SetSlider(csm.GetCurrentCharacterData().Mana);
                 else if (stats.Equals(Stats.Timer))
                     amount.text = "00:59";
             }

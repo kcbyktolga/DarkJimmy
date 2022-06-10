@@ -2,17 +2,35 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ShopOreintation : MonoBehaviour
+namespace DarkJimmy.UI
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
+    public class ShopOreintation : Popup
+    {     
+        public override void Start()
+        {
+            base.Start();
+
+            if (popupButton != null)
+                popupButton.SetName(LanguageManager.GetText("Go"));
+
+            popupButton.OnClick(CloudSaveManager.Instance.GemType,Go);
+        }
+
+        private void Go(GemType type )
+        {
+            GoBack();
+            UIManager.Instance.PageIndex = GetPage(type);
+            UIManager.Instance.OpenMenu(Menus.Shop);
+        }
+        private int GetPage(GemType gemType)
+        {
+            return gemType switch
+            {
+                GemType.Diamond => 3,
+                _ => 2,
+            };
+        }
+
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
 }

@@ -24,7 +24,7 @@ namespace DarkJimmy
         }
         private void CreateCatalog()
         {
-            module = StandardPurchasingModule.Instance(AppStore.fake);
+            module = StandardPurchasingModule.Instance(AppStore.GooglePlay);
             builder = ConfigurationBuilder.Instance(module);
 
             for (int i = 0; i < productCatalog.pages.Count; i++)
@@ -49,10 +49,10 @@ namespace DarkJimmy
         }
         public void OnPurchase(Product product)
         {
-            //if (product.availableToPurchase && product != null)
-            //    controller.InitiatePurchase(product);
+            if (product.availableToPurchase && product != null)
+                controller.InitiatePurchase(product);
 
-             UIManager.Instance.OpenMenu(UI.Menu.Menus.AppUpdate);
+            // UIManager.Instance.OpenMenu(UI.Menu.Menus.AppUpdate);
         }
         public Product GetProduct(string id)
         {

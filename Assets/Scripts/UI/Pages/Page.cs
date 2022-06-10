@@ -11,7 +11,7 @@ namespace DarkJimmy.UI
         private TMP_Text pageName;
         public void SetPage(string name)
         {
-            pageName.text = name;
+            pageName.text = LanguageManager.GetText(name);
         }
     }
 }

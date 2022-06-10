@@ -20,6 +20,8 @@ namespace DarkJimmy
         [SerializeField]
         private SystemProperty system;
         #region Properties
+        public GemType GemType { get; set; }
+
         public int WorldIndex { get; set; } = 0;
         public int LevelIndex { get; set; } = 0;
         public int Index { get; set; } = 0;
@@ -145,7 +147,18 @@ namespace DarkJimmy
 
             await SaveData();
         }
+        public async void UnlockStage(int index, bool isOn)
+        {
+            PlayerDatas.Stages[index].stageIsLocked = isOn;
+            await SaveData();
+        }
 
+        #endregion
+        #region Common
+        public string StringFormat(int count)
+        {
+            return $"{string.Format("{0:N0}", count)}";
+        }
         #endregion
 
         [ContextMenu("Update Level")]
@@ -260,7 +273,7 @@ namespace DarkJimmy
 
         #region Main Methods  
         [ContextMenu("Save")]
-        private async Task SaveData()
+        public async Task SaveData()
         {
             await ForceSaveObjectData("PlayerData", PlayerDatas);
         }
@@ -363,6 +376,7 @@ namespace DarkJimmy
                 }
                 else
                 {
+                    LanguageManager.DefaultLanguage();
                     PlayerDatas.PlayerId = AuthenticationService.Instance.PlayerId;
                     SetDefualt();
                     await ForceSaveObjectData("PlayerData", PlayerDatas);

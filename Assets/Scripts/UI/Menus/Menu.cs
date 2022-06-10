@@ -38,7 +38,7 @@ namespace DarkJimmy.UI
             Disconnet,
             AppUpdate,
             StageLockOrientation,
-            ShopOreintation
+            ShopOrientation
  
         }
         public enum MenuRank
@@ -70,7 +70,7 @@ namespace DarkJimmy.UI
             {Menus.Disconnet, "Popups/DisconnectPopup"},
             {Menus.AppUpdate, "Popups/AppUpdatePopup"},
             {Menus.StageLockOrientation, "Popups/StageLockOrientationPopup"},
-            {Menus.ShopOreintation, "Popups/ShopOrientationPopup"}
+            {Menus.ShopOrientation, "Popups/ShopOrientationPopup"}
         };
 
         #endregion

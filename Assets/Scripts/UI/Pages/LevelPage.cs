@@ -49,7 +49,18 @@ namespace DarkJimmy.UI
                 levelTab.OnClick(i, OnSelect);
             }
         }
+        public override void OnSelect(int index)
+        {
+           // base.OnSelect(index);
+           // LevelTab previous = GetTab(PreviousIndex);
 
+            LevelTab next = GetTab(NextIndex);
+
+            CloudSaveManager.Instance.LevelIndex = index;
+
+            next.OpenPage();
+
+        }
         private void UpdateLevelTab()
         {
             bool priority = false;
@@ -67,39 +78,26 @@ namespace DarkJimmy.UI
         }
         private void Purchase()
         {
-            if (CloudSaveManager.Instance.CanSpendGem(localData.GetPayType(),localData.GetStagePrice()))
+            if (CloudSaveManager.Instance.CanUnlockStage(PageIndex))            
             {
-                if (CloudSaveManager.Instance.CanUnlockStage(PageIndex))
+                if (CloudSaveManager.Instance.CanSpendGem(localData.GetPayType(), localData.GetStagePrice()))
                 {
-                    CloudSaveManager.Instance.SpendGem(localData.GetPayType(), localData.GetStagePrice());
-
-                    lockPanel.SetActive(false);
                     globalData.stageIsLocked = false;
-
+                    CloudSaveManager.Instance.SpendGem(localData.GetPayType(), localData.GetStagePrice());
+                    lockPanel.SetActive(false);
                     CloudSaveManager.Instance.updateStage(globalData);
                     UpdateLevelTab();
                 }
                 else
                 {
-                    UIManager.Instance.OpenMenu(Menu.Menus.StageLockOrientation);
+                    CloudSaveManager.Instance.GemType = localData.GetPayType();
+                    UIManager.Instance.OpenMenu(Menu.Menus.ShopOrientation);
                 }
-               
             }
-
-        }
-
-
-        public override void OnSelect(int index)
-        {
-           // base.OnSelect(index);
-           // LevelTab previous = GetTab(PreviousIndex);
-
-            LevelTab next = GetTab(NextIndex);
-
-            CloudSaveManager.Instance.LevelIndex = index;
-
-            next.OpenPage();
-
+            else
+            {
+                UIManager.Instance.OpenMenu(Menu.Menus.StageLockOrientation);
+            }
         }
         private bool PasedCheck(int index)
         {
