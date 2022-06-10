@@ -37,6 +37,8 @@ namespace DarkJimmy.UI
             ConnectedError,
             Disconnet,
             AppUpdate,
+            StageLockOrientation,
+            ShopOreintation
  
         }
         public enum MenuRank
@@ -61,7 +63,14 @@ namespace DarkJimmy.UI
              {Menus.LevelPrevious, "Menus/LevelPopup"},
 
             //Popups
-            {Menus.PurchaseProcess, "Popups/PurchaseProcessPopup"}
+            {Menus.PurchaseProcess, "Popups/PurchaseProcessPopup"},
+            {Menus.Waiting, "Popups/WaitingPopup"},
+            {Menus.StageUpProcess, "Popups/StageUpProcessPopup"},
+            {Menus.ConnectedError, "Popups/ConnectedErrorPopup"},
+            {Menus.Disconnet, "Popups/DisconnectPopup"},
+            {Menus.AppUpdate, "Popups/AppUpdatePopup"},
+            {Menus.StageLockOrientation, "Popups/StageLockOrientationPopup"},
+            {Menus.ShopOreintation, "Popups/ShopOrientationPopup"}
         };
 
         #endregion

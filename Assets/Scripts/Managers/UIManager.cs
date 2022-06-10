@@ -75,8 +75,13 @@ namespace DarkJimmy
         {
 
         }
+        public void OpenUrl(string address)
+        {
+            if (string.IsNullOrEmpty(address))
+                return;
 
-
+            Application.OpenURL(address);
+        }
         public int GetStackCount()
         {
             return menuStack.Count;

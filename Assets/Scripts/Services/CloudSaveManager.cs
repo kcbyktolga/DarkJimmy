@@ -9,10 +9,7 @@ using GooglePlayGames;
 
 namespace DarkJimmy
 {
-    public enum PopupType
-    {
-        
-    }
+   
 
     public class CloudSaveManager : Singleton<CloudSaveManager>
     {
@@ -22,11 +19,22 @@ namespace DarkJimmy
         public PlayerData PlayerDatas;
         [SerializeField]
         private SystemProperty system;
-        public string UserId { get; set; }
+        #region Properties
         public int WorldIndex { get; set; } = 0;
         public int LevelIndex { get; set; } = 0;
         public int Index { get; set; } = 0;
-        public PopupType PopupType { get; set; }
+
+        public string UserId { get; set; }
+        public string AplicationURL { get; set; } = "https://play.google.com/store/apps/details?id=com.rhombeusgaming.DarkJimmy";
+        public string WebsiteURL { get; set; } = "http://www.rhombeusgaming.com/";
+        public string InstagramURL { get; set; } = "https://www.instagram.com/rhombeusgaming/";
+        public string YoutubeeURL { get; set; } = "https://www.youtube.com/channel/UCgUMXl7bylbFv36oDuDgLtw";
+        public string PublisherURL { get; set; } = "https://play.google.com/store/apps/dev?id=8451792306383085358&hl=en_US&gl=US";
+        public string MailURL { get; set; } = "mailto:rhombeusgaming@gmail.com";
+        #endregion
+
+
+
 
         public delegate void UpdateStage(Stage stage);
         public UpdateStage updateStage;

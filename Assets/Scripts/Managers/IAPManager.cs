@@ -50,12 +50,9 @@ namespace DarkJimmy
         public void OnPurchase(Product product)
         {
             if (product.availableToPurchase && product != null)
-            {
-                // controller.InitiatePurchase(product);
-                UIManager.Instance.OpenMenu(UI.Menu.Menus.PurchaseProcess);
-            }
-            else
-                Debug.Log("satýn alýnmadý");
+                controller.InitiatePurchase(product);
+
+            // UIManager.Instance.OpenMenu(UI.Menu.Menus.Waiting);
         }
         public Product GetProduct(string id)
         {
