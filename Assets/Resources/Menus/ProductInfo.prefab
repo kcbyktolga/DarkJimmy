@@ -968,7 +968,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &3410299561525068378
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1044,6 +1044,7 @@ MonoBehaviour:
   pageName: {fileID: 3410299560384176691}
   baseTransform: {fileID: 0}
   menuType: 14
+  menuRank: 0
   stats: {fileID: 8989428707727285328, guid: 125af36824157cc4882fc9da67f2b33a, type: 3}
   statsContent: {fileID: 3410299559568109276}
   colorList:

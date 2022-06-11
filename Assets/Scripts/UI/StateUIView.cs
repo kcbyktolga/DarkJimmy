@@ -29,6 +29,7 @@ namespace DarkJimmy
         private void Start()
         {
             csm = CloudSaveManager.Instance;
+
             if (type.Equals(ViewType.UI))
             {
                 SetStatsValue();
@@ -91,6 +92,11 @@ namespace DarkJimmy
                 amount.text = $"{(int)percent}%";
                 yield return null;
             }
+        }
+
+        public void SetStatName(string name)
+        {
+            statsName.text = LanguageManager.GetText(name);
         }
     }
 

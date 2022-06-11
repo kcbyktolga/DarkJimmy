@@ -96,6 +96,12 @@ namespace DarkJimmy
         {
             return PlayerDatas.Characters[PlayerDatas.CurrentCharacterIndex];
         }
+        public async  void SetCharacter(int index)
+        {
+            PlayerDatas.CurrentCharacterIndex = index;
+
+            await SaveData();
+        }
         public Level GetLevel()
         {
             return HasLevel() ? PlayerDatas.Stages[WorldIndex].levels[LevelIndex] : systemData.Stages[WorldIndex].levels[LevelIndex];
@@ -213,7 +219,7 @@ namespace DarkJimmy
         private void SetDefualt()
         {
             PlayerDatas.Stages = systemData.Stages;
-            PlayerDatas.Characters = systemData.CharacterDatas;
+            PlayerDatas.Characters.Add(systemData.CharacterDatas[0]);
         }
         [ContextMenu("Sett Level")]
         public void SetLevel()

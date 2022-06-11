@@ -36,8 +36,7 @@ namespace DarkJimmy.UI
         {
             float time = 0;
             float currentPos = content.anchoredPosition.x;
-           // float endPos = GetPosition[Index];
-
+ 
             while (time <= 1)
             {
                 time += Time.deltaTime / duration;
