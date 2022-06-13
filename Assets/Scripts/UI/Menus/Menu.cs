@@ -15,7 +15,7 @@ namespace DarkJimmy.UI
             Lobby,
             Settings,
             Shop,
-            Characters,
+            Customize,
             Stages,
             Victory,
             Defeat,
@@ -29,16 +29,18 @@ namespace DarkJimmy.UI
             Splash,
             Loading,
             LevelPrevious,
+            Upgrade,
 
             // Popups
             PurchaseProcess,
             Waiting,
             StageUpProcess,
             ConnectedError,
-            Disconnet,
+            Disconnect,
             AppUpdate,
             StageLockOrientation,
-            ShopOrientation
+            ShopOrientation,
+            LuckySpin
  
         }
         public enum MenuRank
@@ -51,7 +53,7 @@ namespace DarkJimmy.UI
              {Menus.Lobby, "Menus/Lobby"},
              {Menus.Settings, "Menus/Settings"},
              {Menus.Shop, "Menus/Shop"},
-             {Menus.Characters, "Menus/Characters"},
+             {Menus.Customize, "Menus/Characters"},
              {Menus.Stages, "Menus/Stages"},
              {Menus.Victory, "Menus/Victory"},
              {Menus.Defeat, "Menus/Defeat"},
@@ -61,16 +63,17 @@ namespace DarkJimmy.UI
              {Menus.Splash, "Menus/Splash"},
              {Menus.Loading, "Menus/Loading"},
              {Menus.LevelPrevious, "Menus/LevelPopup"},
+             {Menus.LuckySpin, "Menus/LuckySpin"},
 
             //Popups
-            {Menus.PurchaseProcess, "Popups/PurchaseProcessPopup"},
-            {Menus.Waiting, "Popups/WaitingPopup"},
-            {Menus.StageUpProcess, "Popups/StageUpProcessPopup"},
-            {Menus.ConnectedError, "Popups/ConnectedErrorPopup"},
-            {Menus.Disconnet, "Popups/DisconnectPopup"},
-            {Menus.AppUpdate, "Popups/AppUpdatePopup"},
-            {Menus.StageLockOrientation, "Popups/StageLockOrientationPopup"},
-            {Menus.ShopOrientation, "Popups/ShopOrientationPopup"}
+             {Menus.PurchaseProcess, "Popups/PurchaseProcessPopup"},
+             {Menus.Waiting, "Popups/WaitingPopup"},
+             {Menus.StageUpProcess, "Popups/StageUpProcessPopup"},
+             {Menus.ConnectedError, "Popups/ConnectedErrorPopup"},
+             {Menus.Disconnect, "Popups/DisconnectPopup"},
+             {Menus.AppUpdate, "Popups/AppUpdatePopup"},
+             {Menus.StageLockOrientation, "Popups/StageLockOrientationPopup"},
+             {Menus.ShopOrientation, "Popups/ShopOrientationPopup"}
         };
 
         #endregion
@@ -79,6 +82,7 @@ namespace DarkJimmy.UI
         public Canvas canvas;
         public TMP_Text pageName;
         public RectTransform baseTransform;
+        private float duration = 0.1f;
         [Header("Referances")]
         public Menus menuType;
         public MenuRank menuRank;
@@ -106,7 +110,39 @@ namespace DarkJimmy.UI
         {
             UIManager.Instance.Cancel();
         }
+     
+        public virtual IEnumerator Animation()
+        {
+            if (baseTransform == null)
+                yield break;
+
+            float time = 0;
+            int step = 0;
+            Vector2 start = baseTransform.localScale;
+            Vector2 end = 1.04f * Vector2.one;
+
+            while (step<2)
+            {
+                while (time <= 1)
+                {
+                    time += Time.deltaTime / (duration * 0.5f);
+                    baseTransform.localScale = Vector2.Lerp(start, end, time);
+                    yield return null;
+                }
+
+                step++;
+                start = baseTransform.localScale;
+                end = Vector2.one;
+                time = 0;
+            }
+        }
         #endregion
+
+
+        public virtual void OnEnable()
+        {
+            StartCoroutine(Animation());
+        }
     }
 }
 

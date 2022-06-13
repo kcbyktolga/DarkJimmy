@@ -168,7 +168,7 @@ MonoBehaviour:
   canvas: {fileID: 1372535658204038118}
   pageName: {fileID: 7886083444964011268}
   baseTransform: {fileID: 7886083444428015130}
-  menuType: 23
+  menuType: 24
   menuRank: 0
   popupButton: {fileID: 6845048628476732655}
 --- !u!1001 &176574228445078012
@@ -293,7 +293,8 @@ PrefabInstance:
       propertyPath: m_Name
       value: Base
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 6658323000101240274, guid: 1ca455b80cd37b34688f34997fcfacf2, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 1ca455b80cd37b34688f34997fcfacf2, type: 3}
 --- !u!224 &7886083444428015130 stripped
 RectTransform:

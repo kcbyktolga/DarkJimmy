@@ -95,9 +95,8 @@ namespace DarkJimmy.UI
                 }
             }
             else
-            {
                 UIManager.Instance.OpenMenu(Menu.Menus.StageLockOrientation);
-            }
+
         }
         private bool PasedCheck(int index)
         {

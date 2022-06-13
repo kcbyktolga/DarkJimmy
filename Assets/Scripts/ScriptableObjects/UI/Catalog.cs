@@ -13,7 +13,8 @@ namespace DarkJimmy
     {
         public TabButton tabButton;
         public List<PageStruct> pages;
-        public List<ProductStruct> GetProductStruct;
+        public List<ProductStruct> GetProductShop;
+        public List<ProductStruct> GetProductLuckySpin;
     
         private Dictionary<PageType, string> PagePaths = new Dictionary<PageType, string>
         {

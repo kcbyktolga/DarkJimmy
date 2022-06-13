@@ -170,7 +170,7 @@ MonoBehaviour:
   baseTransform: {fileID: 0}
   menuType: 16
   menuRank: 0
-  duration: 3
+  duration: 5
 --- !u!1 &8753495177384729439
 GameObject:
   m_ObjectHideFlags: 0

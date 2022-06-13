@@ -65,6 +65,3 @@ MonoBehaviour:
     key: {fileID: 21300000, guid: e9958a692226a90499bb7001427a427d, type: 3}
     paidSprite: {fileID: 21300000, guid: 0b6f8cc58028cd24c99d1b1cf2feac96, type: 3}
     freeSprite: {fileID: 21300000, guid: dae4f662c279b66469644fb5037bcb78, type: 3}
-  userID: 
-  WorldIndex: 0
-  LevelIndex: 0

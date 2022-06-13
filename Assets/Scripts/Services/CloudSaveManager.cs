@@ -19,12 +19,16 @@ namespace DarkJimmy
         public PlayerData PlayerDatas;
         [SerializeField]
         private SystemProperty system;
+
         #region Properties
         public GemType GemType { get; set; }
 
         public int WorldIndex { get; set; } = 0;
         public int LevelIndex { get; set; } = 0;
         public int Index { get; set; } = 0;
+
+        public bool IsSignedIn { get; set; }
+        public bool IsLoadedData { get; set; } = false;
 
         public string UserId { get; set; }
         public string AplicationURL { get; set; } = "https://play.google.com/store/apps/details?id=com.rhombeusgaming.DarkJimmy";
@@ -34,9 +38,6 @@ namespace DarkJimmy
         public string PublisherURL { get; set; } = "https://play.google.com/store/apps/dev?id=8451792306383085358&hl=en_US&gl=US";
         public string MailURL { get; set; } = "mailto:rhombeusgaming@gmail.com";
         #endregion
-
-
-
 
         public delegate void UpdateStage(Stage stage);
         public UpdateStage updateStage;
@@ -48,27 +49,32 @@ namespace DarkJimmy
 
             await UnityServices.InitializeAsync();
 
-            if ( PlayService.Instance !=null && PlayService.Instance.signIn)
-                await AuthenticationService.Instance.SignInWithGoogleAsync(((PlayGamesLocalUser)Social.localUser).GetIdToken());
-            else
-                await AuthenticationService.Instance.SignInAnonymouslyAsync();
-
-
-            PlayerDatas = await RetrieveSpecificData<PlayerData>("PlayerData");
-
-            Instance.UserId = PlayerDatas.PlayerId;
+            SignIn();
 
             // remote config.
             //SyncStages();
+            //await SaveData();
+            //await ForceDeleteSpecificData("PlayerData");
+            //await RetrieveEverything();
+        }
 
+        public async void SignIn()
+        {
+            if (!IsSignedIn)
+            {
+                if (PlayService.Instance != null && PlayService.Instance.signIn)
+                    await AuthenticationService.Instance.SignInWithGoogleAsync(((PlayGamesLocalUser)Social.localUser).GetIdToken());
+                else
+                    await AuthenticationService.Instance.SignInAnonymouslyAsync();
 
+                IsSignedIn = AuthenticationService.Instance.IsSignedIn;
 
-           // await SaveData();
+                Debug.Log(IsSignedIn);
+            }
+          
+            PlayerDatas = await RetrieveSpecificData<PlayerData>("PlayerData");
 
-           //  await ForceDeleteSpecificData("PlayerData");
-
-           //await RetrieveEverything();
-
+            Instance.UserId = PlayerDatas.PlayerId;
         }
 
         #region Player Data Methods
@@ -80,7 +86,7 @@ namespace DarkJimmy
         {
             return GetGemCount(type) >= price;
         }
-        public int GetCurrentCharacter()
+        public int GetCurrentCharacterIndex()
         {
             return PlayerDatas.CurrentCharacterIndex;
         }
@@ -96,16 +102,22 @@ namespace DarkJimmy
         {
             return PlayerDatas.Characters[PlayerDatas.CurrentCharacterIndex];
         }
-        public async  void SetCharacter(int index)
-        {
-            PlayerDatas.CurrentCharacterIndex = index;
-
-            await SaveData();
-        }
         public Level GetLevel()
         {
             return HasLevel() ? PlayerDatas.Stages[WorldIndex].levels[LevelIndex] : systemData.Stages[WorldIndex].levels[LevelIndex];
         }
+
+        public async void SetCharacterIndex(int index)
+        {
+            PlayerDatas.CurrentCharacterIndex = index;
+            await SaveData();
+
+        }
+        public async  void SetCharacterData(int index , CharacterData data)
+        {
+            PlayerDatas.Characters[index] = data;
+            await SaveData();
+        }    
         public async void SetGem(GemType type, int amount)
         {
             switch (type)
@@ -158,7 +170,7 @@ namespace DarkJimmy
             PlayerDatas.Stages[index].stageIsLocked = isOn;
             await SaveData();
         }
-
+    
         #endregion
         #region Common
         public string StringFormat(int count)
@@ -216,10 +228,12 @@ namespace DarkJimmy
         }
 
         [ContextMenu("Set Default")]
-        private void SetDefualt()
+        private async void SetDefualt()
         {
             PlayerDatas.Stages = systemData.Stages;
-            PlayerDatas.Characters.Add(systemData.CharacterDatas[0]);
+            PlayerDatas.Characters = systemData.CharacterDatas;
+
+           await SaveData();
         }
         [ContextMenu("Sett Level")]
         public void SetLevel()
@@ -378,7 +392,12 @@ namespace DarkJimmy
 
                 if (results.TryGetValue(key, out string value))
                 {
+                    IsLoadedData = !string.IsNullOrEmpty(value);
+
+                    Debug.Log(IsLoadedData);
+
                     return JsonUtility.FromJson<T>(value);
+
                 }
                 else
                 {
@@ -407,6 +426,7 @@ namespace DarkJimmy
             catch (CloudSaveException e)
             {
                 Debug.LogError(e);
+                return await RetrieveSpecificData<T>(key);
             }
 
             Debug.Log("Burda deðilim");

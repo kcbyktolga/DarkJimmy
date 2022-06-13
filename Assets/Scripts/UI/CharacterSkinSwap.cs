@@ -15,7 +15,7 @@ namespace DarkJimmy
 
         private void Start()
         {           
-            SetSkin(CloudSaveManager.Instance.GetCurrentCharacter());
+            SetSkin(CloudSaveManager.Instance.GetCurrentCharacterIndex());
         }
   
         

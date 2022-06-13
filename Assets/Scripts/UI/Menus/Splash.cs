@@ -4,8 +4,7 @@ namespace DarkJimmy.UI
 {
     public class Splash : Menu
     {
-        [SerializeField]
-        private float duration = 3f;
+        public float duration = 3f;
 
         public override void Start()
         {

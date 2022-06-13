@@ -13,6 +13,8 @@ namespace DarkJimmy.UI
         [SerializeField]
         private TouchButton stageButton;
         [SerializeField]
+        private PurchaseButton purchaseButton;
+        [SerializeField]
         private Image block;
         [SerializeField]
         private Color onColor;
@@ -23,15 +25,19 @@ namespace DarkJimmy.UI
         [SerializeField]
         private float endPos;
 
+        [SerializeField]
+        private GameObject buttonGroup;
+
         private Animator animator;
         private Transform playerT;
         private float originalPosY;
+
+
 
         int idleParamId;
   
         public override void Start()
         {
-            base.Start();
 
             globalData = CloudSaveManager.Instance;
             systemData = globalData.GetSystemData();
@@ -41,39 +47,52 @@ namespace DarkJimmy.UI
             animator = prefab.GetComponent<Animator>();
             playerT = prefab.transform;
             originalPosY = playerT.position.y;
-
             idleParamId = Animator.StringToHash("Idle");
+
+
+            Index = globalData.GetCurrentCharacterIndex();
+            bool islock = Index > globalData.PlayerDatas.GetAllCharacterCount-1;
+            SetButtons(islock);
+
+            base.Start();
 
             for (int i = 0; i < stats.Count; i++)
             {
                 stats[i].SetStatName(((CharacterProperty)i).ToString());
-                stats[i].SetInfoSlider(globalData.GetCurrentCharacterData().GetCharacterProperty((CharacterProperty)i), 10);
-            }              
+                stats[i].SetInfoSlider(globalData.GetCurrentCharacterData().GetCharacterProperty((CharacterProperty)i)*10, 100);
+            }
         }
 
         public override void Move(bool onClick, int amount)
         {
             Index += amount;
-            Index = Mathf.Clamp(Index, 0, Count - 1);
+            Index = Mathf.Clamp(Index, 0, Count-1);
 
-            bool islock = Index <= globalData.PlayerDatas.GetAllCharacterCount - 1;
+            bool islock = globalData.PlayerDatas.Characters[Index].isLock;
 
-            if (islock)
-                globalData.SetCharacter(Index);
+            if (!islock)
+                globalData.SetCharacterIndex(Index);
 
-            stageButton.button.interactable = islock;
-
-            Color endColor = islock ? onColor : offColor;
+            Color endColor = !islock ? onColor : offColor;
             StartCoroutine(BlackOut(endColor));
             StartCoroutine(Moving(endPos));
 
             prefab.SetSkin(Index);
             SetMoveButton();
+            SetButtons(islock);
 
-            CharacterData data = islock ? globalData.GetCurrentCharacterData() : systemData.CharacterDatas[Index];
+            CharacterData data = !islock ? globalData.GetCurrentCharacterData() : systemData.CharacterDatas[Index];
+
+            if (islock)
+            {
+                purchaseButton.OnClick(Index, Purchase);
+                purchaseButton.buttonName.text = globalData.StringFormat(data.price);
+                purchaseButton.priceIcon.sprite = globalData.GetPaySprite(data.payType);
+
+            }
 
             for (int i = 0; i < stats.Count; i++)
-                stats[i].SetInfoSlider(data.GetCharacterProperty((CharacterProperty)i), 10);
+                stats[i].SetInfoSlider(data.GetCharacterProperty((CharacterProperty)i)*10, 100);
 
         }
 
@@ -108,6 +127,36 @@ namespace DarkJimmy.UI
             }
 
             animator.SetBool(idleParamId,true);
+        }
+        private void Purchase(int index)
+        {
+            CharacterData data = systemData.CharacterDatas[index];
+
+            if (globalData.CanSpendGem(data.payType, data.price))
+            {
+                data.isLock = false;
+                globalData.SetCharacterData(Index,data);
+                globalData.SetCharacterIndex(Index);
+                globalData.SpendGem(data.payType, data.price);
+          
+                buttonGroup.SetActive(true);
+                purchaseButton.gameObject.SetActive(false);
+                stageButton.button.interactable = true;
+
+                StartCoroutine(BlackOut(onColor));       
+            }
+            else
+            {
+                globalData.GemType = data.payType;
+                UIManager.Instance.OpenMenu(Menu.Menus.ShopOrientation);
+            }
+        }
+
+        private void SetButtons(bool islock)
+        {
+            stageButton.button.interactable = !islock;
+            purchaseButton.gameObject.SetActive(islock);
+            buttonGroup.SetActive(!islock);
         }
     }
 

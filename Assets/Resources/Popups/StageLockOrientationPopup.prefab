@@ -227,7 +227,7 @@ MonoBehaviour:
   canvas: {fileID: 7217049613607935897}
   pageName: {fileID: 7217049613600397349}
   baseTransform: {fileID: 7217049614138356539}
-  menuType: 24
+  menuType: 25
   menuRank: 0
   popupButton: {fileID: 6315907088653472206}
 --- !u!1 &7217049613774677203

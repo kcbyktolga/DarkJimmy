@@ -14,6 +14,8 @@ namespace DarkJimmy
         public List<Stage> Stages;
         [Header("Characters")]
         public List<CharacterData> CharacterDatas;
+        [Header("Catalog")]
+        public Catalog Catalog;
 
         [ContextMenu("Set Level Id")]
         public void SetLevel()
@@ -78,7 +80,10 @@ namespace DarkJimmy
         [Header("Character Property")]
         [SerializeField]
         private Sprite characterIcon;
-        
+
+        public GemType payType;
+        public bool isLock = true;
+        public int price;
         public string Id;
         public float Level;
         public float Energy;
