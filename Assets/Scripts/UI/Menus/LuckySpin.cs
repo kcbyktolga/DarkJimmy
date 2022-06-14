@@ -25,20 +25,17 @@ namespace DarkJimmy.UI
         private int speedMultiple;
         [SerializeField]
         private float effectDuration;
-
-        [SerializeField]
-        private Vector2 duration = new Vector2(1f, 3f);
-      
         [SerializeField]
         private Color onColor;
-
         [SerializeField]
         private Color offColor;
-
         [SerializeField]
         private Sprite darkBackground;
         [SerializeField]
         private Sprite lightBackground;
+
+        [SerializeField]
+        private int spinDuration = 2;
 
         
         private PayType Paytype { get; set; }
@@ -56,11 +53,9 @@ namespace DarkJimmy.UI
             catalog = csm.GetSystemData().Catalog;
             gemType = GemType.Diamond;
 
-
             purchaseButton.OnClick(SpinWheel);
             CreateSlot();
         }
-
         private void CreateSlot()
         {
             float diffAngle = 360 / catalog.GetProductLuckySpin.Count;
@@ -86,8 +81,7 @@ namespace DarkJimmy.UI
             {
                 if (csm.CanSpendGem(gemType, price))
                 {
-                    
-
+                    csm.SpendGem(gemType,price);
                     StartCoroutine(Spin());
                 }
                 else
@@ -98,6 +92,7 @@ namespace DarkJimmy.UI
             }
             else
             {
+                GoogleAdsManager.Instance.ShowInterstitialAd();
                 StartCoroutine(Spin());
             }
             
@@ -116,28 +111,30 @@ namespace DarkJimmy.UI
 
             int index = GetCurrentIndex() + Random.Range(0, catalog.GetProductLuckySpin.Count);
             float time = 0;
-
+ 
             Vector3 currentAngle = wheel.localEulerAngles;
 
-            float targetZ =  currentAngle.z + index*45 + 360*speedMultiple;
-            float _duration = duration.x;
+            float targetZ =  currentAngle.z + index*45 + 360*spinDuration*24;
             Vector3 targetAngle = new Vector3(wheel.localEulerAngles.x,wheel.localEulerAngles.y,targetZ);
             bool startAnim = true;
 
             Debug.Log($"targetZ: {targetZ}");
-            Debug.Log($"duration: {_duration}");
+            Debug.Log($"duration: {spinDuration}");
+
+            float t = Time.time;
+
             while (time<=1)
             {
-                time += Time.fixedDeltaTime /_duration;
+                time += Time.fixedDeltaTime /spinDuration;
                 wheel.localEulerAngles = targetAngle*curve.Evaluate(time);
 
-                if(time>=0.2f && time < 0.5f && startAnim)
+                if(time>=0.25f && time < 0.5f && startAnim)
                 {
                     startAnim = false;
                     StartCoroutine(SpinColorEffect(onColor,offColor));                  
                 }
 
-                if (time>=0.8f && !startAnim)
+                if (time>=0.75f && !startAnim)
                 {
                     startAnim = true;
                     StartCoroutine(SpinColorEffect(offColor, onColor));
@@ -145,7 +142,7 @@ namespace DarkJimmy.UI
 
                 yield return null;
             }
-
+            Debug.Log(Time.time - t);
             Index = (GetCurrentIndex() + 4) % catalog.GetProductLuckySpin.Count;
 
             ProductStruct ps = GetSlotProduct();
@@ -162,7 +159,7 @@ namespace DarkJimmy.UI
 
             while (time<=1)
             {
-                time += Time.deltaTime / effectDuration;
+                time += Time.deltaTime/0.25f;
 
                 Color color0 = Color.Lerp(startColor,endColor,time);
                 Color color1 = Color.Lerp(endColor, startColor, time);

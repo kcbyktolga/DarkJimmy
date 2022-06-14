@@ -252,6 +252,96 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 18b8b0f3a260af44c8c63d29586364ec, type: 3}
+--- !u!1 &396131085
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 396131087}
+  - component: {fileID: 396131086}
+  - component: {fileID: 396131088}
+  m_Layer: 0
+  m_Name: AdManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &396131086
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 396131085}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5336800ed5878ea49b9c2daab3ae9080, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  type: 0
+  androidGameId: 4782926
+  iOSGameId: 4782927
+  testMode: 1
+  InterstitialAd:
+    AndroidAdUnitId: 
+    IOSAdUnitId: 
+  RewardedAd:
+    AndroidAdUnitId: 
+    IOSAdUnitId: 
+--- !u!4 &396131087
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 396131085}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 1480, y: 720, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 3
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &396131088
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 396131085}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1a43dc02c80ae3145a50667fa46bd1ad, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  type: 0
+  testMode: 1
+  testDeviceId: 
+  InterstitialAd:
+    AndroidAdUnitId: ca-app-pub-4622275896974207/9687914413
+    IOSAdUnitId: 
+  LocalAdvancedAd:
+    AndroidAdUnitId: ca-app-pub-4622275896974207/2947309880
+    IOSAdUnitId: 
+  AppOpenAd:
+    AndroidAdUnitId: ca-app-pub-4622275896974207/5498792934
+    IOSAdUnitId: 
+  RewardedAds:
+  - AndroidAdUnitId: ca-app-pub-4622275896974207/9795789264
+    IOSAdUnitId: 
+  - AndroidAdUnitId: ca-app-pub-4622275896974207/3038809222
+    IOSAdUnitId: 
+  - AndroidAdUnitId: ca-app-pub-4622275896974207/1797879744
+    IOSAdUnitId: 
+  - AndroidAdUnitId: ca-app-pub-4622275896974207/8769663963
+    IOSAdUnitId: 
+  - AndroidAdUnitId: ca-app-pub-4622275896974207/9629609634
+    IOSAdUnitId: 
+  targetForChildren: 0
 --- !u!224 &1000386020 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 8536292636079344876, guid: 8ed26d7c09adb8b4f8f3f947ef0268ac,
@@ -393,6 +483,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: RootCanvas
+      objectReference: {fileID: 0}
+    - target: {fileID: 8536292636079344848, guid: 8ed26d7c09adb8b4f8f3f947ef0268ac,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8536292636079344876, guid: 8ed26d7c09adb8b4f8f3f947ef0268ac,
         type: 3}

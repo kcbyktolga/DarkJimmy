@@ -5,7 +5,7 @@ using UnityEngine.SceneManagement;
 
 namespace DarkJimmy
 {
-    public class Singleton<T> : MonoBehaviour where T : Singleton<T>
+    public abstract class Singleton<T> : MonoBehaviour where T : Singleton<T>
     {
         public SingletonType type;
         public static T Instance;

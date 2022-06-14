@@ -82,7 +82,7 @@ namespace DarkJimmy.UI
         public Canvas canvas;
         public TMP_Text pageName;
         public RectTransform baseTransform;
-        private float duration = 0.1f;
+        private float _duration = 0.1f;
         [Header("Referances")]
         public Menus menuType;
         public MenuRank menuRank;
@@ -125,7 +125,7 @@ namespace DarkJimmy.UI
             {
                 while (time <= 1)
                 {
-                    time += Time.deltaTime / (duration * 0.5f);
+                    time += Time.deltaTime / (_duration * 0.5f);
                     baseTransform.localScale = Vector2.Lerp(start, end, time);
                     yield return null;
                 }
