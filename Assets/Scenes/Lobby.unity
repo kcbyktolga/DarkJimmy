@@ -1031,7 +1031,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   blinkTimeRange: {x: 1, y: 3}
   blinkDuration: {x: 0.1, y: 0.3}
-  blinkRate: 3
+  blinkRate: 2
   headDie: {fileID: 991079621}
   blinkTime: 0
 --- !u!4 &563554228 stripped

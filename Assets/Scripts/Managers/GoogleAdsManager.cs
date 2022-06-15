@@ -34,8 +34,8 @@ namespace DarkJimmy
         private IEnumerator showInterstitialCoroutine;
         private IEnumerator showRewardedVideoCoroutine;
 
-        public delegate void RewardOnEarned(Reward reward);
-        private RewardOnEarned rewardDelegate;
+        public delegate void RewardOnEarned(RewardType reward);
+        public RewardOnEarned rewardDelegate;
 
         private string testIntersititialAdUnit = "ca-app-pub-3940256099942544/1033173712";
         private string testRewardedAdUnit      = "ca-app-pub-3940256099942544/5224354917";
@@ -277,7 +277,7 @@ namespace DarkJimmy
         {
             if (rewardDelegate != null)
             {
-                rewardDelegate(reward);
+                rewardDelegate(TypeOfReward);
                 rewardDelegate = null;
             }
         }

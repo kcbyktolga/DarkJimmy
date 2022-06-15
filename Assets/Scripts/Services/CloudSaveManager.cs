@@ -1,11 +1,13 @@
 using System;
 using System.Collections.Generic;
+using System.Collections;
 using System.Threading.Tasks;
 using Unity.Services.Authentication;
 using Unity.Services.CloudSave;
 using Unity.Services.Core;
 using UnityEngine;
 using GooglePlayGames;
+using TMPro;
 
 namespace DarkJimmy
 {
@@ -177,6 +179,42 @@ namespace DarkJimmy
         {
             return $"{string.Format("{0:N0}", count)}";
         }
+
+        public void SetResetTime(DateTime resetTime,RewardType rewardType)
+        {
+            PlayerPrefs.SetString(rewardType.ToString(),resetTime.ToString());
+        }
+        public DateTime GetResetTime(RewardType rewardType)
+        {
+            string key = rewardType.ToString();
+
+            if (PlayerPrefs.HasKey(key))
+                return Convert.ToDateTime(PlayerPrefs.GetString(key));
+
+            DateTime time = DateTime.Now;
+            SetResetTime(time, rewardType);
+
+            return time;
+        }
+        //public void TimeUpdate(RewardType rewardType, out string description, out PayType payType)
+        //{
+        //    description = string.Empty;         
+        //    DateTime resetTime = GetResetTime(rewardType);
+        //    payType = PayType.Paid;
+
+        //    while (DateTime.Now <= resetTime)
+        //    {
+        //        TimeSpan diffTime = resetTime.Subtract(DateTime.Now);
+
+        //        string timeText = diffTime.Hours > 0 ? $"{diffTime.Hours}{LanguageManager.GetText("sa")} : {diffTime.Minutes}{LanguageManager.GetText("d")}" : $"{diffTime.Minutes}{LanguageManager.GetText("dk")} : {diffTime.Seconds}{LanguageManager.GetText("sn")}";
+
+        //        description= $"{LanguageManager.GetText("RemainingTime")}: {timeText}";
+        //    }
+            
+        //    payType = PayType.Free;
+
+        //}
+
         #endregion
 
         [ContextMenu("Update Level")]
@@ -289,7 +327,6 @@ namespace DarkJimmy
             };
         }
         #endregion
-
 
         #region Main Methods  
         [ContextMenu("Save")]
