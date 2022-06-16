@@ -44,7 +44,6 @@ namespace DarkJimmy
         public override void Awake()
         {
             base.Awake();
-
             InitializeAds();
         }
         public void InitializeAds()
@@ -60,7 +59,6 @@ namespace DarkJimmy
                 InitializeBannerAds();
                 //InitializeMRecAds();
 
-              
             };
 
             MaxSdk.SetSdkKey(MaxSdkKey);          
@@ -91,6 +89,13 @@ namespace DarkJimmy
                 MaxSdk.HideBanner(Banner.AdUnit);
 
             isBannerShowing = !isBannerShowing;
+        }
+        public void ToggleBannerVisibility(bool isOn)
+        {
+            if (isOn)
+                MaxSdk.ShowBanner(Banner.AdUnit);
+            else
+                MaxSdk.HideBanner(Banner.AdUnit);
         }
         private void OnBannerAdLoadedEvent(string adUnitId, MaxSdkBase.AdInfo adInfo)
         {
@@ -311,6 +316,74 @@ namespace DarkJimmy
             string placement = adInfo.Placement; // The placement this ad's postbacks are tied to
 
             //TrackAdRevenue(adInfo);
+        }
+
+        #endregion
+
+        #region MREC Ad Methods
+
+        private void InitializeMRecAds()
+        {
+
+            // Attach Callbacks
+            MaxSdkCallbacks.MRec.OnAdLoadedEvent += OnMRecAdLoadedEvent;
+            MaxSdkCallbacks.MRec.OnAdLoadFailedEvent += OnMRecAdFailedEvent;
+            MaxSdkCallbacks.MRec.OnAdClickedEvent += OnMRecAdClickedEvent;
+            MaxSdkCallbacks.MRec.OnAdRevenuePaidEvent += OnMRecAdRevenuePaidEvent;
+
+            // MRECs are automatically sized to 300x250.
+            MaxSdk.CreateMRec(MREC.AdUnit, MaxSdkBase.AdViewPosition.BottomCenter);
+
+            //MRECSetPosition(SystemManager.Instance.mrecPosition);
+
+        }
+
+        private void MRECSetPosition(Vector2 position)
+        {
+            //MaxSdk.UpdateMRecPosition(MREC.AdUnit, position.x, position.y);
+            MaxSdk.CreateMRec(MREC.AdUnit, position.x, position.y);
+        }
+        public void ToggleMRecVisibility()
+        {
+
+            if (!isMRecShowing)
+                MaxSdk.ShowMRec(MREC.AdUnit);
+            else
+                MaxSdk.HideMRec(MREC.AdUnit);
+
+    
+            isMRecShowing = !isMRecShowing;
+        }
+        private void OnMRecAdLoadedEvent(string adUnitId, MaxSdkBase.AdInfo adInfo)
+        {
+            // MRec ad is ready to be shown.
+            // If you have already called MaxSdk.ShowMRec(MRecAdUnitId) it will automatically be shown on the next MRec refresh.
+            Debug.Log("MRec ad loaded");
+        }
+        private void OnMRecAdFailedEvent(string adUnitId, MaxSdkBase.ErrorInfo errorInfo)
+        {
+            // MRec ad failed to load. MAX will automatically try loading a new ad internally.
+            Debug.Log("MRec ad failed to load with error code: " + errorInfo.Code);
+        }
+        private void OnMRecAdClickedEvent(string adUnitId, MaxSdkBase.AdInfo adInfo)
+        {
+            Debug.Log("MRec ad clicked");
+        }
+        private void OnMRecAdRevenuePaidEvent(string adUnitId, MaxSdkBase.AdInfo adInfo)
+        {
+            // MRec ad revenue paid. Use this callback to track user revenue.
+            Debug.Log("MRec ad revenue paid");
+
+            // Ad revenue
+            double revenue = adInfo.Revenue;
+
+            // Miscellaneous data
+            string countryCode = MaxSdk.GetSdkConfiguration().CountryCode; // "US" for the United States, etc - Note: Do not confuse this with currency code which is "USD"!
+            string networkName = adInfo.NetworkName; // Display name of the network that showed the ad (e.g. "AdColony")
+            string adUnitIdentifier = adInfo.AdUnitIdentifier; // The MAX Ad Unit ID
+            string placement = adInfo.Placement; // The placement this ad's postbacks are tied to
+
+           // TrackAdRevenue(adInfo);
         }
 
         #endregion

@@ -1,0 +1,70 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &1447413764371803161
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1447413764371803163}
+  - component: {fileID: 1447413764371803162}
+  m_Layer: 0
+  m_Name: AdManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1447413764371803163
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1447413764371803161}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 1480, y: 720, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1447413764371803162
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1447413764371803161}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3ee0d66b23854b84c87e726a2208c820, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  type: 0
+  MaxSdkKey: y8QBUL14FDFT5Hd1R1WQJRApmpT7vg7IGZv5-VAmZs-5ml3p9_RIFwcX3N5TC4iECeGDFUf2mKMnnd38XTL6ib
+  androidGameId: 
+  iOSGameId: 
+  testMode: 1
+  Banner:
+    AndroidAdUnitId: 8e65240b0b01ddf1
+    IOSAdUnitId: 
+  Interstitial:
+    AndroidAdUnitId: 581430ec1ffb2353
+    IOSAdUnitId: 
+  MREC:
+    AndroidAdUnitId: 8fb14db6c063fea2
+    IOSAdUnitId: 
+  Rewardeds:
+  - AndroidAdUnitId: 09beca42649decab
+    IOSAdUnitId: 
+  - AndroidAdUnitId: fc091ffb64333b92
+    IOSAdUnitId: 
+  - AndroidAdUnitId: ce001b5353b63dca
+    IOSAdUnitId: 
+  - AndroidAdUnitId: a12a85f21c86e20a
+    IOSAdUnitId: 
+  - AndroidAdUnitId: f6d17db4022b772c
+    IOSAdUnitId: 

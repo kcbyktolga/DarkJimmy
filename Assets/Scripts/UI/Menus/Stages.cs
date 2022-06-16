@@ -7,7 +7,12 @@ namespace DarkJimmy.UI
 {
     public class Stages : Menu
     {
+        public override void Start()
+        {
+            base.Start();
 
+            AdManager.Instance.ToggleBannerVisibility(false);
+        }
     }
 
 }

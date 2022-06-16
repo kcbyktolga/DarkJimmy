@@ -8,6 +8,7 @@ namespace DarkJimmy
     {
         public SystemProperty system;
 
+        public Vector2 mrecPosition;
         public GemType GemType { get; set; }
         public Sprite GetLevelSprite(LevelStatus status)
         {

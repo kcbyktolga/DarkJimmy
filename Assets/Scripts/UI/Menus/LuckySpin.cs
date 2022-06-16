@@ -122,7 +122,6 @@ namespace DarkJimmy.UI
                 }
             }
             else
-                Debug.Log("here");
                 AdManager.Instance.ShowRewardedAd(rewardType, FreeSpin);
 
         }
@@ -242,7 +241,6 @@ namespace DarkJimmy.UI
         {
             return catalog.GetProductLuckySpin[Index];
         }
-
         private bool IsTimeOut()
         {
           return  DateTime.Now >= csm.GetResetTime(rewardType);
