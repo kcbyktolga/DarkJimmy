@@ -14,5 +14,4 @@ namespace DarkJimmy.UI
             AdManager.Instance.ToggleBannerVisibility(false);
         }
     }
-
 }
