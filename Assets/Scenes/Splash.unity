@@ -274,6 +274,16 @@ PrefabInstance:
       propertyPath: m_Name
       value: AdManager
       objectReference: {fileID: 0}
+    - target: {fileID: 1447413764371803162, guid: 196f9ccd92f787147bdb6ce809726d25,
+        type: 3}
+      propertyPath: MaxSdkKey
+      value: y8QBUL14FDFT5Hd1R1WQJRApmpT7vg7IGZv5-VAmZs-5ml3p9_RIFwcX3N5TC4iECeGDFUf2mKMnnd38XTL6ib
+      objectReference: {fileID: 0}
+    - target: {fileID: 1447413764371803162, guid: 196f9ccd92f787147bdb6ce809726d25,
+        type: 3}
+      propertyPath: MREC.AndroidAdUnitId
+      value: 8fb14db6c063fea2
+      objectReference: {fileID: 0}
     - target: {fileID: 1447413764371803163, guid: 196f9ccd92f787147bdb6ce809726d25,
         type: 3}
       propertyPath: m_RootOrder
