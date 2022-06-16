@@ -329,7 +329,7 @@ MonoBehaviour:
     m_SelectedTrigger: Selected
     m_DisabledTrigger: Disabled
   m_Interactable: 1
-  m_TargetGraphic: {fileID: 2378487852651660852}
+  m_TargetGraphic: {fileID: 1612979043646684367}
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
@@ -346,5 +346,5 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   button: {fileID: 5115458831026366483}
-  menuType: 0
   buttonName: {fileID: 2854263710336492365}
+  menuType: 0

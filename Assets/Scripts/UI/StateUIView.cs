@@ -26,8 +26,10 @@ namespace DarkJimmy
         public Color color;
 
         CloudSaveManager csm;
+        SystemManager system;
         private void Start()
         {
+            system = SystemManager.Instance;
             csm = CloudSaveManager.Instance;
 
             if (type.Equals(ViewType.UI))
@@ -37,22 +39,21 @@ namespace DarkJimmy
             }
         }
 
-        public void UpdateState(Stats state,float amount)
+        public void UpdateState(Stats stats,float amount)
         {
-            if (this.stats != state)
+            if (this.stats != stats)
                 return;
 
             if (this.amount != null)
-                this.amount.text = csm.StringFormat((int)amount);
+                this.amount.text = system.StringFormat((int)amount);
 
             if (statsSlider != null)
                 statsSlider.value = amount;
-
         }
         void SetStatsValue()
         {         
             if (Enum.TryParse(stats.ToString(), out GemType gemType))
-                amount.text = csm.StringFormat(csm.GetGemCount(gemType));
+                amount.text = system.StringFormat(csm.GetGemCount(gemType));
             else
             {
                 if (stats.Equals(Stats.Energy))
@@ -60,7 +61,7 @@ namespace DarkJimmy
                 else if (stats.Equals(Stats.Mana))
                     SetSlider(csm.GetCurrentCharacterData().Mana);
                 else if (stats.Equals(Stats.Timer))
-                    amount.text = "00:59";
+                    amount.text = "00:59"; // Sonra ayarlancak.
             }
         }
         private void SetSlider(float value)
@@ -93,7 +94,6 @@ namespace DarkJimmy
                 yield return null;
             }
         }
-
         public void SetStatName(string name)
         {
             statsName.text = LanguageManager.GetText(name);

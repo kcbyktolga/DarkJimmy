@@ -40,7 +40,17 @@ namespace DarkJimmy.UI
             AppUpdate,
             StageLockOrientation,
             ShopOrientation,
-            LuckySpin
+            LuckySpin,
+
+            //Social Platform
+            Share,
+            InstagramURL,
+            YoutubeURL,
+            AppURL,
+            PublisherURL,
+            Mail
+
+
  
         }
         public enum MenuRank

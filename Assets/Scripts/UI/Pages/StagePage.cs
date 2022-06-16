@@ -28,13 +28,13 @@ namespace DarkJimmy.UI
             for (int i = 0; i < globalData.Stages.Count; i++)
             {
                 StageTab stageTab = Instantiate(prefab, container);
-                stageTab.SetStage(globalData.Stages[i],CloudSaveManager.Instance.GetSystemData().Stages[i].GetStageIcon());
+                stageTab.SetStage(globalData.Stages[i],CloudSaveManager.Instance.GetDefaultData().Stages[i].GetStageIcon());
                 stageTab.OnClick(i, OnSelect);
                 tabs.Add(stageTab);
 
                 LevelPage page = Instantiate(pagePrefab, stageContent);
                 page.globalData = globalData.Stages[i];
-                page.localData = CloudSaveManager.Instance.GetSystemData().Stages[i];
+                page.localData = CloudSaveManager.Instance.GetDefaultData().Stages[i];
                 page.PageIndex = i;
                 
                 GetPosition.Add(_posX);

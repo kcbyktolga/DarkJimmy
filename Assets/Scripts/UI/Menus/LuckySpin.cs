@@ -55,15 +55,13 @@ namespace DarkJimmy.UI
         public override void Start()
         {
             csm = CloudSaveManager.Instance;
-            catalog = csm.GetSystemData().Catalog;
+            catalog = csm.GetDefaultData().Catalog;
             gemType = GemType.Diamond;
             rewardType = RewardType.LuckySpin;
 
-            
-            resetTime = csm.GetResetTime(rewardType);
-            payType = DateTime.Now < resetTime ? PayType.Paid : PayType.Free;
+            payType = !IsTimeOut() ? PayType.Paid : PayType.Free;
 
-            if(payType!=PayType.Free)
+            if (payType != PayType.Free)
                 StartCoroutine(TimeUpdate());
             else
                 infoText.text = LanguageManager.GetText(PayType.Free.ToString());
@@ -114,17 +112,18 @@ namespace DarkJimmy.UI
             {
                 if (csm.CanSpendGem(gemType, price))
                 {
-                    csm.SpendGem(gemType,price);
+                    csm.SpendGem(gemType, price);
                     StartCoroutine(Spin());
                 }
                 else
                 {
-                    CloudSaveManager.Instance.GemType = gemType;
+                    SystemManager.Instance.GemType = gemType;
                     UIManager.Instance.OpenMenu(Menus.ShopOrientation);
                 }
             }
             else
-                GoogleAdsManager.Instance.ShowRewardedAd(rewardType, FreeSpin);
+                Debug.Log("here");
+                AdManager.Instance.ShowRewardedAd(rewardType, FreeSpin);
 
         }
         private void FixedUpdate()
@@ -200,12 +199,10 @@ namespace DarkJimmy.UI
             }
         }
         private IEnumerator TimeUpdate()
-        {
-            DateTime resetTime = csm.GetResetTime(rewardType);
-
-            while (DateTime.Now <= resetTime)
+        {          
+            while (!IsTimeOut())
             {         
-                TimeSpan diffTime = resetTime.Subtract(DateTime.Now);
+                TimeSpan diffTime = csm.GetResetTime(rewardType).Subtract(DateTime.Now);
 
                string timer = diffTime.Hours > 0 ? $"{diffTime.Hours}{LanguageManager.GetText("sa")} : {diffTime.Minutes}{LanguageManager.GetText("d")}" : $"{diffTime.Minutes}{LanguageManager.GetText("dk")} : {diffTime.Seconds}{LanguageManager.GetText("sn")}";
 
@@ -246,10 +243,15 @@ namespace DarkJimmy.UI
             return catalog.GetProductLuckySpin[Index];
         }
 
+        private bool IsTimeOut()
+        {
+          return  DateTime.Now >= csm.GetResetTime(rewardType);
+        }
         private void OnDestroy()
         {
             StopTimer();
         }
+
     }
 
   

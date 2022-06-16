@@ -1,65 +1,62 @@
 using System;
 using System.Collections.Generic;
-using System.Collections;
 using System.Threading.Tasks;
 using Unity.Services.Authentication;
 using Unity.Services.CloudSave;
 using Unity.Services.Core;
 using UnityEngine;
 using GooglePlayGames;
-using TMPro;
 
 namespace DarkJimmy
 {
-   
-
+  
     public class CloudSaveManager : Singleton<CloudSaveManager>
     {
         [Header("References")]
         [SerializeField]
-        private SystemData systemData;
+        private DefaultData systemData;
         public PlayerData PlayerDatas;
-        [SerializeField]
-        private SystemProperty system;
-
+       
         #region Properties
         public GemType GemType { get; set; }
-
         public int WorldIndex { get; set; } = 0;
         public int LevelIndex { get; set; } = 0;
-        public int Index { get; set; } = 0;
-
         public bool IsSignedIn { get; set; }
         public bool IsLoadedData { get; set; } = false;
-
         public string UserId { get; set; }
-        public string AplicationURL { get; set; } = "https://play.google.com/store/apps/details?id=com.rhombeusgaming.DarkJimmy";
-        public string WebsiteURL { get; set; } = "http://www.rhombeusgaming.com/";
-        public string InstagramURL { get; set; } = "https://www.instagram.com/rhombeusgaming/";
-        public string YoutubeeURL { get; set; } = "https://www.youtube.com/channel/UCgUMXl7bylbFv36oDuDgLtw";
-        public string PublisherURL { get; set; } = "https://play.google.com/store/apps/dev?id=8451792306383085358&hl=en_US&gl=US";
-        public string MailURL { get; set; } = "mailto:rhombeusgaming@gmail.com";
+
+        #region URLs
+        //public string AplicationURL { get; private set; } = "https://play.google.com/store/apps/details?id=com.rhombeusgaming.DarkJimmy";
+        //public string WebsiteURL { get; private set; }    = "http://www.rhombeusgaming.com/";
+        //public string InstagramURL { get; private set; }  = "https://www.instagram.com/rhombeusgaming/";
+        //public string YoutubeeURL { get; private set; }   = "https://www.youtube.com/channel/UCgUMXl7bylbFv36oDuDgLtw";
+        //public string PublisherURL { get; private set; }  = "https://play.google.com/store/apps/dev?id=8451792306383085358&hl=en_US&gl=US";
+        //public string MailURL { get; private set; }       = "mailto:rhombeusgaming@gmail.com";
         #endregion
 
+        #endregion
+
+        #region Delegates
         public delegate void UpdateStage(Stage stage);
         public UpdateStage updateStage;
+        #endregion
+
         public override async void Awake()
         {
             base.Awake();
-            // Cloud Save needs to be initialized along with the other Unity Services that
-            // it depends on (namely, Authentication), and then the user must sign in.
 
             await UnityServices.InitializeAsync();
-
             SignIn();
 
-            // remote config.
+            // Seviye senkronizasyonu remote config ile yapýlacak.. Daha sonra bak.
             //SyncStages();
+
             //await SaveData();
             //await ForceDeleteSpecificData("PlayerData");
             //await RetrieveEverything();
         }
 
+        #region Player Data Methods
         public async void SignIn()
         {
             if (!IsSignedIn)
@@ -69,66 +66,103 @@ namespace DarkJimmy
                 else
                     await AuthenticationService.Instance.SignInAnonymouslyAsync();
 
-                IsSignedIn = AuthenticationService.Instance.IsSignedIn;
-
-                Debug.Log(IsSignedIn);
+                Instance.IsSignedIn = AuthenticationService.Instance.IsSignedIn;
             }
-          
-            PlayerDatas = await RetrieveSpecificData<PlayerData>("PlayerData");
+
+            Instance.PlayerDatas = await RetrieveSpecificData<PlayerData>("PlayerData");
 
             Instance.UserId = PlayerDatas.PlayerId;
         }
 
-        #region Player Data Methods
+        #region Check Methods
         private bool HasLevel()
         {
-            return WorldIndex < PlayerDatas.Stages.Count && LevelIndex < PlayerDatas.Stages[PlayerDatas.Stages.Count - 1].levels.Count;
+            return WorldIndex < Instance.PlayerDatas.Stages.Count && LevelIndex < Instance.PlayerDatas.Stages[PlayerDatas.Stages.Count - 1].levels.Count;
         }
         public bool CanSpendGem(GemType type, int price)
         {
             return GetGemCount(type) >= price;
         }
+        public bool CanUnlockStage(int index)
+        {
+            return !Instance.PlayerDatas.Stages[index - 1].stageIsLocked;
+        }
+        #endregion
+
+        #region Get Methods
         public int GetCurrentCharacterIndex()
         {
-            return PlayerDatas.CurrentCharacterIndex;
+            return Instance.PlayerDatas.CurrentCharacterIndex;
         }
         public int GetGemCount(GemType type)
         {
             return type switch
             {
-                GemType.Diamond => PlayerDatas.Diamond,
-                _ => PlayerDatas.Gold,
+                GemType.Diamond => Instance.PlayerDatas.Diamond,
+                _ => Instance.PlayerDatas.Gold,
             };
+        }
+        public int GetLockedFirstStage()
+        {
+            int index = 0;
+
+            if (GetStagesCount() == 0)
+                return 0;
+
+            for (int i = 0; i < Instance.PlayerDatas.Stages.Count; i++)
+            {
+
+                if (Instance.PlayerDatas.Stages[i].stageIsLocked)
+                    break;
+
+                index = i;
+            }
+
+            return index;
         }
         public CharacterData GetCurrentCharacterData()
         {
-            return PlayerDatas.Characters[PlayerDatas.CurrentCharacterIndex];
+            return Instance.PlayerDatas.Characters[PlayerDatas.CurrentCharacterIndex];
+        }
+        public DefaultData GetDefaultData()
+        {
+            return Instance.systemData;
         }
         public Level GetLevel()
         {
-            return HasLevel() ? PlayerDatas.Stages[WorldIndex].levels[LevelIndex] : systemData.Stages[WorldIndex].levels[LevelIndex];
+            return HasLevel() ? Instance.PlayerDatas.Stages[WorldIndex].levels[LevelIndex] : Instance.systemData.Stages[WorldIndex].levels[LevelIndex];
         }
+        private int GetStagesCount()
+        {
+            return Instance.PlayerDatas.Stages.Count;
+        }
+        private List<Level> GetLevelList(int index)
+        {
+            return Instance.PlayerDatas.Stages[index].levels;
+        }
+        #endregion
 
+        #region Set Methods
         public async void SetCharacterIndex(int index)
         {
-            PlayerDatas.CurrentCharacterIndex = index;
+            Instance.PlayerDatas.CurrentCharacterIndex = index;
             await SaveData();
 
         }
-        public async  void SetCharacterData(int index , CharacterData data)
+        public async void SetCharacterData(int index, CharacterData data)
         {
-            PlayerDatas.Characters[index] = data;
+            Instance.PlayerDatas.Characters[index] = data;
             await SaveData();
-        }    
+        }
         public async void SetGem(GemType type, int amount)
         {
             switch (type)
             {
                 case GemType.Gold:
-                    PlayerDatas.Gold = amount;
+                    Instance.PlayerDatas.Gold = amount;
                     break;
                 case GemType.Diamond:
-                    PlayerDatas.Diamond = amount;
+                    Instance.PlayerDatas.Diamond = amount;
                     break;
             }
             await SaveData();
@@ -138,27 +172,27 @@ namespace DarkJimmy
             switch (type)
             {
                 case GemType.Gold:
-                    PlayerDatas.Gold += amount;
+                    Instance.PlayerDatas.Gold += amount;
                     break;
                 case GemType.Diamond:
-                    PlayerDatas.Diamond += amount;
+                    Instance.PlayerDatas.Diamond += amount;
                     break;
             }
 
             if (Enum.TryParse(type.ToString(), out Stats stats))
                 UIManager.Instance.updateState(stats, GetGemCount(type));
 
-           await SaveData();
+            await SaveData();
         }
         public async void SpendGem(GemType type, int price)
         {
             switch (type)
             {
                 case GemType.Gold:
-                    PlayerDatas.Gold -= price;
+                    Instance.PlayerDatas.Gold -= price;
                     break;
                 case GemType.Diamond:
-                    PlayerDatas.Diamond -= price;
+                    Instance.PlayerDatas.Diamond -= price;
                     break;
             }
 
@@ -169,20 +203,16 @@ namespace DarkJimmy
         }
         public async void UnlockStage(int index, bool isOn)
         {
-            PlayerDatas.Stages[index].stageIsLocked = isOn;
+            Instance.PlayerDatas.Stages[index].stageIsLocked = isOn;
             await SaveData();
         }
-    
-        #endregion
-        #region Common
-        public string StringFormat(int count)
-        {
-            return $"{string.Format("{0:N0}", count)}";
-        }
 
-        public void SetResetTime(DateTime resetTime,RewardType rewardType)
+        #endregion
+
+        #region Common
+        public void SetResetTime(DateTime resetTime, RewardType rewardType)
         {
-            PlayerPrefs.SetString(rewardType.ToString(),resetTime.ToString());
+            PlayerPrefs.SetString(rewardType.ToString(), resetTime.ToString());
         }
         public DateTime GetResetTime(RewardType rewardType)
         {
@@ -196,26 +226,11 @@ namespace DarkJimmy
 
             return time;
         }
-        //public void TimeUpdate(RewardType rewardType, out string description, out PayType payType)
-        //{
-        //    description = string.Empty;         
-        //    DateTime resetTime = GetResetTime(rewardType);
-        //    payType = PayType.Paid;
-
-        //    while (DateTime.Now <= resetTime)
-        //    {
-        //        TimeSpan diffTime = resetTime.Subtract(DateTime.Now);
-
-        //        string timeText = diffTime.Hours > 0 ? $"{diffTime.Hours}{LanguageManager.GetText("sa")} : {diffTime.Minutes}{LanguageManager.GetText("d")}" : $"{diffTime.Minutes}{LanguageManager.GetText("dk")} : {diffTime.Seconds}{LanguageManager.GetText("sn")}";
-
-        //        description= $"{LanguageManager.GetText("RemainingTime")}: {timeText}";
-        //    }
-            
-        //    payType = PayType.Free;
-
-        //}
+        #endregion
 
         #endregion
+
+        #region Context Methods
 
         [ContextMenu("Update Level")]
         private async void SyncStages()
@@ -225,106 +240,42 @@ namespace DarkJimmy
                 int startIndex = GetLockedFirstStage();
                 int Count = GetStagesCount();
 
-                for (int i = startIndex+1; i < Count; i++)
+                for (int i = startIndex + 1; i < Count; i++)
                 {
-                    PlayerDatas.Stages.RemoveAt(startIndex+1);
+                    PlayerDatas.Stages.RemoveAt(startIndex + 1);
                 }
 
                 for (int i = startIndex + 1; i < Instance.systemData.Stages.Count; i++)
                 {
                     Stage stage = Instance.systemData.Stages[i];
-                    PlayerDatas.Stages.Add(stage);                    
+                    PlayerDatas.Stages.Add(stage);
                 }
 
             }
 
-         await  SaveData();
+            await SaveData();
         }
-
-        public bool CanUnlockStage(int index) 
-        {
-            return !PlayerDatas.Stages[index - 1].stageIsLocked;
-        }
-        public int GetLockedFirstStage()
-        {
-            int index = 0;
-
-            if (GetStagesCount() == 0)
-                return 0;
-
-            for (int i = 0; i < PlayerDatas.Stages.Count; i++)
-            {
-
-                if (PlayerDatas.Stages[i].stageIsLocked)
-                    break;
-
-                index =i; 
-            }
-              
-            Debug.Log( $"Baþlatýcý {index}");
-            return index;
-        }
-
         [ContextMenu("Set Default")]
         private async void SetDefualt()
         {
             PlayerDatas.Stages = systemData.Stages;
             PlayerDatas.Characters = systemData.CharacterDatas;
 
-           await SaveData();
+            await SaveData();
         }
-        [ContextMenu("Sett Level")]
+        [ContextMenu("Set Level")]
         public void SetLevel()
         {
-            Level level = systemData.Stages[WorldIndex].levels[LevelIndex];
+            Level level = Instance.systemData.Stages[WorldIndex].levels[LevelIndex];
 
             SetLevel(level);
         }
-        public async void SetLevel(Level level)
+        private async void SetLevel(Level level)
         {
             GetLevelList(WorldIndex)[LevelIndex] = level;
 
             await SaveData();
-   
-        }
-        public SystemData GetSystemData()
-        {
-            return systemData;
-        }
-        private int GetStagesCount()
-        {
-            return PlayerDatas.Stages.Count;
-        }    
-        private List<Level> GetLevelList(int index)
-        {
-            return PlayerDatas.Stages[index].levels;
-        }
 
-        #region System 
-        public Sprite GetLevelSprite(LevelStatus status)
-        {
-            return status switch
-            {
-                LevelStatus.Active => system.active,
-                LevelStatus.Passive => system.passive,
-                _ => system.passed,
-            };
-        }
-        public Sprite GetPaySprite(GemType type)
-        {
-            return type switch
-            {
-                GemType.Diamond => system.token,
-                _ => system.gold,
-            };
-        }
-        public Sprite GetGridProductSprite(PayType type)
-        {
-            return type switch
-            {
-                PayType.Free => system.freeSprite,
-                _ => system.paidSprite,
-            };
         }
         #endregion
 
@@ -332,7 +283,7 @@ namespace DarkJimmy
         [ContextMenu("Save")]
         public async Task SaveData()
         {
-            await ForceSaveObjectData("PlayerData", PlayerDatas);
+            await ForceSaveObjectData("PlayerData", Instance.PlayerDatas);
         }
         private async Task ListAllKeys()
         {
@@ -429,24 +380,21 @@ namespace DarkJimmy
 
                 if (results.TryGetValue(key, out string value))
                 {
-                    IsLoadedData = !string.IsNullOrEmpty(value);
-
-                    Debug.Log(IsLoadedData);
+                    Instance.IsLoadedData = !string.IsNullOrEmpty(value);
 
                     return JsonUtility.FromJson<T>(value);
-
                 }
                 else
                 {
                     LanguageManager.DefaultLanguage();
-                    PlayerDatas.PlayerId = AuthenticationService.Instance.PlayerId;
+
+                    Instance.PlayerDatas.PlayerId = AuthenticationService.Instance.PlayerId;
                     SetDefualt();
-                    await ForceSaveObjectData("PlayerData", PlayerDatas);
 
-                    PlayerDatas = await RetrieveSpecificData<PlayerData>("PlayerData");
+                    await ForceSaveObjectData("PlayerData", Instance.PlayerDatas);
+
+                    Instance.PlayerDatas = await RetrieveSpecificData<PlayerData>("PlayerData");
                     Instance.UserId = PlayerDatas.PlayerId;
-
-                    Debug.Log("Burdayýýým aaq");
 
                     return await RetrieveSpecificData<T>(key);
 
@@ -466,7 +414,6 @@ namespace DarkJimmy
                 return await RetrieveSpecificData<T>(key);
             }
 
-            Debug.Log("Burda deðilim");
             return default;
         }
         private async Task RetrieveEverything()
@@ -517,18 +464,12 @@ namespace DarkJimmy
                 Debug.LogError(e);
             }
         }
+
         //private async void OnDestroy()
         //{
         // //await  SaveData();
         //}
         #endregion
-
-    }
-
-    public enum GemType
-    {
-        Gold,
-        Diamond,
     }
 
     [Serializable]
@@ -551,25 +492,7 @@ namespace DarkJimmy
         }
     }
 
-    [Serializable]
-    public class SystemProperty
-    {
-        [Header("Button Sprites")]
-        public Sprite passed;
-        public Sprite active;
-        public Sprite passive;
-
-        [Header("Gem Sprites")]
-        public Sprite gold;
-        public Sprite token;
-        public Sprite key;
-
-        [Header("Grid Product Sprite")]
-        public Sprite paidSprite;
-        public Sprite freeSprite;
-
-    }
-
+  
 }
 
    

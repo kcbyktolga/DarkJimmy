@@ -27,9 +27,9 @@ namespace DarkJimmy
             module = StandardPurchasingModule.Instance(AppStore.GooglePlay);
             builder = ConfigurationBuilder.Instance(module);
 
-            for (int i = 0; i < productCatalog.pages.Count; i++)
+            for (int i = 0; i < productCatalog.Pages.Count; i++)
             {
-                PageStruct page = productCatalog.pages[i];
+                PageStruct page = productCatalog.Pages[i];
 
                 for (int j = 0; j < page.products.Count; j++)
                 {                  

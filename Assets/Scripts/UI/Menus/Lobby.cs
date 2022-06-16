@@ -14,7 +14,16 @@ namespace DarkJimmy.UI
         {
             base.Start();
 
-            infoText.text = $"Unity user id: {CloudSaveManager.Instance.UserId}, GPGS user id:{((PlayGamesLocalUser)Social.localUser).GetIdToken()} , Sign in status: {PlayService.Instance.signIn}"; 
+            infoText.text = $"Unity user id: {CloudSaveManager.Instance.UserId}, GPGS user id:{((PlayGamesLocalUser)Social.localUser).GetIdToken()} , Sign in status: {PlayService.Instance.signIn}";
+
+            AdManager.Instance.ToggleBannerVisibility();
+
+            Invoke(nameof(ShowInterstitial), 5);
+        }
+
+        void ShowInterstitial()
+        {
+            AdManager.Instance.ShowInterstitial();
         }
     }
 }

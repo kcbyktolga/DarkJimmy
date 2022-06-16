@@ -15,8 +15,7 @@ namespace DarkJimmy.UI
             OnClick(OpenPage);
             SetTouchButtonName();
             LanguageManager.onChangedLanguage += SetTouchButtonName;
-        }
-       
+        } 
         public override void OpenPage()
         {
             if (menuType.Equals(Menu.Menus.None))
@@ -30,21 +29,24 @@ namespace DarkJimmy.UI
                 PlayService.Instance.LoginGooglePlayGames();
             else if (menuType.Equals(Menu.Menus.Stages))
                 SceneManager.LoadScene(menuType.ToString());
+            else if (menuType.Equals(Menu.Menus.YoutubeURL) || menuType.Equals(Menu.Menus.InstagramURL) || menuType.Equals(Menu.Menus.AppURL) || menuType.Equals(Menu.Menus.PublisherURL))
+            {
+                string address = SystemManager.Instance.GetUrlAddress(menuType.ToString());
+                UIManager.Instance.OpenUrl(address);
+            }
             else
                 UIManager.Instance.OpenMenu(menuType);
         }           
-
+        public void SetName(string name)
+        {
+            if (buttonName != null)
+                buttonName.text = name;
+        }
         private void SetTouchButtonName()
         {
             string name = menuType.Equals(Menu.Menus.None) ? string.Empty : LanguageManager.GetText(menuType.ToString());
 
             SetTabButtonName(name);
-        }
-
-        public void SetName(string name)
-        {
-            if (buttonName != null)
-                buttonName.text = name;
         }
 
     }

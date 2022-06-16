@@ -1,0 +1,67 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &8115533980048168129
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8115533980048168131}
+  - component: {fileID: 8115533980048168128}
+  m_Layer: 0
+  m_Name: SystemManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &8115533980048168131
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8115533980048168129}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &8115533980048168128
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8115533980048168129}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f608807762dbf33459c790ac4991589d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  type: 0
+  system:
+    passed: {fileID: 21300000, guid: dae4f662c279b66469644fb5037bcb78, type: 3}
+    active: {fileID: 21300000, guid: 0adf4d7eaba1c984f810365659eaf14e, type: 3}
+    passive: {fileID: 21300000, guid: 06c3909134869fd44a0cf3b2b1f7b1b8, type: 3}
+    gold: {fileID: 21300000, guid: 6970d6d54ba521e4cb09a0dc1e3b2dbe, type: 3}
+    diamond: {fileID: 21300000, guid: 93b017d65c52b7043b45b88319608950, type: 3}
+    key: {fileID: 21300000, guid: e9958a692226a90499bb7001427a427d, type: 3}
+    goldSprite: {fileID: 21300000, guid: 9db4bf56102ff3a4197054332e856c8b, type: 3}
+    diamondSprite: {fileID: 21300000, guid: c6ad4c89277e78945a4a7a5f3d1e5e4e, type: 3}
+    offersSprite: {fileID: 21300000, guid: fe483ea8b2e374b48b25cf90141b877e, type: 3}
+    premiumSprite: {fileID: 21300000, guid: 5efa54f782469604e9020f8e9aec60a9, type: 3}
+    blackAlfa255: {r: 0, g: 0, b: 0, a: 1}
+    blackAlfa0: {r: 0, g: 0, b: 0, a: 0}
+    whiteAlfa255: {r: 1, g: 1, b: 1, a: 1}
+    whiteAlfa0: {r: 1, g: 1, b: 1, a: 0}
+    ApplicationURL: https://play.google.com/store/apps/details?id=com.rhombeusgaming.DarkJimmy
+    WebsiteURL: http://www.rhombeusgaming.com/
+    InstagramURL: https://www.instagram.com/rhombeusgaming/
+    YoutubeeURL: https://www.youtube.com/channel/UCgUMXl7bylbFv36oDuDgLtw
+    PublisherURL: https://play.google.com/store/apps/dev?id=8451792306383085358&hl=en_US&gl=US
+    MailURL: mailto:rhombeusgaming@gmail.com

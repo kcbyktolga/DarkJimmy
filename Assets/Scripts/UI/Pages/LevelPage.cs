@@ -27,7 +27,7 @@ namespace DarkJimmy.UI
             if (globalData.stageIsLocked)
             {
                 purchaseButton.buttonName.text = $"{localData.GetStagePrice()}";
-                purchaseButton.priceIcon.sprite = CloudSaveManager.Instance.GetPaySprite(localData.GetPayType());
+                purchaseButton.priceIcon.sprite = SystemManager.Instance.GetPaySprite(localData.GetPayType());
                 purchaseButton.OnClick(Purchase);
             }
 
@@ -90,7 +90,7 @@ namespace DarkJimmy.UI
                 }
                 else
                 {
-                    CloudSaveManager.Instance.GemType = localData.GetPayType();
+                    SystemManager.Instance.GemType = localData.GetPayType();
                     UIManager.Instance.OpenMenu(Menu.Menus.ShopOrientation);
                 }
             }

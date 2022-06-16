@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.UI;
+using System.Collections.Generic;
 using TMPro;
 using DarkJimmy.Manager;
 
@@ -10,15 +11,37 @@ namespace DarkJimmy.UI
         [Header("Tab Button Property")]
         public Image focus;
         [SerializeField]
-        private Color idleColor;
+        private GameObject on;
         [SerializeField]
-        private Color focusColor;
+        private GameObject off;
+
+        [SerializeField]
+        private List<Image> tabIcons;
+
+        HorizontalLayoutGroup layout;
+        private void Awake()
+        {
+            layout = GetComponent<HorizontalLayoutGroup>();
+        }
 
         public virtual void SetTabButton(bool isOn)
         {
-            buttonName.color = isOn ? focusColor : idleColor;
-            focus.enabled = isOn;
+            off.SetActive(!isOn);
+            on.SetActive(isOn);
             button.interactable = !isOn;
+
+            if (layout != null)
+            {
+                layout.enabled = false;
+                layout.enabled = true;
+                Canvas.ForceUpdateCanvases();
+            }
+        }
+
+        public virtual void SetTabIcon(Sprite sprite)
+        {
+            for (int i = 0; i < tabIcons.Count; i++)
+                tabIcons[i].sprite = sprite;
         }
      
     }

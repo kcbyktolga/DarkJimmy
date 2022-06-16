@@ -11,8 +11,9 @@ namespace DarkJimmy
     [CreateAssetMenu(menuName = "Data/Catalog", fileName = "Catalog")]
     public class Catalog : ScriptableObject
     {
+        public int startIndex = 2;
         public TabButton tabButton;
-        public List<PageStruct> pages;
+        public List<PageStruct> Pages;
         public List<ProductStruct> GetProductShop;
         public List<ProductStruct> GetProductLuckySpin;
     
@@ -31,10 +32,10 @@ namespace DarkJimmy
              {ProductShape.GridDuo, "Products/GridProductDuo"},
 
         };
-        public Page GetPage(PageType type)
+        public ShopProductPage GetPage(PageType type)
         {
             if (PagePaths.TryGetValue(type, out string path))
-                return Resources.Load<Page>(path);
+                return Resources.Load<ShopProductPage>(path);
            
             return null;
         }
@@ -49,9 +50,9 @@ namespace DarkJimmy
         [ContextMenu("Set Product ID")]
         private void SetProductId()
         {
-            for (int i = 0; i < pages.Count; i++)
+            for (int i = startIndex; i < Pages.Count; i++)
             {
-                PageStruct ps = pages[i];
+                PageStruct ps = Pages[i];
 
                 for (int j = 0; j < ps.products.Count; j++)
                 {
@@ -72,6 +73,7 @@ namespace DarkJimmy
     public struct PageStruct
     {
         public string pageName;
+        public Sprite pageIcon;
         public PageType pageType;
         public List<ProductStruct> products;
     }

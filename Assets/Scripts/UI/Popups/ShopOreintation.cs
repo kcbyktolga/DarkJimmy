@@ -13,24 +13,14 @@ namespace DarkJimmy.UI
             if (popupButton != null)
                 popupButton.SetName(LanguageManager.GetText("Go"));
 
-            popupButton.OnClick(CloudSaveManager.Instance.GemType,Go);
+            popupButton.OnClick(SystemManager.Instance.GemType,Go);
         }
-
         private void Go(GemType type )
         {
             GoBack();
-            UIManager.Instance.PageIndex = GetPage(type);
+            UIManager.Instance.PageIndex = SystemManager.Instance.GetShopPage(type.ToString());
             UIManager.Instance.OpenMenu(Menus.Shop);
         }
-        private int GetPage(GemType gemType)
-        {
-            return gemType switch
-            {
-                GemType.Diamond => 3,
-                _ => 2,
-            };
-        }
-
     }
 
 }

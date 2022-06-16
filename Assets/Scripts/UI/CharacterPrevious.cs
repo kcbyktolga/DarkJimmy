@@ -9,17 +9,14 @@ namespace DarkJimmy.UI
     public class CharacterPrevious : SlidePage<CharacterSkinSwap,CloudSaveManager>
     {
         [Header("Character Previous")]
-        private SystemData systemData;
+        private DefaultData defaultData;
         [SerializeField]
         private TouchButton stageButton;
         [SerializeField]
         private PurchaseButton purchaseButton;
         [SerializeField]
         private Image block;
-        [SerializeField]
-        private Color onColor;
-        [SerializeField]
-        private Color offColor;
+
         [SerializeField]
         private List<StateUIView> stats;
         [SerializeField]
@@ -32,16 +29,15 @@ namespace DarkJimmy.UI
         private Transform playerT;
         private float originalPosY;
 
-
-
         int idleParamId;
+        SystemManager system;
   
         public override void Start()
         {
-
+            system = SystemManager.Instance;
             globalData = CloudSaveManager.Instance;
-            systemData = globalData.GetSystemData();
-            Count = systemData.CharacterDatas.Count;
+            defaultData = globalData.GetDefaultData();
+            Count = defaultData.CharacterDatas.Count;
 
             prefab = FindObjectOfType<CharacterSkinSwap>();
             animator = prefab.GetComponent<Animator>();
@@ -62,7 +58,6 @@ namespace DarkJimmy.UI
                 stats[i].SetInfoSlider(globalData.GetCurrentCharacterData().GetCharacterProperty((CharacterProperty)i)*10, 100);
             }
         }
-
         public override void Move(bool onClick, int amount)
         {
             Index += amount;
@@ -73,7 +68,7 @@ namespace DarkJimmy.UI
             if (!islock)
                 globalData.SetCharacterIndex(Index);
 
-            Color endColor = !islock ? onColor : offColor;
+            Color endColor = system.GetBlackAlfaColor(islock);
             StartCoroutine(BlackOut(endColor));
             StartCoroutine(Moving(endPos));
 
@@ -81,22 +76,19 @@ namespace DarkJimmy.UI
             SetMoveButton();
             SetButtons(islock);
 
-            CharacterData data = !islock ? globalData.GetCurrentCharacterData() : systemData.CharacterDatas[Index];
+            CharacterData data = !islock ? globalData.GetCurrentCharacterData() : defaultData.CharacterDatas[Index];
 
             if (islock)
             {
                 purchaseButton.OnClick(Index, Purchase);
-                purchaseButton.buttonName.text = globalData.StringFormat(data.price);
-                purchaseButton.priceIcon.sprite = globalData.GetPaySprite(data.payType);
-
+                purchaseButton.buttonName.text  = system.StringFormat(data.price);
+                purchaseButton.priceIcon.sprite = system.GetPaySprite(data.payType);
             }
 
             for (int i = 0; i < stats.Count; i++)
                 stats[i].SetInfoSlider(data.GetCharacterProperty((CharacterProperty)i)*10, 100);
 
         }
-
-     
         IEnumerator BlackOut(Color endColor)
         {
             float time = 0;
@@ -130,7 +122,7 @@ namespace DarkJimmy.UI
         }
         private void Purchase(int index)
         {
-            CharacterData data = systemData.CharacterDatas[index];
+            CharacterData data = defaultData.CharacterDatas[index];
 
             if (globalData.CanSpendGem(data.payType, data.price))
             {
@@ -143,15 +135,14 @@ namespace DarkJimmy.UI
                 purchaseButton.gameObject.SetActive(false);
                 stageButton.button.interactable = true;
 
-                StartCoroutine(BlackOut(onColor));       
+                StartCoroutine(BlackOut(system.GetBlackAlfaColor(data.isLock)));       
             }
             else
             {
-                globalData.GemType = data.payType;
+                system.GemType = data.payType;
                 UIManager.Instance.OpenMenu(Menu.Menus.ShopOrientation);
             }
         }
-
         private void SetButtons(bool islock)
         {
             stageButton.button.interactable = !islock;

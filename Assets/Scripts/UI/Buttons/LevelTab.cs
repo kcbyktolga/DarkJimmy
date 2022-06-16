@@ -18,11 +18,7 @@ namespace DarkJimmy.UI
         [SerializeField]
         private List<Image> stars;
         [SerializeField]
-        private float duration = 0.01f;
-        [SerializeField]
-        private Color onColor;
-        [SerializeField]
-        private Color offColor;
+        private float duration = 0.01f;    
         [SerializeField]
         private Image background;
         [SerializeField]
@@ -30,13 +26,12 @@ namespace DarkJimmy.UI
         [SerializeField]
         private Sprite passed;
 
-
-
+        SystemManager system;
         private void Start()
         {
+            system = SystemManager.Instance;
             levelText.text = LanguageManager.GetText("Level");
         }
-
         public override void OpenPage()
         {
             UIManager.Instance.OpenMenu(Menu.Menus.LevelPrevious);
@@ -46,7 +41,7 @@ namespace DarkJimmy.UI
             levelIndex.text = $"{index+1}";
 
             if (level.levelStatus.Equals(LevelStatus.Passed))
-                StartCoroutine(ChangeColor(level.rankCount));
+                StartCoroutine(ChangeStartColor(level.rankCount));
 
             background.sprite = level.levelStatus.Equals(LevelStatus.Passed) ? passed : active;
 
@@ -54,7 +49,7 @@ namespace DarkJimmy.UI
             focus.SetActive(level.levelStatus.Equals(LevelStatus.Active) && !isLocked);
 
         }
-        IEnumerator ChangeColor(int count)
+        private IEnumerator ChangeStartColor(int count)
         {
             int index = 0;
 
@@ -65,7 +60,7 @@ namespace DarkJimmy.UI
                 while (time <= 1)
                 {
                     time += Time.deltaTime/duration;
-                    Color color = Color.Lerp(offColor, onColor, time);
+                    Color color = Color.Lerp(system.GetWhiteAlfaColor(false), system.GetWhiteAlfaColor(true), time);
                     stars[index].color = color;
                     yield return null;
                 }
@@ -74,9 +69,6 @@ namespace DarkJimmy.UI
                 yield return null;
             }
         }  
-
-
-
 
     }
 }

@@ -14,7 +14,7 @@ namespace DarkJimmy.UI
         [SerializeField]
         private Image stageIcon;
 
-        Stage dependStage;
+        private Stage dependStage;
 
         private void Start()
         {
