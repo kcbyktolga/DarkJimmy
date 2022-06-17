@@ -6,6 +6,7 @@ using Unity.Services.CloudSave;
 using Unity.Services.Core;
 using UnityEngine;
 using GooglePlayGames;
+using Unity.Services.RemoteConfig;
 
 namespace DarkJimmy
 {
@@ -24,6 +25,24 @@ namespace DarkJimmy
         public bool IsSignedIn { get; set; }
         public bool IsLoadedData { get; set; } = false;
         public string UserId { get; set; }
+
+        public struct UserAttributes
+        {
+            //public bool expansionFlag;
+        }
+        public struct AppAttributes
+        {
+           
+        }
+        public struct FilterAttributes
+        {
+            // Optionally declare variables for attributes to filter on any of following parameters:
+            public string[] key;
+            public string[] type;
+            public string[] schemaId;
+        }
+
+        public string AppVersion { get; set; }
 
         #region URLs
         //public string AplicationURL { get; private set; } = "https://play.google.com/store/apps/details?id=com.rhombeusgaming.DarkJimmy";
@@ -47,6 +66,7 @@ namespace DarkJimmy
 
             await UnityServices.InitializeAsync();
             SignIn();
+            InitializeRemoteConfigAsync();
 
             // Seviye senkronizasyonu remote config ile yapýlacak.. Daha sonra bak.
             //SyncStages();
@@ -473,7 +493,48 @@ namespace DarkJimmy
         // //await  SaveData();
         //}
         #endregion
+
+        #region RemetoConfig
+
+        private  void InitializeRemoteConfigAsync()
+        {          
+            // Add a listener to apply settings when successfully retrieved:
+            RemoteConfigService.Instance.FetchCompleted += ApplyRemoteSettings;
+
+            // Set the user’s unique ID:
+            RemoteConfigService.Instance.SetCustomUserID(Instance.UserId);
+
+            // Set the environment ID:
+            RemoteConfigService.Instance.SetEnvironmentID("e810f0f8-3a3c-427e-9b35-0f2e25feddc9");
+
+            // Fetch configuration settings from the remote service:
+            RemoteConfigService.Instance.FetchConfigs(new UserAttributes(), new AppAttributes());
+        }
+        void ApplyRemoteSettings(ConfigResponse configResponse)
+        {
+            // Conditionally update settings, depending on the response's origin:
+            switch (configResponse.requestOrigin)
+            {
+                case ConfigOrigin.Default:
+                    break;
+                case ConfigOrigin.Cached:
+                    break;
+                case ConfigOrigin.Remote:
+                    AppVersion = RemoteConfigService.Instance.appConfig.GetString("AppVersion");
+                    break;
+            }
+        }
+
+
+        #endregion
+
+        private void OnDestroy()
+        {
+            RemoteConfigService.Instance.FetchCompleted -= ApplyRemoteSettings;
+        }
     }
+
+    
 
     [Serializable]
     public class PlayerData

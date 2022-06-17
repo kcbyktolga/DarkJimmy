@@ -1,18 +1,31 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using System;
 using UnityEngine.UI;
 using TMPro;
+using UnityEngine.EventSystems;
+using System.Collections;
 
 namespace DarkJimmy.UI
 {
-    public class BaseButton : MonoBehaviour
+    public class BaseButton : MonoBehaviour , IPointerDownHandler, IPointerUpHandler
     {
         public Button button;
         public TMP_Text buttonName;
+        [SerializeField]
+        private RectTransform baseTransform;
 
-  
+        private const float clickDuration = 0.1f;
+        private const float scaleMultiple = 0.95f;
+        private bool isClick = false;
+        private Vector2 originalScale = Vector2.one;
+
+        private void Start()
+        {
+            if(baseTransform!=null)
+                originalScale = baseTransform.localScale;
+
+        }
+
         public virtual void OnClick(Action action)
         {
             button.onClick.RemoveAllListeners();
@@ -36,6 +49,54 @@ namespace DarkJimmy.UI
         }
         public virtual void OpenPage() { }
 
+        public void OnPointerDown(PointerEventData eventData)
+        {
+            if (baseTransform == null)
+                return;
+
+            //originalScale = baseTransform.localScale;
+            isClick = true;
+            // OnDrag(eventData);
+            // clickTime = clickDuration + Time.time; 
+
+            StartCoroutine(Scale(originalScale * scaleMultiple));
+        }
+        public void OnDrag(PointerEventData eventData)
+        {
+            if (baseTransform == null)
+                return;
+
+            if (isClick)
+            {
+                isClick = false;
+                StartCoroutine(Scale(originalScale*scaleMultiple));
+            }
+        }
+        public void OnPointerUp(PointerEventData eventData)
+        {
+            if (baseTransform == null)
+                return;
+
+            StartCoroutine(Scale(originalScale));
+        }
+
+        private IEnumerator Scale(Vector2 endScale)
+        {
+            float time = 0;
+
+            while (time<=1)
+            {
+                time += Time.fixedDeltaTime / clickDuration;
+                baseTransform.localScale = Vector2.Lerp(baseTransform.localScale,endScale,time);
+                yield return null;
+            }
+        }
+
+        private void OnDisable()
+        {
+            if(baseTransform !=null)
+                baseTransform.localScale = originalScale;
+        }
     }
 }
 

@@ -7,8 +7,12 @@ namespace DarkJimmy.UI
  
     public class Loading : Splash
     {
+        CloudSaveManager csm;
+
         public override void Start()
         {
+            csm = CloudSaveManager.Instance;
+
             Load(Menus.Lobby);
         }
 
@@ -21,15 +25,22 @@ namespace DarkJimmy.UI
 
             float time = duration + Time.time;
 
-            while ((!CloudSaveManager.Instance.IsLoadedData || !AuthenticationService.Instance.IsSignedIn) && time >= Time.time)
+            while ((!csm.IsLoadedData || !AuthenticationService.Instance.IsSignedIn) && time >= Time.time)
             {
                 yield return null;
             }
 
-            if (!CloudSaveManager.Instance.IsSignedIn || !CloudSaveManager.Instance.IsLoadedData)
-                UIManager.Instance.OpenMenu(Menus.Disconnect);
+            if (!csm.IsSignedIn || !csm.IsLoadedData)
+                UIManager.Instance.OpenMenu(Menus.Disconnect);         
             else
             {
+                if (csm.AppVersion !=Application.version)
+                {
+                    UIManager.Instance.OpenMenu(Menus.AppUpdate);
+
+                    yield break;
+                }
+
                 yield return new WaitForSeconds(duration);
                 SceneManager.LoadScene(sceneName);
             }

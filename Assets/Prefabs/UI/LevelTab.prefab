@@ -470,6 +470,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   button: {fileID: 8031807375225945447}
   buttonName: {fileID: 0}
+  baseTransform: {fileID: 986058458826741570}
   focus: {fileID: 3843417633879449719}
   levelIndex: {fileID: 986058459610070634}
   levelText: {fileID: 986058459537450752}
@@ -478,8 +479,6 @@ MonoBehaviour:
   - {fileID: 4352739753740215136}
   - {fileID: 2313601902939343342}
   duration: 0.5
-  onColor: {r: 1, g: 1, b: 1, a: 1}
-  offColor: {r: 1, g: 1, b: 1, a: 0}
   background: {fileID: 5301587080463882524}
   active: {fileID: 21300000, guid: 06c3909134869fd44a0cf3b2b1f7b1b8, type: 3}
   passed: {fileID: 21300000, guid: dae4f662c279b66469644fb5037bcb78, type: 3}
