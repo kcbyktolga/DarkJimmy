@@ -5,110 +5,71 @@ using System;
 
 namespace DarkJimmy
 {
-    public class LocalSaveManager : Singleton<LocalSaveManager>
+    public static class LocalSaveManager
     {
-        public int goldCount;
-        public int keyCount;
-        public float mana;
-        public float energy;
-        public int timer;
-        public int diamond;
 
-        float maxMana;
-        float maxEnergy;
-        public float Mana 
-        { 
-            get 
-            { 
-                return mana; 
-            }           
-            set 
-            {
-                if (value > maxMana)
-                    mana = maxMana;
-                else
-                    mana = value;
-            } 
-        }
-        public float Energy
+        public static int GetIntValue(string key)
         {
-            get
+            string value = Load(key);
+            return string.IsNullOrEmpty(value) ? 0 : Convert.ToInt32(value);
+        }
+        public static int GetIntValue(string key, int defaultValue)
+        {
+            string value = Load(key);
+            return string.IsNullOrEmpty(value) ? defaultValue : Convert.ToInt32(value);
+        }
+        public static bool GetBoolValue(string key)
+        {
+            string value = Load(key);
+
+            if (string.IsNullOrEmpty(value))
+                return false;
+
+            return Convert.ToBoolean(value);
+        }
+        public static bool GetBoolValue(string key, bool defaultValue)
+        {
+            string value = Load(key);
+
+            if (string.IsNullOrEmpty(value))
             {
-                return energy;
+                Save(key, defaultValue);
+                return defaultValue;
             }
-            set
-            {
-                if (value > maxEnergy)
-                    energy = maxEnergy;
-                else
-                    energy = value;
-            }
+
+            return Convert.ToBoolean(value);
+        }
+        public static float GetFloatValue(string key)
+        {
+            string value = Load(key);
+            return string.IsNullOrEmpty(value) ? 0 : Convert.ToSingle(value);
+        }
+        public static float GetFloatValue(string key, float defaultValue)
+        {
+            string value = Load(key);
+            return string.IsNullOrEmpty(value) ? defaultValue : Convert.ToSingle(value);
+        }
+        public static void Save<T>(string key, T value)
+        {
+            PlayerPrefs.SetString(key, value.ToString());
+        }
+        static string Load(string key)
+        {
+            if (PlayerPrefs.HasKey(key))
+                return PlayerPrefs.GetString(key);
+
+            return PlayerPrefs.GetString(key, string.Empty);
         }
 
-        private void Start()
+        public static string GetToggleName(UI.VolumeType type)
         {
-            goldCount = CloudSaveManager.Instance.PlayerDatas.Gold;
-            keyCount = CloudSaveManager.Instance.PlayerDatas.Key;
-            maxMana= mana = CloudSaveManager.Instance.GetCurrentCharacterData().Mana;
-            maxEnergy= energy = CloudSaveManager.Instance.GetCurrentCharacterData().Energy;
+            return $"{type} Toogle";
+        }
+        public static string GetSliderName(UI.VolumeType type)
+        {
+            return $"{type} Slider";
         }
 
-        private void SetValue(Stats stats, int value)
-        {
-            switch (stats)
-            {
-                case Stats.Gold:
-                    goldCount = value;
-                    break;
-                case Stats.Diamond:
-                    diamond = value;
-                    break;
-                case Stats.Key:
-                    keyCount = value;
-                    break;
-                case Stats.Energy:
-                    Energy = value;
-                    break;
-                case Stats.Mana:
-                    Mana = value;
-                    break;
-                case Stats.Timer:
-                    timer = value;
-                    break;
- 
-            }
-        }
-        private int GetValue(Stats stats)
-        {
-            return stats switch
-            {
-                Stats.Diamond => diamond,
-                Stats.Key => keyCount,
-                Stats.Energy => (int)energy,
-                Stats.Mana => (int)mana,
-                Stats.Timer => timer,
-                _ => goldCount,
-            };
-        }
-        public void AddCollectable(Stats stats, int amount)
-        {
-            int value = GetValue(stats) + amount;
-            SetValue(stats,value);
-            UIManager.Instance.updateState(stats,value);
-        }
-
-        private void OnDestroy()
-        {
-            SaveData(Stats.Gold);
-            SaveData(Stats.Key);
-        }
-
-        void SaveData(Stats stats)
-        {
-            if (Enum.TryParse(stats.ToString(), out GemType gemType))
-                CloudSaveManager.Instance.SetGem(gemType,GetValue(stats));
-        }
     }
-
-
 }
+

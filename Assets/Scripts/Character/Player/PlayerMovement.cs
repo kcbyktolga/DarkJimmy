@@ -189,7 +189,7 @@ namespace DarkJimmy.Characters
 		}
 		private bool CanDoubleJump()
         {
-			if(LocalSaveManager.Instance.mana > 0)
+			if(GameSaveManager.Instance.mana > 0)
             {
 				if (currentJumpAmount > 0)
 					return true;
@@ -219,8 +219,8 @@ namespace DarkJimmy.Characters
 				else if (data.isJumping && CanDoubleJump() && !data.isWallSliding)
 				{
 					currentJumpAmount--;
-					LocalSaveManager.Instance.mana--;
-					UIManager.Instance.updateState(Stats.Mana, LocalSaveManager.Instance.mana);
+					GameSaveManager.Instance.mana--;
+					UIManager.Instance.updateState(Stats.Mana, GameSaveManager.Instance.mana);
 					Vector2 force = new Vector2(0, data.jumpForce * data.jumpForceMultiple);
 					Jump(force,false);
 				}

@@ -11,7 +11,7 @@ namespace DarkJimmy.UI
         {
             base.Start();
 
-            AdManager.Instance.ToggleBannerVisibility(false);
+           // AdManager.Instance.ToggleBannerVisibility(false);
         }
     }
 }

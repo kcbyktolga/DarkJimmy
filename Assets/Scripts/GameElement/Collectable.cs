@@ -21,7 +21,7 @@ namespace DarkJimmy
             //if(Enum.TryParse(stats.ToString(), out GemType gemType))
             //    CloudSaveManager.Instance.AddGem(gemType,this.amount);
 
-            LocalSaveManager.Instance.AddCollectable(stats, this.amount);
+            GameSaveManager.Instance.AddCollectable(stats, this.amount);
 
         }
     }
