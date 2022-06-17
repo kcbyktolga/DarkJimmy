@@ -258,8 +258,12 @@ namespace DarkJimmy
         [ContextMenu("Set Default")]
         private async void SetDefualt()
         {
-            PlayerDatas.Stages = systemData.Stages;
-            PlayerDatas.Characters = systemData.CharacterDatas;
+            Instance.PlayerDatas = new PlayerData
+            {
+                PlayerId = AuthenticationService.Instance.PlayerId,
+                Stages = systemData.Stages,
+                Characters = systemData.CharacterDatas
+            };
 
             await SaveData();
         }
@@ -388,13 +392,12 @@ namespace DarkJimmy
                 {
                     LanguageManager.DefaultLanguage();
 
-                    Instance.PlayerDatas.PlayerId = AuthenticationService.Instance.PlayerId;
                     SetDefualt();
 
                     await ForceSaveObjectData("PlayerData", Instance.PlayerDatas);
 
                     Instance.PlayerDatas = await RetrieveSpecificData<PlayerData>("PlayerData");
-                    Instance.UserId = PlayerDatas.PlayerId;
+                    Instance.UserId = Instance.PlayerDatas.PlayerId;
 
                     return await RetrieveSpecificData<T>(key);
 

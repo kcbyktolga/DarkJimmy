@@ -9,12 +9,12 @@ namespace DarkJimmy
         [Header("AdManager Property")]
         [SerializeField]
         private string MaxSdkKey;
-        [SerializeField] 
-        private string androidGameId;
-        [SerializeField] 
-        private string iOSGameId;
-        [SerializeField] 
-        private bool testMode = true;
+        //[SerializeField] 
+        //private string androidGameId;
+        //[SerializeField] 
+        //private string iOSGameId;
+        //[SerializeField] 
+        //private bool testMode = true;
         [Header("Ads Units")]
         [SerializeField]
         private AdsUnit Banner;
@@ -33,10 +33,10 @@ namespace DarkJimmy
         private int rewardedRetryAttempt;
         private int rewardedInterstitialRetryAttempt;
 
-        private string GameId
-        {
-            get { return (Application.platform == RuntimePlatform.IPhonePlayer) ? iOSGameId : androidGameId; }
-        }
+        //private string GameId
+        //{
+        //    get { return (Application.platform == RuntimePlatform.IPhonePlayer) ? iOSGameId : androidGameId; }
+        //}
 
         private Dictionary<string, RewardType> GetRewardType = new Dictionary<string, RewardType>();
         public delegate void RewardOnEarned(RewardType reward);
@@ -388,6 +388,7 @@ namespace DarkJimmy
 
         #endregion
 
+   
     }
     [Serializable]
     public class AdsUnit

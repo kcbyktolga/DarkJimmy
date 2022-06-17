@@ -26,6 +26,7 @@ namespace DarkJimmy
                 }   
             }
         }
+
     }
 
     [Serializable]
@@ -99,6 +100,10 @@ namespace DarkJimmy
                 CharacterProperty.ERR => ERR,
                 _ => Energy,
             };
+        }
+        public Sprite GetCharacterIcon()
+        {
+            return characterIcon;
         }
     }
     public enum CharacterProperty

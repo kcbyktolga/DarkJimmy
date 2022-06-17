@@ -107,7 +107,6 @@ namespace DarkJimmy.UI
             float time = 0;
             float currentPosY = endPosY;
 
-
             animator.SetBool(idleParamId,false);
 
             while (time <= 1)
@@ -126,7 +125,7 @@ namespace DarkJimmy.UI
 
             if (globalData.CanSpendGem(data.payType, data.price))
             {
-                data.isLock = false;
+                globalData.PlayerDatas.Characters[Index].isLock = false;
                 globalData.SetCharacterData(Index,data);
                 globalData.SetCharacterIndex(Index);
                 globalData.SpendGem(data.payType, data.price);
@@ -138,9 +137,11 @@ namespace DarkJimmy.UI
                 StartCoroutine(BlackOut(system.GetBlackAlfaColor(data.isLock)));       
             }
             else
+
             {
                 system.GemType = data.payType;
                 UIManager.Instance.OpenMenu(Menu.Menus.ShopOrientation);
+                
             }
         }
         private void SetButtons(bool islock)

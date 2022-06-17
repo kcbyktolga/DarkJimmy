@@ -72,7 +72,7 @@ namespace DarkJimmy.UI
              {Menus.CharacterPrevious, "Menus/ProductInfo"},
              {Menus.Splash, "Menus/Splash"},
              {Menus.Loading, "Menus/Loading"},
-             {Menus.LevelPrevious, "Menus/LevelPopup"},
+             {Menus.LevelPrevious, "Menus/LevelPrevious"},
              {Menus.LuckySpin, "Menus/LuckySpin"},
 
             //Popups
