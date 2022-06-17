@@ -16,7 +16,11 @@ namespace DarkJimmy
         public static int GetIntValue(string key, int defaultValue)
         {
             string value = Load(key);
-            return string.IsNullOrEmpty(value) ? defaultValue : Convert.ToInt32(value);
+            int _value = string.IsNullOrEmpty(value) ? defaultValue : Convert.ToInt32(value);
+
+            Save(key, _value);
+
+            return _value;
         }
         public static bool GetBoolValue(string key)
         {

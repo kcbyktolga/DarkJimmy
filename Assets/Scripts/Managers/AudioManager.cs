@@ -12,28 +12,35 @@ namespace DarkJimmy
         [SerializeField]
         private AudioMixerGroup musicMixer;           //The music mixer group
         [SerializeField]
-        private AudioMixerGroup soundMixer;           //The sound mixer group
+        private AudioMixerGroup sound2DMixer;         //The sound 2D mixer group
+        [SerializeField]
+        private AudioMixerGroup sound3DMixer;         //The sound 3D mixer group
         [SerializeField]
         private List<SoundGroup> soundGroups;
         [SerializeField]
         private List<AudioClip> musicClips;
 
         private AudioSource musicSource;
-        private AudioSource soundSource;
+        private AudioSource sound2DSource;
+        private AudioSource sound3DSource;
         private Dictionary<string, List<AudioClip>> soundGroupDictionary = new Dictionary<string, List<AudioClip>>();
 
+        public delegate void SetVolume(UI.VolumeType type);
+        public SetVolume setVolume;
         public override void Awake()
         {
             base.Awake();
-            SetSoundGrop();
+            SetSoundGroup();
             musicSource = gameObject.AddComponent<AudioSource>();
-            soundSource = gameObject.AddComponent<AudioSource>();
+            sound2DSource = gameObject.AddComponent<AudioSource>();
+            sound3DSource = gameObject.AddComponent<AudioSource>();
         }
         private void Start()
         {
-           // SetAdiouManagerSource();
+            SetAdiouManagerSource();
 
-           // SceneManager.activeSceneChanged += Play;
+            // SceneManager.activeSceneChanged += Play;
+            setVolume += SetSourceStatus;
         }
 
 
@@ -41,14 +48,15 @@ namespace DarkJimmy
         public void SetAdiouManagerSource()
         {
             SetSource(ref musicSource, ref musicMixer, true, UI.VolumeType.Music);
-            SetSource(ref soundSource, ref soundMixer, false,UI.VolumeType.Sound);
+            SetSource(ref sound2DSource, ref sound2DMixer, false,UI.VolumeType.Sound);
+            SetSource(ref sound3DSource, ref sound3DMixer, false, UI.VolumeType.Sound);
         }
         public void PlaySound(string soundName)
         {
-            if (!soundSource.enabled)
+            if (!sound2DSource.enabled)
                 return;
 
-            soundSource.PlayOneShot(GetClipFromName(soundName));
+            sound2DSource.PlayOneShot(GetClipFromName(soundName));
         }
         public void PauseMusic()
         {
@@ -72,10 +80,21 @@ namespace DarkJimmy
             musicSource.Stop();
         }
 
-        //public void SetSourceStatus(ToggleType type, bool isOn)
-        //{
-        //    GetAudioSource(type).enabled = isOn;
-        //}
+        private void SetSourceStatus(UI.VolumeType volumeType)
+        {
+            switch (volumeType)
+            {
+                case UI.VolumeType.Music:
+                    SetSource(ref musicSource, ref musicMixer, true, volumeType);               
+                    break;
+                case UI.VolumeType.Sound:
+                    SetSource(ref sound2DSource, ref sound2DMixer, false, volumeType);
+                    SetSource(ref sound3DSource, ref sound3DMixer, false, volumeType);
+                    break;
+                default:
+                    break;
+            }
+        }
         #endregion
 
         #region Private Methods
@@ -116,7 +135,7 @@ namespace DarkJimmy
 
         //    PlayMusic(GetClip());
         //}
-        private void SetSoundGrop()
+        private void SetSoundGroup()
         {
             foreach (SoundGroup soundGroup in soundGroups)
             {
@@ -135,7 +154,8 @@ namespace DarkJimmy
         }
         private void SetSource(ref AudioSource source, ref AudioMixerGroup mixerGroup, bool isLoop,UI.VolumeType type)
         {
-            source.volume = LocalSaveManager.GetIntValue(LocalSaveManager.GetSliderName(type),9);
+            float value = LocalSaveManager.GetIntValue(LocalSaveManager.GetSliderName(type), 9) + 1;
+            source.volume = value*0.1f;
             source.outputAudioMixerGroup = mixerGroup;
             source.loop = isLoop;
             source.enabled = LocalSaveManager.GetBoolValue(LocalSaveManager.GetToggleName(type), true);

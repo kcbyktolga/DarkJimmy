@@ -54,38 +54,48 @@ namespace DarkJimmy.UI
             next.onClick.AddListener(Increase);
             previous.onClick.AddListener(Decrease);
 
-            VolumeIndex=LocalSaveManager.GetIntValue(LocalSaveManager.GetToggleName(volumeType), bloks.Count -1);
-            IsOn = LocalSaveManager.GetBoolValue(LocalSaveManager.GetToggleName(volumeType), true);
+            VolumeIndex=LocalSaveManager.GetIntValue(LocalSaveManager.GetSliderName(volumeType));
+            IsOn = LocalSaveManager.GetBoolValue(LocalSaveManager.GetToggleName(volumeType));
             
             if (IsOn)
                 SetSlider(VolumeIndex,true);
-
         }
         private void SetSlider(int count, bool isOn)
         {
             for (int i = -1; i < count; i++)
                 bloks[i + 1].SetActive(isOn);
+
         }
         private void SetToggle()
         {
             if (VolumeIndex < 0)
-                VolumeIndex = bloks.Count - 1;
-            
+                VolumeIndex = 0;
+
             IsOn = !IsOn;
 
             int count = IsOn ? VolumeIndex : bloks.Count-1;
 
             SetSlider(count, IsOn);
+
+            if (!(VolumeIndex < 0))
+                AudioManager.Instance.setVolume(volumeType);
         }
         private void Increase()
         {
             if (!IsOn)
+            {
                 SetToggle();
+
+                return;
+            }
+                
 
             if (VolumeIndex >= bloks.Count - 1)
                 return;
 
             bloks[++VolumeIndex].SetActive(true);
+
+            AudioManager.Instance.setVolume(volumeType);
         }
         private void Decrease()
         {
@@ -96,12 +106,13 @@ namespace DarkJimmy.UI
                 SetToggle();
 
             bloks[VolumeIndex--].SetActive(false);
+
+            AudioManager.Instance.setVolume(volumeType);
         }
         private void SetIcon(bool isOn)
         {
             sliderIcon.sprite = isOn ? onIcon : offIcon;
         }
-
         private void OnDestroy()
         {
             toggle.onClick.RemoveAllListeners();
@@ -109,7 +120,6 @@ namespace DarkJimmy.UI
             previous.onClick.RemoveAllListeners();
         }
     }
-
     public enum VolumeType
     {
         Music,
