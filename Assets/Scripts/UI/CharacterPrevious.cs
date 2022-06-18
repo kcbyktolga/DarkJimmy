@@ -45,17 +45,15 @@ namespace DarkJimmy.UI
             originalPosY = playerT.position.y;
             idleParamId = Animator.StringToHash("Idle");
 
-
             Index = globalData.GetCurrentCharacterIndex();
-            bool islock = Index > globalData.PlayerDatas.GetAllCharacterCount-1;
-            SetButtons(islock);
+            SetButtons(false);
 
             base.Start();
 
             for (int i = 0; i < stats.Count; i++)
             {
                 stats[i].SetStatName(((CharacterProperty)i).ToString());
-                stats[i].SetInfoSlider(globalData.GetCurrentCharacterData().GetCharacterProperty((CharacterProperty)i)*10, 100);
+                stats[i].SetSliderValues(globalData.GetCurrentCharacterData().GetCharacterProperty((CharacterProperty)i)*10, 100);
             }
         }
         public override void Move(bool onClick, int amount)
@@ -76,17 +74,17 @@ namespace DarkJimmy.UI
             SetMoveButton();
             SetButtons(islock);
 
-            CharacterData data = !islock ? globalData.GetCurrentCharacterData() : defaultData.CharacterDatas[Index];
+            CharacterData data = !islock ? globalData.PlayerDatas.Characters[Index] : defaultData.CharacterDatas[Index];
 
             if (islock)
             {
-                purchaseButton.OnClick(Index, Purchase);
+                purchaseButton.OnClick(Purchase);
                 purchaseButton.buttonName.text  = system.StringFormat(data.price);
                 purchaseButton.priceIcon.sprite = system.GetPaySprite(data.payType);
             }
 
             for (int i = 0; i < stats.Count; i++)
-                stats[i].SetInfoSlider(data.GetCharacterProperty((CharacterProperty)i)*10, 100);
+                stats[i].SetSliderValues(data.GetCharacterProperty((CharacterProperty)i)*10, 100);
 
         }
         IEnumerator BlackOut(Color endColor)
@@ -119,22 +117,24 @@ namespace DarkJimmy.UI
 
             animator.SetBool(idleParamId,true);
         }
-        private void Purchase(int index)
+        private void Purchase()
         {
-            CharacterData data = defaultData.CharacterDatas[index];
+            CharacterData data = defaultData.CharacterDatas[Index];
 
             if (globalData.CanSpendGem(data.payType, data.price))
             {
-                globalData.PlayerDatas.Characters[Index].isLock = false;
                 globalData.SetCharacterData(Index,data);
                 globalData.SetCharacterIndex(Index);
+                globalData.PlayerDatas.Characters[Index].isLock = false;
                 globalData.SpendGem(data.payType, data.price);
-          
-                buttonGroup.SetActive(true);
-                purchaseButton.gameObject.SetActive(false);
-                stageButton.button.interactable = true;
 
-                StartCoroutine(BlackOut(system.GetBlackAlfaColor(data.isLock)));       
+                //buttonGroup.SetActive(true);
+                //purchaseButton.gameObject.SetActive(false);
+                //stageButton.button.interactable = true;
+
+                //StartCoroutine(BlackOut(system.GetBlackAlfaColor(data.isLock)));       
+
+                Move(true,0);
             }
             else
 

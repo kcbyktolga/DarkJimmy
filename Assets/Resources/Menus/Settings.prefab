@@ -975,6 +975,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   button: {fileID: 6346532013654804195}
   buttonName: {fileID: 6346532014802120075}
+  baseTransform: {fileID: 6346532013654804194}
   menuType: 13
 --- !u!1 &6346532013685448667
 GameObject:
@@ -1187,6 +1188,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   button: {fileID: 6346532014261127297}
   buttonName: {fileID: 6346532013339768719}
+  baseTransform: {fileID: 6346532014261127296}
   menuType: 12
 --- !u!1 &6346532014306319590
 GameObject:

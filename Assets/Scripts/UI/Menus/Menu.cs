@@ -74,6 +74,7 @@ namespace DarkJimmy.UI
              {Menus.Loading, "Menus/Loading"},
              {Menus.LevelPrevious, "Menus/LevelPrevious"},
              {Menus.LuckySpin, "Menus/LuckySpin"},
+             {Menus.Play, "Menus/GameDisplay"},
 
             //Popups
              {Menus.PurchaseProcess, "Popups/PurchaseProcessPopup"},

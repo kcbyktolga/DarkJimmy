@@ -14,17 +14,11 @@ namespace DarkJimmy.UI
         [SerializeField]
         private RectTransform baseTransform;
 
-        private const float clickDuration = 0.1f;
+        private const float clickDuration = 0.05f;
         private const float scaleMultiple = 0.95f;
         private bool isClick = false;
         private Vector2 originalScale = Vector2.one;
 
-        private void Start()
-        {
-            if(baseTransform!=null)
-                originalScale = baseTransform.localScale;
-
-        }
 
         public virtual void OnClick(Action action)
         {
@@ -73,13 +67,11 @@ namespace DarkJimmy.UI
             }
         }
         public void OnPointerUp(PointerEventData eventData)
-        {
+        {       
             if (baseTransform == null)
                 return;
-
             StartCoroutine(Scale(originalScale));
         }
-
         private IEnumerator Scale(Vector2 endScale)
         {
             float time = 0;
@@ -91,12 +83,12 @@ namespace DarkJimmy.UI
                 yield return null;
             }
         }
-
         private void OnDisable()
         {
             if(baseTransform !=null)
                 baseTransform.localScale = originalScale;
         }
+
     }
 }
 

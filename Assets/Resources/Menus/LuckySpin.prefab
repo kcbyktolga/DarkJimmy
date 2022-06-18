@@ -1205,6 +1205,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   button: {fileID: 8401683006311591893}
   buttonName: {fileID: 1583407943941907595}
+  baseTransform: {fileID: 8075398992016084419}
   priceIcon: {fileID: 1398106566178570738}
   productId: 
 --- !u!1001 &5204815316636396847

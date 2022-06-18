@@ -571,7 +571,7 @@ PrefabInstance:
         type: 3}
       propertyPath: m_TargetGraphic
       value: 
-      objectReference: {fileID: 2303294108997386911}
+      objectReference: {fileID: 86283273648213380}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ad0c5054fc3860347a4435344ac03055, type: 3}
 --- !u!224 &9195067116909528512 stripped
@@ -580,9 +580,9 @@ RectTransform:
     type: 3}
   m_PrefabInstance: {fileID: 3361479576443009263}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &2303294108997386911 stripped
+--- !u!114 &86283273648213380 stripped
 MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 3553531509159213680, guid: ad0c5054fc3860347a4435344ac03055,
+  m_CorrespondingSourceObject: {fileID: 3428600457235379563, guid: ad0c5054fc3860347a4435344ac03055,
     type: 3}
   m_PrefabInstance: {fileID: 3361479576443009263}
   m_PrefabAsset: {fileID: 0}

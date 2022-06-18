@@ -92,7 +92,7 @@ namespace DarkJimmy.UI
         {
             if (!IsLock)
             {
-                Debug.Log("Oyun baþlýyor aq! hazýr ol!");
+                UIManager.Instance.OpenMenu(Menu.Menus.Play); // sahne deðiþecek.
                 return;
             }
 
@@ -108,9 +108,9 @@ namespace DarkJimmy.UI
 
                 if (csm.CanSpendGem(data.payType, data.price))
                 {
-                    csm.PlayerDatas.Characters[Index].isLock = false;
                     csm.SetCharacterData(Index, data);
                     csm.SetCharacterIndex(Index);
+                    csm.PlayerDatas.Characters[Index].isLock = false;
                     csm.SpendGem(data.payType, data.price);
 
                     Move(true,0);

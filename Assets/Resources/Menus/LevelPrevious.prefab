@@ -810,6 +810,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   button: {fileID: 677052694360742949}
   buttonName: {fileID: 0}
+  baseTransform: {fileID: 677052694360742955}
 --- !u!1 &677052694411522446
 GameObject:
   m_ObjectHideFlags: 0
@@ -1687,6 +1688,7 @@ GameObject:
   - component: {fileID: 677052695038787388}
   - component: {fileID: 677052695038787389}
   - component: {fileID: 677052695038787391}
+  - component: {fileID: 3107978717611077120}
   m_Layer: 5
   m_Name: UpgradeButon
   m_TagString: Untagged
@@ -1797,6 +1799,21 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &3107978717611077120
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 677052695038787331}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 75d8b4dc7673bda4c86e541ac2c8421c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  button: {fileID: 0}
+  buttonName: {fileID: 0}
+  baseTransform: {fileID: 677052695038787330}
 --- !u!1 &677052695216610864
 GameObject:
   m_ObjectHideFlags: 0
@@ -2021,6 +2038,7 @@ GameObject:
   - component: {fileID: 677052695315112804}
   - component: {fileID: 677052695315112805}
   - component: {fileID: 677052695315112810}
+  - component: {fileID: 1068085270587289479}
   m_Layer: 5
   m_Name: Play
   m_TagString: Untagged
@@ -2130,6 +2148,21 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &1068085270587289479
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 677052695315112808}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 75d8b4dc7673bda4c86e541ac2c8421c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  button: {fileID: 0}
+  buttonName: {fileID: 0}
+  baseTransform: {fileID: 677052695315112811}
 --- !u!1 &677052695574661534
 GameObject:
   m_ObjectHideFlags: 0
@@ -2554,6 +2587,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   button: {fileID: 677052695661459371}
   buttonName: {fileID: 0}
+  baseTransform: {fileID: 677052695661459369}
 --- !u!1 &677052695679494249
 GameObject:
   m_ObjectHideFlags: 0

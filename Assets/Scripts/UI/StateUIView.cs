@@ -21,10 +21,7 @@ namespace DarkJimmy
         private float duration=0.5f;
         [SerializeField]
         private TMP_Text statsName;
-        [SerializeField]
-        private Image fill;       
-        public Color color;
-
+ 
         CloudSaveManager csm;
         SystemManager system;
         private void Start()
@@ -38,17 +35,23 @@ namespace DarkJimmy
                 UIManager.Instance.updateState += UpdateState;
             }
         }
-
         public void UpdateState(Stats stats,float amount)
         {
             if (this.stats != stats)
                 return;
 
-            if (this.amount != null)
-                this.amount.text = system.StringFormat((int)amount);
-
             if (statsSlider != null)
                 statsSlider.value = amount;
+
+            if (this.amount != null)
+            {
+                if (stats.Equals(Stats.Gold) || stats.Equals(Stats.Key))
+                    this.amount.text = system.StringFormat((int)amount);
+                else if (stats.Equals(Stats.Mana) || stats.Equals(Stats.Energy))
+                    this.amount.text = $"{statsSlider.value}/{statsSlider.maxValue}";
+                //else if(stats.Equals(Stats.Timer))
+
+            }          
         }
         void SetStatsValue()
         {         
@@ -57,29 +60,25 @@ namespace DarkJimmy
             else
             {
                 if (stats.Equals(Stats.Energy))
-                    SetSlider(csm.GetCurrentCharacterData().Energy);
+                    SetSliderMaxValue(csm.GetCurrentCharacterData().Energy);
                 else if (stats.Equals(Stats.Mana))
-                    SetSlider(csm.GetCurrentCharacterData().Mana);
-                else if (stats.Equals(Stats.Timer))
-                    amount.text = "00:59"; // Sonra ayarlancak.
+                    SetSliderMaxValue(csm.GetCurrentCharacterData().Mana);
+               // else if (stats.Equals(Stats.Timer))
+                   // amount.text = 
             }
         }
-        private void SetSlider(float value)
+        private void SetSliderMaxValue(float value)
         {
             statsSlider.maxValue = value;
             statsSlider.value = value;
+
+            if (amount != null)
+                amount.text = $"{statsSlider.value}/{statsSlider.maxValue}";
         }
-        public void SetInfoSlider(float value, float maxValue )
+        public void SetSliderValues(float value, float maxValue )
         {
             StartCoroutine(SetSliderValue(value,maxValue));
-        }
-        public void SetColor(Color color, string key)
-        {
-            statsName.text = LanguageManager.GetText(key);
-            statsName.color = color;
-            fill.color = color;
-            amount.color = color;
-        }
+        }    
         IEnumerator SetSliderValue(float value, float maxValue)
         {
             statsSlider.maxValue = maxValue;
