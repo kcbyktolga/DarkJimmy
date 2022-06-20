@@ -17,6 +17,7 @@ namespace DarkJimmy
         [SerializeField]
         private DefaultData systemData;
         public PlayerData PlayerDatas;
+        private SystemManager system;
        
         #region Properties
         public GemType GemType { get; set; }
@@ -42,7 +43,7 @@ namespace DarkJimmy
             public string[] schemaId;
         }
 
-        public string AppVersion { get; set; }
+        public string AppVersion { get; set; } = string.Empty;
 
         #region URLs
         //public string AplicationURL { get; private set; } = "https://play.google.com/store/apps/details?id=com.rhombeusgaming.DarkJimmy";
@@ -63,11 +64,12 @@ namespace DarkJimmy
         public override async void Awake()
         {
             base.Awake();
+            system = SystemManager.Instance;
 
             await UnityServices.InitializeAsync();
             SignIn();
-            InitializeRemoteConfigAsync();
-
+            
+            
             // Seviye senkronizasyonu remote config ile yapýlacak.. Daha sonra bak.
             //SyncStages();
 
@@ -87,11 +89,16 @@ namespace DarkJimmy
                     await AuthenticationService.Instance.SignInAnonymouslyAsync();
 
                 Instance.IsSignedIn = AuthenticationService.Instance.IsSignedIn;
+
             }
 
             Instance.PlayerDatas = await RetrieveSpecificData<PlayerData>("PlayerData");
 
             Instance.UserId = PlayerDatas.PlayerId;
+
+            InitializeRemoteConfigAsync();
+
+           
         }
 
         #region Check Methods
@@ -200,7 +207,7 @@ namespace DarkJimmy
             }
 
             if (Enum.TryParse(type.ToString(), out Stats stats))
-                UIManager.Instance.updateState(stats, GetGemCount(type));
+                system.updateStats(stats, GetGemCount(type));
 
             await SaveData();
         }
@@ -217,7 +224,7 @@ namespace DarkJimmy
             }
 
             if (Enum.TryParse(type.ToString(), out Stats stats))
-                UIManager.Instance.updateState(stats, GetGemCount(type));
+               system.updateStats(stats, GetGemCount(type));
 
             await SaveData();
         }
@@ -521,6 +528,8 @@ namespace DarkJimmy
                     break;
                 case ConfigOrigin.Remote:
                     AppVersion = RemoteConfigService.Instance.appConfig.GetString("AppVersion");
+                    Debug.Log(AppVersion);
+                    Debug.Log("here");
                     break;
             }
         }

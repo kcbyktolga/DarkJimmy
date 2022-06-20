@@ -1463,7 +1463,7 @@ MonoBehaviour:
   pageName: {fileID: 677052694347898207}
   baseTransform: {fileID: 0}
   menuType: 17
-  menuRank: 0
+  menuRank: 1
 --- !u!1 &677052694647937014
 GameObject:
   m_ObjectHideFlags: 0

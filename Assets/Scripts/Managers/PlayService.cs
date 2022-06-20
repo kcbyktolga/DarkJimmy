@@ -39,18 +39,20 @@ namespace DarkJimmy
 
         void OnGooglePlayGamesLogin(bool success)
         {
+            signIn = success;
+
             if (success)
             {
-                signIn = true;
                 // Call Unity Authentication SDK to sign in or link with Google.
                 Debug.Log("Login with Google Play Games done. IdToken: " + ((PlayGamesLocalUser)Social.localUser).GetIdToken());
 
-                //CloudSaveManager.Instance
             }
             else
             {
                 Debug.Log("Unsuccessful login");
             }
+
+            Debug.Log("Login with Google Play Games done. IdToken: " + ((PlayGamesLocalUser)Social.localUser).GetIdToken());
         }
 
     }

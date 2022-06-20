@@ -42,7 +42,6 @@ namespace DarkJimmy.UI
 
         }
         public virtual void OpenPage() { }
-
         public void OnPointerDown(PointerEventData eventData)
         {
             if (baseTransform == null)

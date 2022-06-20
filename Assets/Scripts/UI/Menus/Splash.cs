@@ -8,11 +8,11 @@ namespace DarkJimmy.UI
 
         public override void Start()
         {
-            StartCoroutine(Skip(Menus.Loading.ToString()));
+            StartCoroutine(Skip(Menus.Loading.ToString(),duration));
         }
-        public virtual IEnumerator Skip(string sceneName)
+        public virtual IEnumerator Skip(string sceneName, float _time)
         {
-            yield return new WaitForSeconds(duration);
+            yield return new WaitForSeconds(_time);
             SceneManager.LoadScene(sceneName);
         }
 

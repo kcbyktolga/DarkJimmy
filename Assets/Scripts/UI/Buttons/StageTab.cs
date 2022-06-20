@@ -5,7 +5,6 @@ using UnityEngine.UI;
 
 namespace DarkJimmy.UI
 {
-  
     public class StageTab : TabButton
     {
         [Header("Stage Tab Property")]

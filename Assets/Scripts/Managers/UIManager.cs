@@ -9,6 +9,8 @@ namespace DarkJimmy
     public class UIManager : Singleton<UIManager>
     {
         [SerializeField]
+        private RectTransform menuContainer;
+        [SerializeField]
         private Menu.Menus startingMenu;
         public int PageIndex { get; set; }
 
@@ -19,9 +21,7 @@ namespace DarkJimmy
         
         private readonly Vector2 canvasResolition =  new Vector2(2960,1440);
 
-        public delegate void UpdateState(Stats state,float amount);  
-        public UpdateState updateState;
-        public UpdateState addCollectable;
+       // public UpdateState addCollectable;
 
         private void Start()
         {
@@ -31,7 +31,7 @@ namespace DarkJimmy
         public void OpenMenu(Menu.Menus menu)
         {
 
-            if (menuStack.Count > 1)
+            if (menuStack.Count > 0)
                 lastMenu = menuStack.Peek();
 
             if (Menu.MenuPaths.TryGetValue(menu, out string path))
@@ -41,7 +41,7 @@ namespace DarkJimmy
                 if (prefab == null)
                     return;
 
-                currentMenu = Instantiate(prefab, transform);
+                currentMenu = Instantiate(prefab, menuContainer);
                 menuStack.Push(currentMenu);
 
                 if (currentMenu.menuRank.Equals(Menu.MenuRank.Seconder))
@@ -64,8 +64,8 @@ namespace DarkJimmy
 
             Menu lastMenu = menuStack.Peek();
 
-            if (lastMenu.menuType.Equals(Menu.Menus.Lobby) || lastMenu.menuType.Equals(Menu.Menus.Play))
-                return;
+            //if (lastMenu.menuType.Equals(Menu.Menus.Lobby) || lastMenu.menuType.Equals(Menu.Menus.Play))
+            //    return;
 
             if(!lastMenu.gameObject.activeSelf)
                 lastMenu.gameObject.SetActive(true);
@@ -77,8 +77,6 @@ namespace DarkJimmy
         }
         public void OpenUrl(string address)
         {
-            Debug.Log(address);
-
             if (string.IsNullOrEmpty(address))
                 return;
 
@@ -91,6 +89,10 @@ namespace DarkJimmy
         public Vector2 GetReferenceResolotion()
         {
             return canvasResolition;
+        }
+        public Menu GetCurrentMenu()
+        {
+            return menuStack.Peek();
         }
   
     }

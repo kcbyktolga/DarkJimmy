@@ -6,8 +6,12 @@ namespace DarkJimmy
 {
     public class SystemManager : Singleton<SystemManager>
     {
-        public SystemProperty system;
 
+        public delegate void UpdateStats(Stats state, float amount);
+        public UpdateStats updateStats;
+        public UpdateStats setStats;
+
+        public SystemProperty system;
         public Vector2 mrecPosition;
         public GemType GemType { get; set; }
         public Sprite GetLevelSprite(LevelStatus status)

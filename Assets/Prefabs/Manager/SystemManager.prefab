@@ -48,7 +48,7 @@ MonoBehaviour:
     passed: {fileID: 21300000, guid: dae4f662c279b66469644fb5037bcb78, type: 3}
     active: {fileID: 21300000, guid: 0adf4d7eaba1c984f810365659eaf14e, type: 3}
     passive: {fileID: 21300000, guid: 06c3909134869fd44a0cf3b2b1f7b1b8, type: 3}
-    gold: {fileID: 21300000, guid: 6970d6d54ba521e4cb09a0dc1e3b2dbe, type: 3}
+    gold: {fileID: 21300000, guid: c905e6b95b77c844dba2de7c4503f0ef, type: 3}
     diamond: {fileID: 21300000, guid: 93b017d65c52b7043b45b88319608950, type: 3}
     key: {fileID: 21300000, guid: e9958a692226a90499bb7001427a427d, type: 3}
     goldSprite: {fileID: 21300000, guid: 9db4bf56102ff3a4197054332e856c8b, type: 3}

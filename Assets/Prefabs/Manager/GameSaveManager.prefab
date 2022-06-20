@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 4554092481391780788}
   - component: {fileID: 4554092481391780789}
   m_Layer: 0
-  m_Name: LocalSaveManager
+  m_Name: GameSaveManager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

@@ -904,7 +904,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0}
   m_AnchorMax: {x: 0.5, y: 0}
   m_AnchoredPosition: {x: 0, y: 50}
-  m_SizeDelta: {x: 478.2164, y: 150}
+  m_SizeDelta: {x: 480, y: 150}
   m_Pivot: {x: 0.5, y: 0}
 --- !u!222 &1528276091959140217
 CanvasRenderer:
@@ -1002,6 +1002,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   button: {fileID: 7361767379685210444}
   buttonName: {fileID: 7932831674454445158}
+  baseTransform: {fileID: 8646618112598672343}
   priceIcon: {fileID: 3087909228548643436}
   productId: 
 --- !u!1 &7339517093543029096

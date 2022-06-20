@@ -220,7 +220,7 @@ namespace DarkJimmy.Characters
 				{
 					currentJumpAmount--;
 					GameSaveManager.Instance.mana--;
-					UIManager.Instance.updateState(Stats.Mana, GameSaveManager.Instance.mana);
+					SystemManager.Instance.updateStats(Stats.Mana, GameSaveManager.Instance.mana);
 					Vector2 force = new Vector2(0, data.jumpForce * data.jumpForceMultiple);
 					Jump(force,false);
 				}

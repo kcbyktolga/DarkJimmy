@@ -21,7 +21,9 @@ namespace DarkJimmy.UI
         private void Reconnect()
         {
             CloudSaveManager.Instance.SignIn();
-            loading.Load(Menus.Lobby);
+            string sentences = "Yeniden baðlanýlýyor..";
+            loading.SetLoadingText(sentences);
+            loading.Load(Menus.Lobby,1);
             GoBack();
         }
 

@@ -92,7 +92,7 @@ namespace DarkJimmy.UI
         {
             if (!IsLock)
             {
-                UIManager.Instance.OpenMenu(Menu.Menus.Play); // sahne deðiþecek.
+                SceneManager.LoadScene("Game"); // sahne deðiþecek.
                 return;
             }
 

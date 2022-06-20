@@ -21,6 +21,8 @@ namespace DarkJimmy
         private float duration=0.5f;
         [SerializeField]
         private TMP_Text statsName;
+
+        public float defaultValue;
  
         CloudSaveManager csm;
         SystemManager system;
@@ -32,7 +34,8 @@ namespace DarkJimmy
             if (type.Equals(ViewType.UI))
             {
                 SetStatsValue();
-                UIManager.Instance.updateState += UpdateState;
+                system.updateStats += UpdateState;
+                system.setStats += SetStatsPowerUp;
             }
         }
         public void UpdateState(Stats stats,float amount)
@@ -53,6 +56,16 @@ namespace DarkJimmy
 
             }          
         }
+        public void SetStatsPowerUp(Stats stats, float value)
+        {
+            if (this.stats != stats)
+                return;
+
+            if (statsSlider !=null && amount !=null)
+                if (stats.Equals(Stats.Mana) || stats.Equals(Stats.Energy))
+                    SetSliderValues(value, value);
+        }
+      
         void SetStatsValue()
         {         
             if (Enum.TryParse(stats.ToString(), out GemType gemType))
@@ -71,7 +84,7 @@ namespace DarkJimmy
         {
             statsSlider.maxValue = value;
             statsSlider.value = value;
-
+  
             if (amount != null)
                 amount.text = $"{statsSlider.value}/{statsSlider.maxValue}";
         }
@@ -87,9 +100,9 @@ namespace DarkJimmy
             while (time <= 1)
             {
                 time += Time.deltaTime / duration;
-                float percent = Mathf.Lerp(0, value, time);
+                float percent = Mathf.Lerp(0, value, time);              
                 statsSlider.value = percent;
-                amount.text = $"{(int)percent}%";
+                amount.text = $"{(int)percent}/{maxValue}";
                 yield return null;
             }
         }
@@ -97,6 +110,11 @@ namespace DarkJimmy
         {
             statsName.text = LanguageManager.GetText(name);
         }
+        public Stats GetStatsType()
+        {
+            return stats;
+        }
+
     }
 
     public enum Stats

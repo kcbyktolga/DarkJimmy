@@ -7,12 +7,16 @@ namespace DarkJimmy
 {
     public class GameSaveManager : Singleton<GameSaveManager>
     {
+        [SerializeField]
+        private GameObject GameElement;
+     
         public int goldCount;
         public int keyCount;
         public float mana;
         public float energy;
         public int timer;
         public int diamond;
+        public int jumpCount;
 
         float maxMana;
         float maxEnergy;
@@ -45,8 +49,12 @@ namespace DarkJimmy
             }
         }
 
+        private SystemManager system;
+        
+
         private void Start()
         {
+            system = SystemManager.Instance;
             goldCount = CloudSaveManager.Instance.PlayerDatas.Gold;
             keyCount = CloudSaveManager.Instance.PlayerDatas.Key;
             maxMana= mana = CloudSaveManager.Instance.GetCurrentCharacterData().Mana;
@@ -75,7 +83,7 @@ namespace DarkJimmy
                 case Stats.Timer:
                     timer = value;
                     break;
- 
+
             }
         }
         private int GetValue(Stats stats)
@@ -94,7 +102,26 @@ namespace DarkJimmy
         {
             int value = GetValue(stats) + amount;
             SetValue(stats,value);
-            UIManager.Instance.updateState(stats,value);
+            SystemManager.Instance.updateStats(stats,value);
+        }
+        public void UpdateCapacity(Stats stats, int value)
+        {
+            if (stats.Equals(Stats.Energy))
+            {
+                energy += value;
+                maxEnergy = energy;
+                system.setStats(stats, maxEnergy);
+            }
+            else if (stats.Equals(Stats.Mana))
+            {
+                mana += value;
+                maxMana =mana;
+               system.setStats(stats, maxMana);
+            }
+        }
+        public void GenerateGameElement()
+        {
+            GameElement.SetActive(true);
         }
 
         private void OnDestroy()

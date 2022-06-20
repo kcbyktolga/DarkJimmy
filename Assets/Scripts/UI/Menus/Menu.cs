@@ -48,10 +48,10 @@ namespace DarkJimmy.UI
             YoutubeURL,
             AppURL,
             PublisherURL,
-            Mail
+            Mail,
 
+            Preparation
 
- 
         }
         public enum MenuRank
         {
@@ -75,6 +75,7 @@ namespace DarkJimmy.UI
              {Menus.LevelPrevious, "Menus/LevelPrevious"},
              {Menus.LuckySpin, "Menus/LuckySpin"},
              {Menus.Play, "Menus/GameDisplay"},
+             {Menus.Preparation, "Menus/Preparation"},
 
             //Popups
              {Menus.PurchaseProcess, "Popups/PurchaseProcessPopup"},

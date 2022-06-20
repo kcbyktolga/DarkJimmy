@@ -193,7 +193,6 @@ MonoBehaviour:
   canvas: {fileID: 2383208493973087836}
   pageName: {fileID: 2383208495523727767}
   baseTransform: {fileID: 2383208495438668892}
-  duration: 0.2
   menuType: 12
   menuRank: 1
   container: {fileID: 7152625827031165683}
@@ -257,7 +256,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0, g: 0, b: 0, a: 0.5176471}
+  m_Color: {r: 0, g: 0, b: 0, a: 0.8627451}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1

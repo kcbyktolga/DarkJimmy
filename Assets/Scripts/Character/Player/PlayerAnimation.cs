@@ -14,10 +14,7 @@ namespace DarkJimmy.Characters
         PlayerInput input;                //Reference to the PlayerInput script component
         Animator anim;                    //Reference to the Animator component
         BlinkAnimation blink;
-        [SerializeField]
-        private Dust impact;
-
-
+       
         int slideParamID;                 //ID of the isAttackking parameter
         int groundParamID;                //ID of the isOnGround parameter
         int speedParamID;                 //ID of the speed parameter

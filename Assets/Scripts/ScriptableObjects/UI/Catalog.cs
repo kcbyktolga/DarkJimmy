@@ -14,7 +14,7 @@ namespace DarkJimmy
         public int startIndex = 2;
         public TabButton tabButton;
         public List<PageStruct> Pages;
-        public List<ProductStruct> GetProductShop;
+        public List<PowerUpStruct> GetPowerUps;
         public List<ProductStruct> GetProductLuckySpin;
     
         private Dictionary<PageType, string> PagePaths = new Dictionary<PageType, string>
@@ -89,6 +89,19 @@ namespace DarkJimmy
         public ProductShape productShape;
         public ProductType productType;
         public List<Sprite> productIcon;
+    }
+
+    [Serializable]
+    public struct PowerUpStruct
+    {
+        public string powerUpName;
+        public Sprite powerUpIcon;
+        public PowerUp powerUpType;
+        public GemType powerUpPayType;
+        public int powerUpPrice;
+        public float multiple;
+        [TextArea(5, 1)]
+        public string powerUpDescription;
     }
 
     public enum PayType

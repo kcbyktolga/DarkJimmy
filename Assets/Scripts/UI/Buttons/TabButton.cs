@@ -18,7 +18,7 @@ namespace DarkJimmy.UI
         [SerializeField]
         private List<Image> tabIcons;
 
-        HorizontalLayoutGroup layout;
+        private HorizontalLayoutGroup layout;
         private void Awake()
         {
             layout = GetComponent<HorizontalLayoutGroup>();

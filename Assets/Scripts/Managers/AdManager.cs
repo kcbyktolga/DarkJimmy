@@ -44,10 +44,16 @@ namespace DarkJimmy
         public override void Awake()
         {
             base.Awake();
+
             InitializeAds();
+           
         }
         public void InitializeAds()
         {
+
+            MaxSdk.SetSdkKey(MaxSdkKey);
+            MaxSdk.InitializeSdk();
+
             MaxSdkCallbacks.OnSdkInitializedEvent += sdkConfiguration =>
             {
                 // AppLovin SDK is initialized, configure and start loading ads.
@@ -58,11 +64,9 @@ namespace DarkJimmy
                 //InitializeRewardedInterstitialAds();
                 InitializeBannerAds();
                 //InitializeMRecAds();
-
             };
 
-            MaxSdk.SetSdkKey(MaxSdkKey);          
-            MaxSdk.InitializeSdk();
+           
         }
 
         #region Banner Ad 
@@ -388,7 +392,11 @@ namespace DarkJimmy
 
         #endregion
 
-   
+        private void OnDestroy()
+        {
+            Destroy(MaxSdkCallbacks.Instance);
+        }
+
     }
     [Serializable]
     public class AdsUnit
