@@ -180,3 +180,7 @@
 [0620/093319.910:WARNING:dns_config_service_win.cc(668)] Failed to read DnsConfig.
 [0620/093330.736:WARNING:dns_config_service_win.cc(668)] Failed to read DnsConfig.
 [0620/204520.266:WARNING:dns_config_service_win.cc(668)] Failed to read DnsConfig.
+[0621/072601.816:WARNING:dns_config_service_win.cc(668)] Failed to read DnsConfig.
+[0621/072606.992:WARNING:dns_config_service_win.cc(668)] Failed to read DnsConfig.
+[0621/072612.000:WARNING:dns_config_service_win.cc(668)] Failed to read DnsConfig.
+[0621/084502.690:WARNING:dns_config_service_win.cc(668)] Failed to read DnsConfig.

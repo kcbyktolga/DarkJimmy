@@ -48,7 +48,7 @@ namespace DarkJimmy
 
             if (this.amount != null)
             {
-                if (stats.Equals(Stats.Gold) || stats.Equals(Stats.Key))
+                if (stats.Equals(Stats.Gold) || stats.Equals(Stats.Key) || stats.Equals(Stats.Diamond))
                     this.amount.text = system.StringFormat((int)amount);
                 else if (stats.Equals(Stats.Mana) || stats.Equals(Stats.Energy))
                     this.amount.text = $"{statsSlider.value}/{statsSlider.maxValue}";

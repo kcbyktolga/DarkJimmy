@@ -549,9 +549,9 @@ namespace DarkJimmy
     [Serializable]
     public class PlayerData
     {
-        public string PlayerId;        
-        public int Gold { get; set; } = 0;
-        public int Diamond { get; set; } =0;
+        public string PlayerId;
+        public int Gold;
+        public int Diamond;
         public int Key { get { return GetAllKeyCount(); } set { }}
         public int CurrentLevelIndex;
         public int CurrentCharacterIndex;

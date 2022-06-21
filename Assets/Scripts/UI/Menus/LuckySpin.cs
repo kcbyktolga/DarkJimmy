@@ -138,16 +138,22 @@ namespace DarkJimmy.UI
             purchaseButton.button.interactable = !IsSpin; 
             float time = 0;
             int index = GetCurrentIndex() + UnityEngine.Random.Range(0, catalog.GetProductLuckySpin.Count);
-            float targetZ = wheel.localEulerAngles.z + index*45 + 360*spinDuration*24;
-            Vector3 targetAngle = new Vector3(wheel.localEulerAngles.x,wheel.localEulerAngles.y,targetZ);
+            Vector3 startAngle = wheel.localEulerAngles;
+            float targetZ = startAngle.z + index*45 + 360*spinDuration*24;
+            Vector3 targetAngle = new Vector3(startAngle.x,startAngle.y,targetZ);
             bool startColorAnim = true;
             infoText.text = LanguageManager.GetText("Spining");
+
+            
+
             while (time<=1)
             {
                 time += Time.fixedDeltaTime /spinDuration;
-                wheel.localEulerAngles = targetAngle*curve.Evaluate(time);
+                Vector3 currentAngle = targetAngle * curve.Evaluate(time);
 
-                if(time>=0.3f && time < 0.5f && startColorAnim)
+                wheel.localEulerAngles = currentAngle+startAngle;
+
+                if (time>=0.3f && time < 0.5f && startColorAnim)
                 {
                     startColorAnim = false;
                     StartCoroutine(SpinColorEffect(onColor,offColor));                  
@@ -161,9 +167,10 @@ namespace DarkJimmy.UI
 
                 yield return null;
             }
- 
+
             Index = (GetCurrentIndex() + 4) % catalog.GetProductLuckySpin.Count;
 
+            Debug.Log(GetSlotProduct().amount);
            // ProductStruct ps = GetSlotProduct();
 
             if (payType != PayType.Free)

@@ -260,6 +260,16 @@ PrefabInstance:
       propertyPath: m_SizeDelta.x
       value: -2960
       objectReference: {fileID: 0}
+    - target: {fileID: 6683964570595269165, guid: 18b8b0f3a260af44c8c63d29586364ec,
+        type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: -435.0005
+      objectReference: {fileID: 0}
+    - target: {fileID: 6683964570655485406, guid: 18b8b0f3a260af44c8c63d29586364ec,
+        type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: -99.99927
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 18b8b0f3a260af44c8c63d29586364ec, type: 3}
 --- !u!1 &656584338
@@ -292,10 +302,55 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   type: 0
-  musicMixer: {fileID: 0}
-  sound2DMixer: {fileID: 0}
-  sound3DMixer: {fileID: 0}
-  soundGroups: []
+  musicMixer: {fileID: 8656736816454164631, guid: e490cbeddf6e52449bbe02fec63ac62b,
+    type: 2}
+  ambientMixer: {fileID: -1621414111972452048, guid: e490cbeddf6e52449bbe02fec63ac62b,
+    type: 2}
+  playerSoundMixer: {fileID: 9203307018987751869, guid: e490cbeddf6e52449bbe02fec63ac62b,
+    type: 2}
+  sound2DMixer: {fileID: 1714100410363706890, guid: e490cbeddf6e52449bbe02fec63ac62b,
+    type: 2}
+  sound3DMixer: {fileID: -3484102083806739800, guid: e490cbeddf6e52449bbe02fec63ac62b,
+    type: 2}
+  "u\u0131SoundMixer": {fileID: -8525196487918923331, guid: e490cbeddf6e52449bbe02fec63ac62b,
+    type: 2}
+  soundGroups:
+  - groupID: Click Down
+    groupType: 5
+    group:
+    - {fileID: 8300000, guid: 6648e6c6a108ee540ad4b2934314062a, type: 3}
+  - groupID: Click Up
+    groupType: 5
+    group:
+    - {fileID: 8300000, guid: b7ea9638ea655ce4a8b4986c18e2751b, type: 3}
+  - groupID: Pop Up
+    groupType: 5
+    group:
+    - {fileID: 8300000, guid: 06f4a0cdced387042849e30ac5df488b, type: 3}
+  - groupID: Logo Intro
+    groupType: 5
+    group:
+    - {fileID: 8300000, guid: b214e02a43f02d24e99de49d6fc61d79, type: 3}
+  - groupID: Theme 1
+    groupType: 0
+    group:
+    - {fileID: 8300000, guid: d54cbeb2a911e4c40bd4440873916b2a, type: 3}
+  - groupID: Ambient 1
+    groupType: 1
+    group:
+    - {fileID: 8300000, guid: 307a62d7fc1fc1343ad7e2696df26519, type: 3}
+  - groupID: Card Flip
+    groupType: 5
+    group:
+    - {fileID: 8300000, guid: add2b213736d6c94b9df16ed74a7d920, type: 3}
+  - groupID: Turn Page
+    groupType: 5
+    group:
+    - {fileID: 8300000, guid: 9cb99c3ab719428418c9b00a60c5744b, type: 3}
+  - groupID: Jump
+    groupType: 2
+    group:
+    - {fileID: 8300000, guid: 8210169a156d9be439ce6f27f4ce0f6d, type: 3}
   musicClips: []
 --- !u!4 &656584340
 Transform:
@@ -305,7 +360,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 656584338}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 1808.362, y: 1067.8285, z: -40.517654}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -676,6 +731,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 2089192959690537563, guid: 8ed26d7c09adb8b4f8f3f947ef0268ac,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 12
+      objectReference: {fileID: 0}
     - target: {fileID: 8536292636079344848, guid: 8ed26d7c09adb8b4f8f3f947ef0268ac,
         type: 3}
       propertyPath: m_Name
@@ -1872,6 +1932,16 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1000386020}
     m_Modifications:
+    - target: {fileID: 3004465269451793397, guid: 1e15764998e58964a8f02a05afa0b39f,
+        type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: -435.0005
+      objectReference: {fileID: 0}
+    - target: {fileID: 3004465270915520999, guid: 1e15764998e58964a8f02a05afa0b39f,
+        type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: -99.99927
+      objectReference: {fileID: 0}
     - target: {fileID: 6435506489267723320, guid: 1e15764998e58964a8f02a05afa0b39f,
         type: 3}
       propertyPath: m_SizeDelta.x
@@ -2035,6 +2105,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_AnchorMax.y
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4231979320365027091, guid: 261b9f397a76cf94589f1b3d52e5c61f,
+        type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: -400.0005
       objectReference: {fileID: 0}
     - target: {fileID: 5304985534113293672, guid: 261b9f397a76cf94589f1b3d52e5c61f,
         type: 3}
