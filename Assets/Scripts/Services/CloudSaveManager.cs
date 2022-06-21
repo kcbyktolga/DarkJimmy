@@ -98,7 +98,6 @@ namespace DarkJimmy
 
             InitializeRemoteConfigAsync();
 
-           
         }
 
         #region Check Methods
@@ -523,13 +522,15 @@ namespace DarkJimmy
             switch (configResponse.requestOrigin)
             {
                 case ConfigOrigin.Default:
+           
                     break;
                 case ConfigOrigin.Cached:
+
                     break;
                 case ConfigOrigin.Remote:
                     AppVersion = RemoteConfigService.Instance.appConfig.GetString("AppVersion");
                     Debug.Log(AppVersion);
-                    Debug.Log("here");
+
                     break;
             }
         }
@@ -549,20 +550,33 @@ namespace DarkJimmy
     public class PlayerData
     {
         public string PlayerId;        
-        public int Gold = 0;
-        public int Diamond = 0;
-        public int Key = 0;
+        public int Gold { get; set; } = 0;
+        public int Diamond { get; set; } =0;
+        public int Key { get { return GetAllKeyCount(); } set { }}
         public int CurrentLevelIndex;
         public int CurrentCharacterIndex;
         public bool IsAccept;
         public bool HasPremium;
         public List<CharacterData> Characters;      
-        public List<Stage> Stages;  
+        public List<Stage> Stages;
+
+        private int keyCount = 0;
       
-        public int GetAllCharacterCount
+        public int GetAllKeyCount()
         {
-            get { return Characters.Count; }
+            int keyCount = 0;
+            for (int i = 0; i < Stages.Count; i++)
+            {
+                if (Stages[i].stageIsLocked)
+                    continue;
+
+                for (int j = 0; j < Stages[i].levels.Count; j++)
+                    keyCount += Stages[i].levels[j].keyCount;
+            }
+
+            return keyCount;
         }
+
     }
 
   

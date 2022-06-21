@@ -31,6 +31,7 @@ namespace DarkJimmy.UI
             for (int i = 0; i < container.childCount; i++)
             {
                 container.GetChild(i).gameObject.SetActive(true);
+                AudioManager.Instance.PlaySound("Card Flip");
 
                 yield return new WaitForSeconds(0.05f);
             }

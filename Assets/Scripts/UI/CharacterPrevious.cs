@@ -102,6 +102,7 @@ namespace DarkJimmy.UI
         }
         IEnumerator Moving(float endPosY)
         {
+            AudioManager.Instance.PlaySound("Jump");
             float time = 0;
             float currentPosY = endPosY;
 

@@ -12,6 +12,15 @@ namespace DarkJimmy.UI
         public override void Start()
         {
             base.Start();
+
+            AudioManager.Instance.MusicVolumeSet(SoundGroupType.Music,false);
+            AudioManager.Instance.MusicVolumeSet(SoundGroupType.Ambient, false);
+        }
+
+        private void OnDestroy()
+        {
+            AudioManager.Instance.MusicVolumeSet(SoundGroupType.Music, true);
+            AudioManager.Instance.MusicVolumeSet(SoundGroupType.Ambient, true);
         }
     }
 

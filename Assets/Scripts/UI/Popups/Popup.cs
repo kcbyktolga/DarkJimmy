@@ -12,6 +12,8 @@ namespace DarkJimmy.UI
         public override void Start()
         {
             SetPageName();
+
+            AudioManager.Instance.PlaySound("Pop Up");
         }
 
     }

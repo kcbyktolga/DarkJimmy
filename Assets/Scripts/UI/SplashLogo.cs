@@ -1,7 +1,5 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.SceneManagement;
+
 
 namespace DarkJimmy
 {
@@ -10,7 +8,7 @@ namespace DarkJimmy
         
         public void AnimationEvent()
         {
-            
+            AudioManager.Instance.PlaySound("Logo Intro");
         }
     }
 }

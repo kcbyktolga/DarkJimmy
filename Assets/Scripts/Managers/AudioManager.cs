@@ -12,18 +12,28 @@ namespace DarkJimmy
         [SerializeField]
         private AudioMixerGroup musicMixer;           //The music mixer group
         [SerializeField]
+        private AudioMixerGroup ambientMixer;         //The sound 3D mixer group
+        [SerializeField]
+        private AudioMixerGroup playerSoundMixer;     //The sound 3D mixer group
+        [SerializeField]
         private AudioMixerGroup sound2DMixer;         //The sound 2D mixer group
         [SerializeField]
         private AudioMixerGroup sound3DMixer;         //The sound 3D mixer group
+        [SerializeField]
+        private AudioMixerGroup uýSoundMixer;         //The sound 3D mixer group
         [SerializeField]
         private List<SoundGroup> soundGroups;
         [SerializeField]
         private List<AudioClip> musicClips;
 
         private AudioSource musicSource;
+        private AudioSource ambientSource;
+        private AudioSource playerSoundSource;
         private AudioSource sound2DSource;
         private AudioSource sound3DSource;
-        private Dictionary<string, List<AudioClip>> soundGroupDictionary = new Dictionary<string, List<AudioClip>>();
+        private AudioSource uýSoundSource;
+       // private Dictionary<string, List<AudioClip>> soundGroupDictionary = new Dictionary<string, List<AudioClip>>();
+        private Dictionary<string, SoundGroup> soundGroupDictionary = new Dictionary<string, SoundGroup>();
 
         public delegate void SetVolume(UI.VolumeType type);
         public SetVolume setVolume;
@@ -32,14 +42,17 @@ namespace DarkJimmy
             base.Awake();
             SetSoundGroup();
             musicSource = gameObject.AddComponent<AudioSource>();
+            ambientSource= gameObject.AddComponent<AudioSource>();
+            playerSoundSource= gameObject.AddComponent<AudioSource>();
             sound2DSource = gameObject.AddComponent<AudioSource>();
             sound3DSource = gameObject.AddComponent<AudioSource>();
+            uýSoundSource= gameObject.AddComponent<AudioSource>();
         }
         private void Start()
         {
             SetAdiouManagerSource();
 
-            // SceneManager.activeSceneChanged += Play;
+            //SceneManager.onChangedScene += ChangeMusicAndAmbient;
             setVolume += SetSourceStatus;
         }
 
@@ -48,36 +61,61 @@ namespace DarkJimmy
         public void SetAdiouManagerSource()
         {
             SetSource(ref musicSource, ref musicMixer, true, UI.VolumeType.Music);
+            SetSource(ref ambientSource, ref ambientMixer, true, UI.VolumeType.Music);
+            SetSource(ref playerSoundSource, ref playerSoundMixer, false, UI.VolumeType.Sound);
             SetSource(ref sound2DSource, ref sound2DMixer, false,UI.VolumeType.Sound);
             SetSource(ref sound3DSource, ref sound3DMixer, false, UI.VolumeType.Sound);
+            SetSource(ref uýSoundSource, ref uýSoundMixer, false, UI.VolumeType.Sound);
         }
         public void PlaySound(string soundName)
         {
-            if (!sound2DSource.enabled)
+            AudioClip clip = GetClipFromName(soundName.Trim(), out SoundGroupType type);
+            AudioSource source = GetAudioSource(type);
+
+            if (!source.enabled)
                 return;
 
-            sound2DSource.PlayOneShot(GetClipFromName(soundName));
+            source.PlayOneShot(clip);
+        }
+        public void PlayMusic(string soundName)
+        {
+            AudioClip clip = GetClipFromName(soundName.Trim(), out SoundGroupType type);
+            AudioSource source = GetAudioSource(type);
+
+            Debug.Log(source);
+            Debug.Log(clip.name);
+
+            if (!source.enabled)
+                return;
+           
+            source.clip = clip;
+            source.Play();
+    
         }
         public void PauseMusic()
         {
-            if (!musicSource.enabled)
-                return;
+            if (musicSource.enabled && musicSource.isPlaying)
+                musicSource.Pause();
 
-            musicSource.Pause();
+            if (ambientSource.enabled && musicSource.isPlaying)
+                ambientSource.Pause();
+
         }
         public void PlayMusic()
         {
-            if (!musicSource.enabled)
-                return;
+            if (musicSource.enabled && !musicSource.isPlaying)
+                musicSource.Play();
 
-            musicSource.Play();
+            if (ambientSource.enabled && !musicSource.isPlaying)
+                ambientSource.Play();
         }
-        public void Stop()
+        public void StopMusic()
         {
-            if (!musicSource.enabled)
-                return;
+            if (musicSource.enabled && musicSource.isPlaying)
+                musicSource.Stop();
 
-            musicSource.Stop();
+            if (ambientSource.enabled && musicSource.isPlaying)
+                ambientSource.Stop();
         }
 
         private void SetSourceStatus(UI.VolumeType volumeType)
@@ -85,11 +123,14 @@ namespace DarkJimmy
             switch (volumeType)
             {
                 case UI.VolumeType.Music:
-                    SetSource(ref musicSource, ref musicMixer, true, volumeType);               
+                    SetSource(ref musicSource, ref musicMixer, true, volumeType);
+                    SetSource(ref ambientSource, ref ambientMixer, true, volumeType);
                     break;
                 case UI.VolumeType.Sound:
+                    SetSource(ref playerSoundSource, ref playerSoundMixer, false, volumeType);
                     SetSource(ref sound2DSource, ref sound2DMixer, false, volumeType);
                     SetSource(ref sound3DSource, ref sound3DMixer, false, volumeType);
+                    SetSource(ref uýSoundSource, ref uýSoundMixer, false, volumeType);
                     break;
                 default:
                     break;
@@ -98,11 +139,13 @@ namespace DarkJimmy
         #endregion
 
         #region Private Methods
-        private AudioClip GetClipFromName(string soundName)
+        private AudioClip GetClipFromName(string soundName, out SoundGroupType type)
         {
+            type = 0;
             if (soundGroupDictionary.ContainsKey(soundName))
             {
-                List<AudioClip> sounds = soundGroupDictionary[soundName];
+                type = soundGroupDictionary[soundName].groupType;
+                List<AudioClip> sounds = soundGroupDictionary[soundName].group;
                 return sounds[UnityEngine.Random.Range(0, sounds.Count)];
             }
             return null;
@@ -139,18 +182,29 @@ namespace DarkJimmy
         {
             foreach (SoundGroup soundGroup in soundGroups)
             {
-                soundGroupDictionary.Add(soundGroup.groupID, soundGroup.group);
+                soundGroupDictionary.Add(soundGroup.groupID, soundGroup);
             }
         }
-        private void PlayMusic(AudioClip musicClip)
+
+        //private void ChangeMusicAndAmbient()
+        //{
+         
+        //    if (SceneManager.GetActiveSceneName()=="Lobby")
+        //    {
+        //        // remote config den belirlenecek..
+        //        PlayMusic("Theme 1");
+        //        PlayMusic("Ambient 1");
+        //    }
+        //}
+
+        public void MusicVolumeSet(SoundGroupType type, bool isOn)
         {
-            if (musicSource == null || !musicSource.enabled || musicClip == null)
+            AudioSource source = GetAudioSource(type);
+            if (!source.enabled)
                 return;
 
-            musicSource.clip = musicClip;
-            musicSource.Play();
-
-
+            float multiple = isOn ? 4 : 0.25f;
+            source.volume *= multiple;
         }
         private void SetSource(ref AudioSource source, ref AudioMixerGroup mixerGroup, bool isLoop,UI.VolumeType type)
         {
@@ -160,6 +214,19 @@ namespace DarkJimmy
             source.loop = isLoop;
             source.enabled = LocalSaveManager.GetBoolValue(LocalSaveManager.GetToggleName(type), true);
         }
+
+        private AudioSource GetAudioSource(SoundGroupType groupType)
+        {
+            return groupType switch
+            {
+                SoundGroupType.Ambient => ambientSource,
+                SoundGroupType.Player => playerSoundSource,
+                SoundGroupType.Sound2D => sound2DSource,
+                SoundGroupType.Sound3D => sound3DSource,
+                SoundGroupType.SoundUI => uýSoundSource,
+                _ => musicSource,
+            };
+        }
         #endregion
 
     }
@@ -167,7 +234,18 @@ namespace DarkJimmy
     public class SoundGroup
     {
         public string groupID;
+        public SoundGroupType groupType;
         public List<AudioClip> group;
+    }
+
+    public enum SoundGroupType
+    {
+        Music,
+        Ambient,
+        Player,
+        Sound2D,
+        Sound3D,
+        SoundUI
     }
 }
 

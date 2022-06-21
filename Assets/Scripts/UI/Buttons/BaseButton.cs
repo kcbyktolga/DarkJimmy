@@ -46,12 +46,7 @@ namespace DarkJimmy.UI
         {
             if (baseTransform == null)
                 return;
-
-            //originalScale = baseTransform.localScale;
-            isClick = true;
-            // OnDrag(eventData);
-            // clickTime = clickDuration + Time.time; 
-
+            ClickDownSound();
             StartCoroutine(Scale(originalScale * scaleMultiple));
         }
         public void OnDrag(PointerEventData eventData)
@@ -69,7 +64,9 @@ namespace DarkJimmy.UI
         {       
             if (baseTransform == null)
                 return;
+            ClickUpSound();
             StartCoroutine(Scale(originalScale));
+
         }
         private IEnumerator Scale(Vector2 endScale)
         {
@@ -88,6 +85,15 @@ namespace DarkJimmy.UI
                 baseTransform.localScale = originalScale;
         }
 
+
+        public virtual void ClickDownSound()
+        {
+            AudioManager.Instance.PlaySound("Click Down");
+        }
+        public virtual void ClickUpSound()
+        {
+            AudioManager.Instance.PlaySound("Click Up");
+        }
     }
 }
 

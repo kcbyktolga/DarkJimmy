@@ -407,6 +407,7 @@ namespace DarkJimmy
         {
             get
             {
+                
                 return ((Application.platform == RuntimePlatform.IPhonePlayer) ? IOSAdUnitId : AndroidAdUnitId).Trim();
             }
         }

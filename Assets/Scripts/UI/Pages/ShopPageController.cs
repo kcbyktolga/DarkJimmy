@@ -75,6 +75,8 @@ namespace DarkJimmy.UI
             layout.enabled = false;
             layout.enabled = true;
             Canvas.ForceUpdateCanvases();
+
+           // AudioManager.Instance.PlaySound("Turn Page");
          
         }
 

@@ -9,6 +9,12 @@ namespace DarkJimmy.UI
     {      
         public Image priceIcon;
         public string productId;
+
+        public override void ClickDownSound()
+        {
+            //base.ClickDownSound();
+            AudioManager.Instance.PlaySound("Card Flip");
+        }
     }
 
 }
