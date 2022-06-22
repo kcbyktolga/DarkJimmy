@@ -15,38 +15,9 @@ namespace DarkJimmy
         public TabButton tabButton;
         public List<PageStruct> Pages;
         public List<PowerUpStruct> GetPowerUps;
-        public List<ProductStruct> GetProductLuckySpin;
+        public List<LuckyProduct> GetProductLuckySpin;
     
-        private Dictionary<PageType, string> PagePaths = new Dictionary<PageType, string>
-        {
-             {PageType.Grid, "Pages/GridPage"},
-             {PageType.Horizontal, "Pages/HorizontalPage"},
-             {PageType.Single, "Pages/SinglePage"},
-  
-        };
-        private Dictionary<ProductShape, string> ProductPaths = new Dictionary<ProductShape, string>
-        {
-             {ProductShape.HorizontalSingle, "Products/HorizontalProductSingle"},
-             {ProductShape.HorizontalDuo, "Products/HorizontalProductDuo"},
-             {ProductShape.GridSingle, "Products/GridProductSingle"},
-             {ProductShape.GridDuo, "Products/GridProductDuo"},
-
-        };
-        public ShopProductPage GetPage(PageType type)
-        {
-            if (PagePaths.TryGetValue(type, out string path))
-                return Resources.Load<ShopProductPage>(path);
-           
-            return null;
-        }
-        public UI.Product GetProduct(ProductShape type)
-        {
-            if (ProductPaths.TryGetValue(type, out string path))
-                return Resources.Load<UI.Product>(path);
-
-            return null;
-        }
-
+    
         [ContextMenu("Set Product ID")]
         private void SetProductId()
         {
@@ -74,7 +45,6 @@ namespace DarkJimmy
     {
         public string pageName;
         public Sprite pageIcon;
-        public PageType pageType;
         public List<ProductStruct> products;
     }
     [Serializable]
@@ -86,8 +56,16 @@ namespace DarkJimmy
         public string productName;
         public string productTitle;
         public PayType payType;
-        public ProductShape productShape;
         public ProductType productType;
+        public List<Sprite> productIcon;
+    }
+    [Serializable]
+    public class LuckyProduct
+    {
+        public TypeofProduct typeOfProduct;
+        public int luckyFactor;
+        public int amount;
+        public string productName;
         public List<Sprite> productIcon;
     }
 
@@ -108,22 +86,7 @@ namespace DarkJimmy
     {
         Free,
         Paid
-    }
-    public enum PageType
-    {
-        Grid,
-        Horizontal,
-        Single
-    }
-
-    public enum ProductShape
-    {
-        GridSingle,
-        GridDuo,
-        HorizontalSingle,
-        HorizontalDuo
-    }
-
+    } 
     public enum TypeofProduct
     {
         Gold,

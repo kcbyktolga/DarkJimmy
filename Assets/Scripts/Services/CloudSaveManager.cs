@@ -29,18 +29,11 @@ namespace DarkJimmy
 
         public struct UserAttributes
         {
-            //public bool expansionFlag;
+            
         }
         public struct AppAttributes
         {
            
-        }
-        public struct FilterAttributes
-        {
-            // Optionally declare variables for attributes to filter on any of following parameters:
-            public string[] key;
-            public string[] type;
-            public string[] schemaId;
         }
 
         public string AppVersion { get; set; } = string.Empty;
@@ -199,6 +192,7 @@ namespace DarkJimmy
             {
                 case GemType.Gold:
                     Instance.PlayerDatas.Gold += amount;
+
                     break;
                 case GemType.Diamond:
                     Instance.PlayerDatas.Diamond += amount;
@@ -207,6 +201,8 @@ namespace DarkJimmy
 
             if (Enum.TryParse(type.ToString(), out Stats stats))
                 system.updateStats(stats, GetGemCount(type));
+
+            AudioManager.Instance.PlaySound($"Gem");
 
             await SaveData();
         }
@@ -224,6 +220,8 @@ namespace DarkJimmy
 
             if (Enum.TryParse(type.ToString(), out Stats stats))
                system.updateStats(stats, GetGemCount(type));
+
+            AudioManager.Instance.PlaySound($"Gem");
 
             await SaveData();
         }

@@ -14,9 +14,8 @@ namespace DarkJimmy
         private StandardPurchasingModule module;
         private ConfigurationBuilder builder;
         private CloudSaveManager saveManager;
-        private Dictionary<string, ProductStruct> GetProductStruct = new Dictionary<string, ProductStruct>();
+        private readonly Dictionary<string, ProductStruct> GetProductStruct = new Dictionary<string, ProductStruct>();
 
-   
         private void Start()
         {
             saveManager = CloudSaveManager.Instance;
@@ -58,7 +57,6 @@ namespace DarkJimmy
         {
             return controller.products.WithID(id);
         }
-
         public void OnInitialized(IStoreController controller, IExtensionProvider extensions)
         {
             this.controller = controller;

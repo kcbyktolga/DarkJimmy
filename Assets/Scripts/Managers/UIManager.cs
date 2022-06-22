@@ -17,11 +17,9 @@ namespace DarkJimmy
 
         private Menu currentMenu;
         private Menu lastMenu;
-        private Stack<Menu> menuStack = new Stack<Menu>();
+        private readonly Stack<Menu> menuStack = new Stack<Menu>();
         
         private readonly Vector2 canvasResolition =  new Vector2(2960,1440);
-
-       // public UpdateState addCollectable;
 
         private void Start()
         {

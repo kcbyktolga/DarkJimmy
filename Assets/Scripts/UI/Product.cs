@@ -27,7 +27,7 @@ namespace DarkJimmy.UI
 
 
         private Coroutine Timer;
-        private Dictionary<RewardType, int> GetRewardAmount = new Dictionary<RewardType, int>();
+        private readonly Dictionary<RewardType, int> GetRewardAmount = new Dictionary<RewardType, int>();
         private RewardType rewardType;       
         public void SetProduct(ProductStruct ps)
         {

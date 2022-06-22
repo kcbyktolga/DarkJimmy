@@ -9,64 +9,44 @@ namespace DarkJimmy
         [Header("AdManager Property")]
         [SerializeField]
         private string MaxSdkKey;
-        //[SerializeField] 
-        //private string androidGameId;
-        //[SerializeField] 
-        //private string iOSGameId;
-        //[SerializeField] 
-        //private bool testMode = true;
         [Header("Ads Units")]
         [SerializeField]
         private AdsUnit Banner;
         [SerializeField]
         private AdsUnit Interstitial;
         [SerializeField]
-        private AdsUnit MREC;
-        [SerializeField]
         private List<AdsUnit> Rewardeds;
 
 
         private bool isBannerShowing;
-        private bool isMRecShowing;
 
         private int interstitialRetryAttempt;
         private int rewardedRetryAttempt;
-        private int rewardedInterstitialRetryAttempt;
+        private readonly int rewardedInterstitialRetryAttempt;
 
-        //private string GameId
-        //{
-        //    get { return (Application.platform == RuntimePlatform.IPhonePlayer) ? iOSGameId : androidGameId; }
-        //}
-
-        private Dictionary<string, RewardType> GetRewardType = new Dictionary<string, RewardType>();
+        private readonly Dictionary<string, RewardType> GetRewardType = new Dictionary<string, RewardType>();
         public delegate void RewardOnEarned(RewardType reward);
         public RewardOnEarned rewardDelegate;
         public override void Awake()
         {
             base.Awake();
-
-            InitializeAds();
-           
+            InitializeAds();        
         }
         public void InitializeAds()
         {
 
-            MaxSdk.SetSdkKey(MaxSdkKey);
-            MaxSdk.InitializeSdk();
-
             MaxSdkCallbacks.OnSdkInitializedEvent += sdkConfiguration =>
             {
-                // AppLovin SDK is initialized, configure and start loading ads.
-                Debug.Log("MAX SDK Initialized");
-
                 InitializeInterstitialAds();
                 InitializeRewardedAds();
-                //InitializeRewardedInterstitialAds();
-                InitializeBannerAds();
-                //InitializeMRecAds();
+                InitializeBannerAds(); 
             };
 
-           
+            MaxSdk.SetSdkKey(MaxSdkKey);
+            MaxSdk.InitializeSdk();
+            Debug.Log("here");
+
+
         }
 
         #region Banner Ad 
@@ -324,74 +304,6 @@ namespace DarkJimmy
 
         #endregion
 
-        #region MREC Ad Methods
-
-        private void InitializeMRecAds()
-        {
-
-            // Attach Callbacks
-            MaxSdkCallbacks.MRec.OnAdLoadedEvent += OnMRecAdLoadedEvent;
-            MaxSdkCallbacks.MRec.OnAdLoadFailedEvent += OnMRecAdFailedEvent;
-            MaxSdkCallbacks.MRec.OnAdClickedEvent += OnMRecAdClickedEvent;
-            MaxSdkCallbacks.MRec.OnAdRevenuePaidEvent += OnMRecAdRevenuePaidEvent;
-
-            // MRECs are automatically sized to 300x250.
-            MaxSdk.CreateMRec(MREC.AdUnit, MaxSdkBase.AdViewPosition.BottomCenter);
-
-            //MRECSetPosition(SystemManager.Instance.mrecPosition);
-
-        }
-
-        private void MRECSetPosition(Vector2 position)
-        {
-            //MaxSdk.UpdateMRecPosition(MREC.AdUnit, position.x, position.y);
-            MaxSdk.CreateMRec(MREC.AdUnit, position.x, position.y);
-        }
-        public void ToggleMRecVisibility()
-        {
-
-            if (!isMRecShowing)
-                MaxSdk.ShowMRec(MREC.AdUnit);
-            else
-                MaxSdk.HideMRec(MREC.AdUnit);
-
-    
-            isMRecShowing = !isMRecShowing;
-        }
-        private void OnMRecAdLoadedEvent(string adUnitId, MaxSdkBase.AdInfo adInfo)
-        {
-            // MRec ad is ready to be shown.
-            // If you have already called MaxSdk.ShowMRec(MRecAdUnitId) it will automatically be shown on the next MRec refresh.
-            Debug.Log("MRec ad loaded");
-        }
-        private void OnMRecAdFailedEvent(string adUnitId, MaxSdkBase.ErrorInfo errorInfo)
-        {
-            // MRec ad failed to load. MAX will automatically try loading a new ad internally.
-            Debug.Log("MRec ad failed to load with error code: " + errorInfo.Code);
-        }
-        private void OnMRecAdClickedEvent(string adUnitId, MaxSdkBase.AdInfo adInfo)
-        {
-            Debug.Log("MRec ad clicked");
-        }
-        private void OnMRecAdRevenuePaidEvent(string adUnitId, MaxSdkBase.AdInfo adInfo)
-        {
-            // MRec ad revenue paid. Use this callback to track user revenue.
-            Debug.Log("MRec ad revenue paid");
-
-            // Ad revenue
-            double revenue = adInfo.Revenue;
-
-            // Miscellaneous data
-            string countryCode = MaxSdk.GetSdkConfiguration().CountryCode; // "US" for the United States, etc - Note: Do not confuse this with currency code which is "USD"!
-            string networkName = adInfo.NetworkName; // Display name of the network that showed the ad (e.g. "AdColony")
-            string adUnitIdentifier = adInfo.AdUnitIdentifier; // The MAX Ad Unit ID
-            string placement = adInfo.Placement; // The placement this ad's postbacks are tied to
-
-           // TrackAdRevenue(adInfo);
-        }
-
-        #endregion
-
         private void OnDestroy()
         {
             Destroy(MaxSdkCallbacks.Instance);
@@ -406,8 +318,7 @@ namespace DarkJimmy
         public string AdUnit
         {
             get
-            {
-                
+            {            
                 return ((Application.platform == RuntimePlatform.IPhonePlayer) ? IOSAdUnitId : AndroidAdUnitId).Trim();
             }
         }

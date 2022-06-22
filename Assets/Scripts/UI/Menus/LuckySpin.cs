@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 using System;
+using UnityEngine.UI;
 
 namespace DarkJimmy.UI
 {
@@ -24,50 +25,94 @@ namespace DarkJimmy.UI
         [SerializeField]
         private TMP_Text infoText;
         [SerializeField]
+        private TMP_Text spinText;
+        [SerializeField]
         private float speed;
         [SerializeField]
         private int speedMultiple;
         [SerializeField]
-        private float effectDuration;
-        [SerializeField]
-        private Color onColor;
-        [SerializeField]
-        private Color offColor;
-        [SerializeField]
-        private Sprite darkBackground;
-        [SerializeField]
-        private Sprite lightBackground;
+        private float effectDuration;  
+    
         [SerializeField]
         private int spinDuration = 2;
+        [SerializeField]
+        private GameObject paidGroup;
+        [SerializeField]
+        private GameObject freeGroup;
 
-        private PayType payType;
+        [SerializeField]
+        private SpinSlot rewardPopup;
+        [SerializeField]
+        private BaseButton claimButton;
+
+   
         private int Index { get; set; } = 0;
+        private int Seed { get { return UnityEngine.Random.Range(0, 100);} }
         private bool IsSpin { get; set; } = false;
 
-        private List<SpinSlot> slots = new List<SpinSlot>();
-
+        private readonly List<SpinSlot> slots = new List<SpinSlot>();
+        private List<int> luckFactor = new List<int>();
+     
         private Catalog catalog;
         private CloudSaveManager csm;
+        private SystemManager system;
         private RewardType rewardType;
         private Coroutine Timer;
         private DateTime resetTime;
-
+        private PayType payType;
+        private LuckyProduct luckyProduct;
         public override void Start()
         {
+            system = SystemManager.Instance;
             csm = CloudSaveManager.Instance;
             catalog = csm.GetDefaultData().Catalog;
             gemType = GemType.Diamond;
             rewardType = RewardType.LuckySpin;
 
-            payType = !IsTimeOut() ? PayType.Paid : PayType.Free;
+            claimButton.OnClick(ClaimReward);
 
+            claimButton.SetTabButtonName(LanguageManager.GetText("Claim"));
+            spinText.text = LanguageManager.GetText("Spin Now");
+
+            payType = !IsTimeOut() ? PayType.Paid : PayType.Free;
+ 
             if (payType != PayType.Free)
                 StartCoroutine(TimeUpdate());
             else
-                infoText.text = LanguageManager.GetText(PayType.Free.ToString());
+                infoText.text = string.Empty;
 
             CreateSlot();
+            ShuffledElement();
             purchaseButton.OnClick(SpinWheel);
+        }
+        private void CreateSlot()
+        {
+            float diffAngle = 360 / catalog.GetProductLuckySpin.Count;
+            float angle = 0;
+
+            for (int i = 0; i < catalog.GetProductLuckySpin.Count; i++)
+            {
+                LuckyProduct lp = catalog.GetProductLuckySpin[i];
+                SpinSlot slot = Instantiate(prefab, wheel);
+                slot.SetSlot(lp);
+
+                Sprite sprite = system.GetProductBackground(lp.typeOfProduct); 
+                slot.SlotBackground(sprite);
+
+                slot.transform.eulerAngles = new Vector3(0, 0, angle);
+                angle += diffAngle;
+
+                slots.Add(slot);
+
+                int factor = lp.luckyFactor;
+
+                for (int j = 0; j < factor; j++)
+                    luckFactor.Add(i);
+            }
+        }
+        private void ShuffledElement()
+        {
+            luckFactor = new List<int>(Utility.ShuffleArray(luckFactor.ToArray(),Seed));  
         }
         private void StartTimer()
         {
@@ -79,30 +124,11 @@ namespace DarkJimmy.UI
             StopCoroutine(nameof(TimeUpdate));
             Timer = null;
         }
-        private void CreateSlot()
-        {
-            float diffAngle = 360 / catalog.GetProductLuckySpin.Count;
-            float angle = 0;
-
-            for (int i = 0; i < catalog.GetProductLuckySpin.Count; i++)
-            {
-                SpinSlot slot = Instantiate(prefab, wheel);
-                slot.SetSlot(catalog.GetProductLuckySpin[i]);
-
-                Sprite sprite = i % 2 == 0 ? lightBackground : darkBackground;
-                slot.SlotBackground(sprite);
-
-                slot.transform.eulerAngles = new Vector3(0, 0, angle);
-                angle += diffAngle;
-
-                slots.Add(slot);
-            }
-        }
         private void FreeSpin(RewardType type)
         {
             StartCoroutine(Spin());
 
-            resetTime = DateTime.Now.AddMinutes(1);
+            resetTime = DateTime.Now.AddMinutes(120);
             csm.SetResetTime(resetTime,rewardType);
             payType = PayType.Paid;
         }
@@ -123,7 +149,6 @@ namespace DarkJimmy.UI
             }
             else
                 AdManager.Instance.ShowRewardedAd(rewardType, FreeSpin);
-
         }
         private void FixedUpdate()
         {
@@ -137,14 +162,20 @@ namespace DarkJimmy.UI
             IsSpin = !IsSpin;
             purchaseButton.button.interactable = !IsSpin; 
             float time = 0;
-            int index = GetCurrentIndex() + UnityEngine.Random.Range(0, catalog.GetProductLuckySpin.Count);
+      
             Vector3 startAngle = wheel.localEulerAngles;
-            float targetZ = startAngle.z + index*45 + 360*spinDuration*24;
+
+            float targetZ = GetTargetStep(GetRandomElementIndex())*45 + 360*spinDuration*24;
+
+             Index = (GetIndex(startAngle.z + targetZ)+3)% catalog.GetProductLuckySpin.Count;
+           
+            luckyProduct = catalog.GetProductLuckySpin[Index];
+            rewardPopup.SetSlot(luckyProduct);
+
             Vector3 targetAngle = new Vector3(startAngle.x,startAngle.y,targetZ);
+
             bool startColorAnim = true;
             infoText.text = LanguageManager.GetText("Spining");
-
-            
 
             while (time<=1)
             {
@@ -156,35 +187,34 @@ namespace DarkJimmy.UI
                 if (time>=0.3f && time < 0.5f && startColorAnim)
                 {
                     startColorAnim = false;
-                    StartCoroutine(SpinColorEffect(onColor,offColor));                  
+                    StartCoroutine(SpinColorEffect(!startColorAnim));                  
                 }
 
                 if (time>=0.7f && !startColorAnim)
                 {
                     startColorAnim = true;
-                    StartCoroutine(SpinColorEffect(offColor, onColor));
+                    StartCoroutine(SpinColorEffect(!startColorAnim));
                 }
 
                 yield return null;
             }
 
-            Index = (GetCurrentIndex() + 4) % catalog.GetProductLuckySpin.Count;
-
-            Debug.Log(GetSlotProduct().amount);
-           // ProductStruct ps = GetSlotProduct();
+            ShuffledElement();
 
             if (payType != PayType.Free)
                 StartCoroutine(TimeUpdate());
 
-            yield return new WaitForSeconds(5);
-
+            yield return new WaitForSeconds(1);
+            rewardPopup.gameObject.SetActive(true);
             IsSpin = !IsSpin;
             purchaseButton.button.interactable =!IsSpin;
-
         }
-        private IEnumerator SpinColorEffect(Color startColor, Color endColor)
+        private IEnumerator SpinColorEffect(bool isOn)
         {
             float time = 0;
+
+            Color startColor = SystemManager.Instance.GetWhiteAlfaColor(isOn);
+            Color endColor = SystemManager.Instance.GetWhiteAlfaColor(!isOn);
 
             while (time<=1)
             {
@@ -201,29 +231,37 @@ namespace DarkJimmy.UI
                     slots[i].text[0].color = color0;
                     slots[i].text[1].color = color1;
                 }
+
                 yield return null;
             }
         }
         private IEnumerator TimeUpdate()
-        {          
+        {
+            SetSpinButton();
+
             while (!IsTimeOut())
             {         
                 TimeSpan diffTime = csm.GetResetTime(rewardType).Subtract(DateTime.Now);
 
                string timer = diffTime.Hours > 0 ? $"{diffTime.Hours}{LanguageManager.GetText("sa")} : {diffTime.Minutes}{LanguageManager.GetText("d")}" : $"{diffTime.Minutes}{LanguageManager.GetText("dk")} : {diffTime.Seconds}{LanguageManager.GetText("sn")}";
 
-                infoText.text = $"{LanguageManager.GetText("Remaining")}: {timer}";
+                if(!IsSpin)
+                    infoText.text = $"{LanguageManager.GetText("Remaining")}: {timer}";
 
                 yield return new WaitForSeconds(1);
             }
             payType = PayType.Free;
-            infoText.text = LanguageManager.GetText(PayType.Free.ToString());
-        }
-        private int GetCurrentIndex()
-        {
-            float zAngle = wheel.transform.eulerAngles.z;
+            infoText.text = string.Empty;
 
-            float absAngle = Mathf.Abs(zAngle % 360);
+            SetSpinButton();
+        }
+        private LuckyProduct GetSlotProduct()
+        {
+            return catalog.GetProductLuckySpin[Index];
+        }
+        private int GetIndex(float angle)
+        {
+            float absAngle = Mathf.Abs(angle % 360);
 
             if (absAngle < 22.5f)
                 return 0;
@@ -244,22 +282,70 @@ namespace DarkJimmy.UI
             else
                 return 0;
         }
-        private ProductStruct GetSlotProduct()
+        private int GetTargetStep(int index)
+        {  
+            int diff = GetIndex(wheel.localEulerAngles.z)-5 - index;
+            int step = diff % catalog.GetProductLuckySpin.Count;
+            return step;
+        }
+        private int GetRandomElementIndex()
         {
-            return catalog.GetProductLuckySpin[Index];
+            int index =UnityEngine.Random.Range(0,luckFactor.Count);
+            return luckFactor[index];
         }
         private bool IsTimeOut()
         {
           return  DateTime.Now >= csm.GetResetTime(rewardType);
         }
+        private void ClaimReward()
+        {
+            if(Enum.TryParse(luckyProduct.typeOfProduct.ToString(), out GemType _gemType))
+                csm.AddGem(_gemType, luckyProduct.amount);
+
+            else if (luckyProduct.typeOfProduct.Equals(TypeofProduct.Costume))
+            {
+                
+            } 
+        }
+        private void SetSpinButton()
+        {
+            freeGroup.SetActive(IsTimeOut());
+            paidGroup.SetActive(!IsTimeOut());
+        }
         private void OnDestroy()
         {
+            if (IsSpin)
+                ClaimReward();
+
             StopTimer();
         }
 
     }
 
-  
-    
+    public static class Utility
+    {
+        public static T[] ShuffleArray<T>(T[] array, int seed)
+        {
+            System.Random prng = new System.Random(seed);
+
+            for (int i = 0; i < array.Length - 1; i++)
+            {
+                int randomIndex = prng.Next(i, array.Length);
+                T tempItem = array[randomIndex];
+                array[randomIndex] = array[i];
+                array[i] = tempItem;
+            }
+
+            return array;
+        }
+
+    }
+
+
+
+
+
+
+
 }
 

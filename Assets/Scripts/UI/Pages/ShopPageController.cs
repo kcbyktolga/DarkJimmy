@@ -77,8 +77,10 @@ namespace DarkJimmy.UI
             Canvas.ForceUpdateCanvases();
 
            // AudioManager.Instance.PlaySound("Turn Page");
-         
+
         }
+
+       
 
         private void OnDestroy()
         {

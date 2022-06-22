@@ -33,7 +33,7 @@ namespace DarkJimmy
         private AudioSource sound3DSource;
         private AudioSource uýSoundSource;
        // private Dictionary<string, List<AudioClip>> soundGroupDictionary = new Dictionary<string, List<AudioClip>>();
-        private Dictionary<string, SoundGroup> soundGroupDictionary = new Dictionary<string, SoundGroup>();
+        private readonly Dictionary<string, SoundGroup> soundGroupDictionary = new Dictionary<string, SoundGroup>();
 
         public delegate void SetVolume(UI.VolumeType type);
         public SetVolume setVolume;
@@ -186,25 +186,27 @@ namespace DarkJimmy
             }
         }
 
-        //private void ChangeMusicAndAmbient()
-        //{
-         
-        //    if (SceneManager.GetActiveSceneName()=="Lobby")
-        //    {
-        //        // remote config den belirlenecek..
-        //        PlayMusic("Theme 1");
-        //        PlayMusic("Ambient 1");
-        //    }
-        //}
-
         public void MusicVolumeSet(SoundGroupType type, bool isOn)
         {
             AudioSource source = GetAudioSource(type);
             if (!source.enabled)
                 return;
 
-            float multiple = isOn ? 4 : 0.25f;
-            source.volume *= multiple;
+            float multiple = isOn ? 2 : 0.5f;
+            float volume = source.volume * multiple;
+
+            StartCoroutine (SoundLerp(source,volume));
+        }
+
+        IEnumerator SoundLerp(AudioSource source, float volume)
+        {
+            float time = 0;
+            while (time<=1)
+            {
+                time += Time.deltaTime / 0.5f;
+                source.volume = Mathf.Lerp(source.volume,volume,time);
+                yield return null;
+            }
         }
         private void SetSource(ref AudioSource source, ref AudioMixerGroup mixerGroup, bool isLoop,UI.VolumeType type)
         {
