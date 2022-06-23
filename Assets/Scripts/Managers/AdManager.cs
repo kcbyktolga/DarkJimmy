@@ -44,9 +44,7 @@ namespace DarkJimmy
 
             MaxSdk.SetSdkKey(MaxSdkKey);
             MaxSdk.InitializeSdk();
-            Debug.Log("here");
-
-
+ 
         }
 
         #region Banner Ad 

@@ -9,128 +9,159 @@ namespace DarkJimmy
     {
         [SerializeField]
         private GameObject GameElement;
-     
-        public int goldCount;
-        public int keyCount;
-        public float mana;
-        public float energy;
-        public int timer;
-        public int diamond;
-        public int jumpCount;
 
-        float maxMana;
-        float maxEnergy;
-        public float Mana 
-        { 
-            get 
-            { 
-                return mana; 
-            }           
-            set 
-            {
-                if (value > maxMana)
-                    mana = maxMana;
-                else
-                    mana = value;
-            } 
-        }
-        public float Energy
+        public delegate void JumpCountUpdate(int count);
+        public JumpCountUpdate jumpCountUpdate;
+
+        public delegate void StartGame();
+        public StartGame starter;
+
+        public int Gold;
+        public int Key;
+        public int Mana;
+        public int Energy;
+        public int Timer;
+        public int Diamond;
+        public int JumpCount;
+        public int Speed;
+
+        private int maxMana;
+        private int maxEnergy;
+        private int maxJumpCount;
+        private int maxSpeed;
+        private int maxTime;
+
+        private int countDown;
+        public int CountDown
         {
-            get
-            {
-                return energy;
-            }
+            get { return countDown; }
             set
             {
-                if (value > maxEnergy)
-                    energy = maxEnergy;
-                else
-                    energy = value;
+                countDown = value;
             }
         }
-
+   
         private SystemManager system;
-        
+        private CloudSaveManager csm;
 
+        public bool IsStartGame { get; set; } = false;
+        public bool IsEndGame { get; set; } = false;
+        public bool CanPlay { get { return IsStartGame && !IsEndGame; } }
         private void Start()
         {
             system = SystemManager.Instance;
-            goldCount = CloudSaveManager.Instance.PlayerDatas.Gold;
-            keyCount = CloudSaveManager.Instance.PlayerDatas.Key;
-            maxMana= mana = CloudSaveManager.Instance.GetCurrentCharacterData().Mana;
-            maxEnergy= energy = CloudSaveManager.Instance.GetCurrentCharacterData().Energy;
+            csm = CloudSaveManager.Instance;
+
+            Gold =csm.PlayerDatas.Gold;
+            
+            maxMana= Mana = csm.GetCurrentCharacterData().Mana;
+            maxEnergy= Energy = csm.GetCurrentCharacterData().Energy;
+            maxJumpCount=JumpCount = csm.GetCurrentCharacterData().JumpCount;
+            CountDown = csm.GetCurrentDefaultLevel().GetLevelTime();
         }
 
-        private void SetValue(Stats stats, int value)
+        private ref int  GetValue(Stats stats)
         {
             switch (stats)
             {
+                default:
                 case Stats.Gold:
-                    goldCount = value;
-                    break;
+                    return ref Gold;
                 case Stats.Diamond:
-                    diamond = value;
-                    break;
+                    return ref Diamond;
                 case Stats.Key:
-                    keyCount = value;
-                    break;
+                    return ref Key;
                 case Stats.Energy:
-                    Energy = value;
-                    break;
+                    return ref Energy;
                 case Stats.Mana:
-                    Mana = value;
-                    break;
+                    return ref Mana;
                 case Stats.Timer:
-                    timer = value;
-                    break;
-
+                    return ref Timer;
+                case Stats.JumpCount:
+                    return ref JumpCount;
+                case Stats.Speed:
+                    return ref Speed;
             }
         }
-        private int GetValue(Stats stats)
+        private void SetValue(Stats stats, int value)
         {
-            return stats switch
-            {
-                Stats.Diamond => diamond,
-                Stats.Key => keyCount,
-                Stats.Energy => (int)energy,
-                Stats.Mana => (int)mana,
-                Stats.Timer => timer,
-                _ => goldCount,
-            };
+            if (stats.Equals(Stats.Energy))
+                ClampCapacity(stats, value, ref maxEnergy);
+            else if (stats.Equals(Stats.Mana))
+                ClampCapacity(stats, value, ref maxMana);
+            else
+                GetValue(stats) = value;
         }
-        public void AddCollectable(Stats stats, int amount)
+        private void SetCapacity(Stats stats,int value, ref int maxCapacity)
+        {
+            GetValue(stats) += value;
+            maxCapacity = GetValue(stats);
+            system.updateStatsCapacity(stats, maxCapacity);
+        }
+        private void ClampCapacity(Stats stats, int value, ref int maxCapacity)
+        {
+            if (value > maxCapacity)
+                GetValue(stats) = maxCapacity;
+            else
+                GetValue(stats) += value;
+        }
+        public void UpdateStatsValue(Stats stats, int amount)
         {
             int value = GetValue(stats) + amount;
             SetValue(stats,value);
-            SystemManager.Instance.updateStats(stats,value);
+            system.updateStats(stats,value);
         }
         public void UpdateCapacity(Stats stats, int value)
         {
             if (stats.Equals(Stats.Energy))
-            {
-                energy += value;
-                maxEnergy = energy;
-                system.setStats(stats, maxEnergy);
-            }
+                SetCapacity(stats, value, ref maxEnergy);
             else if (stats.Equals(Stats.Mana))
-            {
-                mana += value;
-                maxMana =mana;
-               system.setStats(stats, maxMana);
-            }
+                SetCapacity(stats, value, ref maxMana);
+            else if (stats.Equals(Stats.JumpCount))
+                SetCapacity(stats, value, ref maxJumpCount);
+            else if (stats.Equals(Stats.Speed))
+                SetCapacity(stats, value, ref maxSpeed);
+            else if (stats.Equals(Stats.Speed))
+                SetCapacity(stats, value, ref maxTime);
+
         }
         public void GenerateGameElement()
         {
             GameElement.SetActive(true);
         }
+        public float GetMultiple(Stats stats)
+        {
+            if (stats.Equals(Stats.Speed))
+                return 1 + GetValue(Stats.Speed) * 0.01f;
+            else
+                return GetValue(stats);
+        }
+        public void StartCountDownTimer()
+        {
+            StartCoroutine(CountDownTimer());
+        }
+        IEnumerator CountDownTimer()
+        {
+            while (CountDown>0 && IsStartGame)
+            {
+                CountDown--;
+                system.updateStats(Stats.Timer,CountDown);
+                yield return new WaitForSeconds(1);
+            }
+
+            if (CountDown <= 0)
+                IsEndGame = true;
+            else
+                IsStartGame = false;
+        }
 
         private void OnDestroy()
         {
+            csm.SetLevelKey(GetValue(Stats.Key));
             SaveData(Stats.Gold);
-            SaveData(Stats.Key);
-        }
 
-        void SaveData(Stats stats)
+        }
+        private void SaveData(Stats stats)
         {
             if (Enum.TryParse(stats.ToString(), out GemType gemType))
                 CloudSaveManager.Instance.SetGem(gemType,GetValue(stats));

@@ -1461,7 +1461,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   canvas: {fileID: 677052694623766802}
   pageName: {fileID: 677052694347898207}
-  baseTransform: {fileID: 0}
+  baseTransform: {fileID: 677052694623766800}
   menuType: 17
   menuRank: 1
 --- !u!1 &677052694647937014
@@ -3426,7 +3426,6 @@ MonoBehaviour:
     PlayerId: 
     Gold: 0
     Diamond: 0
-    Key: 0
     CurrentLevelIndex: 0
     CurrentCharacterIndex: 0
     IsAccept: 0
@@ -3437,7 +3436,6 @@ MonoBehaviour:
     PlayerId: 
     Gold: 0
     Diamond: 0
-    Key: 0
     CurrentLevelIndex: 0
     CurrentCharacterIndex: 0
     IsAccept: 0

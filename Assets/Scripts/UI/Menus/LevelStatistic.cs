@@ -28,7 +28,7 @@ namespace DarkJimmy.UI
 
         private void Start()
         {
-            Level level = CloudSaveManager.Instance.GetLevel();
+            Level level = CloudSaveManager.Instance.GetCurrentLevel();
             SetPageProperty(level);
         }
 

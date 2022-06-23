@@ -263,12 +263,12 @@ PrefabInstance:
     - target: {fileID: 6683964570595269165, guid: 18b8b0f3a260af44c8c63d29586364ec,
         type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: -435.0005
+      value: -435.00098
       objectReference: {fileID: 0}
     - target: {fileID: 6683964570655485406, guid: 18b8b0f3a260af44c8c63d29586364ec,
         type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: -99.99951
+      value: -99.99927
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 18b8b0f3a260af44c8c63d29586364ec, type: 3}
@@ -352,6 +352,10 @@ MonoBehaviour:
     group:
     - {fileID: 8300000, guid: 8210169a156d9be439ce6f27f4ce0f6d, type: 3}
   - groupID: Gem
+    groupType: 5
+    group:
+    - {fileID: 8300000, guid: fcd681ceb35c47d40a43f9a292413234, type: 3}
+  - groupID: Reward
     groupType: 5
     group:
     - {fileID: 8300000, guid: fcd681ceb35c47d40a43f9a292413234, type: 3}
@@ -1939,12 +1943,12 @@ PrefabInstance:
     - target: {fileID: 3004465269451793397, guid: 1e15764998e58964a8f02a05afa0b39f,
         type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: -435.0005
+      value: -435.00098
       objectReference: {fileID: 0}
     - target: {fileID: 3004465270915520999, guid: 1e15764998e58964a8f02a05afa0b39f,
         type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: -99.99951
+      value: -99.99927
       objectReference: {fileID: 0}
     - target: {fileID: 6435506489267723320, guid: 1e15764998e58964a8f02a05afa0b39f,
         type: 3}
@@ -2113,7 +2117,7 @@ PrefabInstance:
     - target: {fileID: 4231979320365027091, guid: 261b9f397a76cf94589f1b3d52e5c61f,
         type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: -400.0005
+      value: -400.00098
       objectReference: {fileID: 0}
     - target: {fileID: 5304985534113293672, guid: 261b9f397a76cf94589f1b3d52e5c61f,
         type: 3}
@@ -2309,6 +2313,12 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 8115533980048168128, guid: 74891d671d8b88c4fae5684ed73d4fad,
+        type: 3}
+      propertyPath: system.gold
+      value: 
+      objectReference: {fileID: 21300000, guid: 82813c074e2854877b1382f0e987511b,
+        type: 3}
     - target: {fileID: 8115533980048168129, guid: 74891d671d8b88c4fae5684ed73d4fad,
         type: 3}
       propertyPath: m_Name

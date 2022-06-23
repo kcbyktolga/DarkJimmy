@@ -9,10 +9,7 @@ namespace DarkJimmy.UI
     public class CharacterStatus : MonoBehaviour
     {
         [SerializeField]
-        private Image characterIcon;
-        [SerializeField]
-        private TMP_Text characterLevel;
-
+        private List<Image> characterIcon;  
         CloudSaveManager csm;
         int characterIndex;
         private void Start()
@@ -20,14 +17,15 @@ namespace DarkJimmy.UI
             csm = CloudSaveManager.Instance;
             characterIndex =csm.PlayerDatas.CurrentCharacterIndex;
 
-            SetCharacterStatus();
+            SetCharacterStatus();     
         }
 
         private void SetCharacterStatus()
         {
-            characterIcon.sprite = csm.GetDefaultData().CharacterDatas[characterIndex].GetCharacterIcon();
-            characterLevel.text = csm.PlayerDatas.Characters[characterIndex].Level.ToString();
-        }
+            for (int i = 0; i < characterIcon.Count; i++)
+                characterIcon[i].sprite = csm.GetDefaultData().CharacterDatas[characterIndex].GetCharacterIcon();
+
+        } 
     }
 }
 

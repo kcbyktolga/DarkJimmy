@@ -61,7 +61,9 @@ namespace DarkJimmy
     }
     [Serializable]
     public class Level
-    {    
+    {
+        [SerializeField]
+        private int countDownTime;
         [Header("Level Property")]
         public string levelName;
         public string levelId;
@@ -71,6 +73,10 @@ namespace DarkJimmy
         public int goldCount;
         public int currentScore;
         public int maxScore;
+        public int GetLevelTime()
+        {
+            return countDownTime;
+        }
     }
     [Serializable]
     public class CharacterData
@@ -83,11 +89,10 @@ namespace DarkJimmy
         public bool isLock = true;
         public int price;
         public string Id;
-        public float Level;
-        public float Energy;
-        public float Mana;
-        public float ERR;
-        public float MMR;
+        public int Level;
+        public int JumpCount;
+        public int Energy;
+        public int Mana;
         public float Speed;
 
         public float GetCharacterProperty(CharacterProperty property)
@@ -95,9 +100,7 @@ namespace DarkJimmy
             return property switch
             {
                 CharacterProperty.Mana => Mana,
-                CharacterProperty.Speed => Speed,
-                CharacterProperty.MMR => MMR,
-                CharacterProperty.ERR => ERR,
+                CharacterProperty.Speed => Speed,   
                 _ => Energy,
             };
         }
@@ -111,8 +114,6 @@ namespace DarkJimmy
         Energy,
         Mana,
         Speed,
-        MMR,
-        ERR
     }
     public enum LevelStatus
     {

@@ -34,7 +34,6 @@ namespace DarkJimmy.UI
  
             focus.gameObject.SetActive(isSelect);
 
-
             if (!isOn && k < 0)
                 return;
            
@@ -42,7 +41,6 @@ namespace DarkJimmy.UI
 
             if (Enum.TryParse(powerUpType.ToString(), out Stats stats))
                 gsm.UpdateCapacity(stats, (int)(k * multiple));
-
         }
 
         public void SetPowerUpButton(PowerUpStruct ps)

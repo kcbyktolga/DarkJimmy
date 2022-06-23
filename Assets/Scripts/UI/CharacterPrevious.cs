@@ -18,7 +18,7 @@ namespace DarkJimmy.UI
         private Image block;
 
         [SerializeField]
-        private List<StateUIView> stats;
+        private List<StatsUISlider> stats;
         [SerializeField]
         private float endPos;
 
@@ -50,11 +50,7 @@ namespace DarkJimmy.UI
 
             base.Start();
 
-            for (int i = 0; i < stats.Count; i++)
-            {
-                stats[i].SetStatName(((CharacterProperty)i).ToString());
-                stats[i].SetSliderValues(globalData.GetCurrentCharacterData().GetCharacterProperty((CharacterProperty)i)*10, 100);
-            }
+            SetStats(true, globalData.GetCurrentCharacterData());
         }
         public override void Move(bool onClick, int amount)
         {
@@ -83,9 +79,23 @@ namespace DarkJimmy.UI
                 purchaseButton.priceIcon.sprite = system.GetPaySprite(data.payType);
             }
 
-            for (int i = 0; i < stats.Count; i++)
-                stats[i].SetSliderValues(data.GetCharacterProperty((CharacterProperty)i)*10, 100);
+            //for (int i = 0; i < stats.Count; i++)
+            //    stats[i].SetSliderValues(data.GetCharacterProperty((CharacterProperty)i),10);
 
+            SetStats(false, data);
+        }
+
+        private void SetStats( bool init, CharacterData data)
+        {
+            for (int i = 0; i < stats.Count; i++)
+            {
+                stats[i].SetSliderValues(data.GetCharacterProperty((CharacterProperty)i), 10);
+
+                if (init)
+                    continue;
+
+                stats[i].SetStatName(((CharacterProperty)i).ToString());
+            }
         }
         IEnumerator BlackOut(Color endColor)
         {

@@ -4,9 +4,9 @@ using UnityEngine;
 using DarkJimmy.Characters.Inputs;
 
 namespace DarkJimmy.Characters
-{	
+{
 	public class PlayerMovement : CharacterMovement<PlayerData>
-    {
+	{
 		[SerializeField]
 		private Transform dustTransform;
 		[SerializeField]
@@ -16,21 +16,42 @@ namespace DarkJimmy.Characters
 
 		float wallJumpTime;                     //Variable to hold wall jump duration
 		float jumpTime;                         //Variable to hold jump duration
-		float blockCheckTime;            
+		float blockCheckTime;
 		float playerHeight;                     //Height of the player
 
 
 		float originalXScale;                   //Original scale on X axis
 		int direction = 1;                      //Direction player is facing
 
-		const float smallAmount = .05f;         //A small amount used for hanging position
 		public PlayerAnimation anim;
 		public int horizontal = 1;
 
-		int currentJumpAmount;
-		public int jumpEnergyCount = 10;
-		public int energyCount = 10;
-		bool isStartGame;
+		private int currentJumpAmount;
+		private float speed;	
+		//private bool isStartGame;
+
+	
+		private int CurrentJumpAmount
+		{
+			get { return currentJumpAmount; }
+			set
+            {
+				currentJumpAmount = value;
+				system.updateStats(Stats.JumpCount, currentJumpAmount);
+            }
+		}
+		private float Speed
+        {
+            get { return speed; }
+            set
+            {
+				speed = value*(0.1f*csm.GetCurrentCharacterData().Speed + data.speed);
+            }
+        }
+
+		GameSaveManager gsm;
+		SystemManager system;
+		CloudSaveManager csm;
 
 		private void Start()
         {
@@ -42,11 +63,8 @@ namespace DarkJimmy.Characters
 			if (Input.GetKeyDown(KeyCode.Space))
 				data.isAlive = !data.isAlive;
 
-			if (Input.GetKeyDown(KeyCode.A))
-				isStartGame = true;
 
-
-			if (!data.isAlive || !isStartGame)
+			if (!data.isAlive || !gsm.CanPlay)
 				return;
 
 			CheckInput();
@@ -79,7 +97,7 @@ namespace DarkJimmy.Characters
 			if (data.isOnGround && rigidBody.velocity.y <= 0)
             {
 				data.isJumping = false;
-				currentJumpAmount = data.jumpAmount;
+				CurrentJumpAmount = gsm.JumpCount;
 			}
 				
 			//Cast the ray to check above the player's head
@@ -120,6 +138,9 @@ namespace DarkJimmy.Characters
 		}
         public override void Initialize()
         {
+			system = SystemManager.Instance;
+			csm = CloudSaveManager.Instance;
+			gsm = GameSaveManager.Instance;
 			//Get a reference to the required components
 			input = GetComponent<PlayerInput>();
 			rigidBody = GetComponent<Rigidbody2D>();
@@ -131,16 +152,14 @@ namespace DarkJimmy.Characters
 			//Record the player's height from the collider
 			playerHeight = bodyCollider.size.y;
 
-			currentJumpAmount = data.jumpAmount;
-			//UIManager.Instance.updateState(Stats.Gold, LocalSaveManager.GetData(Stats.Gold));
-			//UIManager.Instance.updateState(Stats.Energy, LocalSaveManager.GetData(Stats.Energy));
-			//UIManager.Instance.updateState(Stats.Mana, LocalSaveManager.GetData(Stats.Mana));
+			Speed = gsm.GetMultiple(Stats.Speed);
+			CurrentJumpAmount = gsm.JumpCount;
 			data.isAlive = true;
 
 		}
         public override void GroundMovement()
         {
-			float xVelocity = !data.isAlive || !isStartGame ? 0: data.speed * horizontal;
+			float xVelocity = !data.isAlive || !gsm.CanPlay ? 0: Speed * horizontal;
 	
 			//If the sign of the velocity and direction don't match, flip the character
 			if (xVelocity * direction < 0f)
@@ -151,7 +170,8 @@ namespace DarkJimmy.Characters
             {
                 if (input.jumpPressed )
                 {				
-					currentJumpAmount = data.jumpAmount;
+					CurrentJumpAmount = gsm.JumpCount;
+					
 					wallJumpTime = data.coyoteDuration + Time.time;
 
 					//...add the jump force to the rigidbody...
@@ -162,7 +182,6 @@ namespace DarkJimmy.Characters
 				}
                 else
 					rigidBody.velocity = new Vector2(-direction * data.wallSlidingSpeed.x, data.wallSlidingSpeed.y);
-
 			}				
 			else
 				rigidBody.velocity = new Vector2(xVelocity, rigidBody.velocity.y);		
@@ -189,12 +208,10 @@ namespace DarkJimmy.Characters
 		}
 		private bool CanDoubleJump()
         {
-			if(GameSaveManager.Instance.mana > 0)
-            {
-				if (currentJumpAmount > 0)
+			if(GameSaveManager.Instance.Mana > 0)
+				if (CurrentJumpAmount > 0)
 					return true;
-				return false;		
-            }
+
 			return false;
         }
 		private void CheckInput()
@@ -218,11 +235,12 @@ namespace DarkJimmy.Characters
 				}
 				else if (data.isJumping && CanDoubleJump() && !data.isWallSliding)
 				{
-					currentJumpAmount--;
-					GameSaveManager.Instance.mana--;
-					SystemManager.Instance.updateStats(Stats.Mana, GameSaveManager.Instance.mana);
+					CurrentJumpAmount--;
+					gsm.Mana--;
+					system.updateStats(Stats.Mana, gsm.Mana);
 					Vector2 force = new Vector2(0, data.jumpForce * data.jumpForceMultiple);
-					Jump(force,false);
+
+					Jump(force,CanDoubleJump());
 				}
 			}
 		}

@@ -6112,6 +6112,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Fader
       objectReference: {fileID: 0}
+    - target: {fileID: 1828674819320628, guid: 0d667d2dcffcc3f46ab368c8054e2e6f, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 114389166422354300, guid: 0d667d2dcffcc3f46ab368c8054e2e6f,
         type: 3}
       propertyPath: m_Color.a

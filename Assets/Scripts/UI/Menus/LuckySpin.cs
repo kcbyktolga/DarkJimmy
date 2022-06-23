@@ -81,6 +81,8 @@ namespace DarkJimmy.UI
             else
                 infoText.text = string.Empty;
 
+            SetSpinButton();
+
             CreateSlot();
             ShuffledElement();
             purchaseButton.OnClick(SpinWheel);
@@ -96,8 +98,8 @@ namespace DarkJimmy.UI
                 SpinSlot slot = Instantiate(prefab, wheel);
                 slot.SetSlot(lp);
 
-                Sprite sprite = system.GetProductBackground(lp.typeOfProduct); 
-                slot.SlotBackground(sprite);
+                //Sprite sprite = system.GetProductBackground(lp.typeOfProduct); 
+                //slot.SlotBackground(sprite);
 
                 slot.transform.eulerAngles = new Vector3(0, 0, angle);
                 angle += diffAngle;

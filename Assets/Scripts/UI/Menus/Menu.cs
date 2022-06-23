@@ -50,7 +50,8 @@ namespace DarkJimmy.UI
             PublisherURL,
             Mail,
 
-            Preparation
+            Preparation,
+            Starter
 
         }
         public enum MenuRank
@@ -76,6 +77,7 @@ namespace DarkJimmy.UI
              {Menus.LuckySpin, "Menus/LuckySpin"},
              {Menus.Play, "Menus/GameDisplay"},
              {Menus.Preparation, "Menus/Preparation"},
+             {Menus.Starter, "Menus/Starter"},
 
             //Popups
              {Menus.PurchaseProcess, "Popups/PurchaseProcessPopup"},

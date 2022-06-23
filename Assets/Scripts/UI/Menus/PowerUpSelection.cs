@@ -104,6 +104,7 @@ namespace DarkJimmy.UI
         {
             prepareDisplay.SetActive(false);
             gameDisplay.SetActive(true);
+            UIManager.Instance.OpenMenu(Menu.Menus.Starter);
             gsm.GenerateGameElement();
             fader.FadeIn();
         }

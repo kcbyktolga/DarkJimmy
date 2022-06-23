@@ -147,7 +147,11 @@ namespace DarkJimmy
         {
             return Instance.systemData;
         }
-        public Level GetLevel()
+        public Level GetCurrentDefaultLevel()
+        {
+            return Instance.systemData.Stages[WorldIndex].levels[LevelIndex];
+        }
+        public Level GetCurrentLevel()
         {
             return HasLevel() ? Instance.PlayerDatas.Stages[WorldIndex].levels[LevelIndex] : Instance.systemData.Stages[WorldIndex].levels[LevelIndex];
         }
@@ -230,6 +234,11 @@ namespace DarkJimmy
             Instance.PlayerDatas.Stages[index].stageIsLocked = isOn;
             await SaveData();
         }
+        public async void SetLevelKey(int keyCount)
+        {
+            Instance.PlayerDatas.Stages[WorldIndex].levels[LevelIndex].keyCount = keyCount;
+            await SaveData();
+        }
 
         #endregion
 
@@ -292,13 +301,13 @@ namespace DarkJimmy
             await SaveData();
         }
         [ContextMenu("Set Level")]
-        public void SetLevel()
+        private void SetLevel()
         {
             Level level = Instance.systemData.Stages[WorldIndex].levels[LevelIndex];
 
             SetLevel(level);
         }
-        private async void SetLevel(Level level)
+        public async void SetLevel(Level level)
         {
             GetLevelList(WorldIndex)[LevelIndex] = level;
 
@@ -558,8 +567,6 @@ namespace DarkJimmy
         public List<CharacterData> Characters;      
         public List<Stage> Stages;
 
-        private int keyCount = 0;
-      
         public int GetAllKeyCount()
         {
             int keyCount = 0;
@@ -571,7 +578,7 @@ namespace DarkJimmy
                 for (int j = 0; j < Stages[i].levels.Count; j++)
                     keyCount += Stages[i].levels[j].keyCount;
             }
-
+            Debug.Log(keyCount);
             return keyCount;
         }
 

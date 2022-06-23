@@ -8,7 +8,7 @@ namespace DarkJimmy.UI
     {
         public override void Start()
         {
-            string text = CloudSaveManager.Instance.GetLevel().levelName;
+            string text = CloudSaveManager.Instance.GetCurrentLevel().levelName;
             pageName.text = LanguageManager.GetText(text);
         }
     }

@@ -373,7 +373,7 @@ GameObject:
   - component: {fileID: 3870345852724448176}
   - component: {fileID: 1725712339183353495}
   - component: {fileID: 3846669954143109478}
-  - component: {fileID: 6385311943159307875}
+  - component: {fileID: 8301380590476883474}
   m_Layer: 5
   m_Name: StatLobby
   m_TagString: Untagged
@@ -429,7 +429,7 @@ MonoBehaviour:
     m_SelectOnDown: {fileID: 0}
     m_SelectOnLeft: {fileID: 0}
     m_SelectOnRight: {fileID: 0}
-  m_Transition: 1
+  m_Transition: 0
   m_Colors:
     m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
     m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
@@ -461,7 +461,7 @@ MonoBehaviour:
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls: []
---- !u!114 &6385311943159307875
+--- !u!114 &8301380590476883474
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -470,17 +470,16 @@ MonoBehaviour:
   m_GameObject: {fileID: 3667337623886245589}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: accea51331374724d9ffd1e8c6b9d371, type: 3}
+  m_Script: {fileID: 11500000, guid: e2c91f63e73bbe1428c5c4f3e80934ff, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   type: 1
   stats: 3
   amount: {fileID: 5567458825968140509}
+  csm: {fileID: 0}
+  system: {fileID: 0}
   statsSlider: {fileID: 3846669954143109478}
-  duration: 0.5
   statsName: {fileID: 5240191575173150568}
-  fill: {fileID: 5173587872674303795}
-  color: {r: 0, g: 0, b: 0, a: 1}
 --- !u!1 &9153778347179241249
 GameObject:
   m_ObjectHideFlags: 0
