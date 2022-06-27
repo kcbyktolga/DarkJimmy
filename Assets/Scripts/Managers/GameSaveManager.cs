@@ -2,6 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System;
+using DarkJimmy.UI;
+using DarkJimmy.Objects;
 
 namespace DarkJimmy
 {
@@ -13,8 +15,9 @@ namespace DarkJimmy
         public delegate void JumpCountUpdate(int count);
         public JumpCountUpdate jumpCountUpdate;
 
-        public delegate void StartGame();
-        public StartGame starter;
+        public delegate void PauseGame();
+        public PauseGame pause;
+        public PauseGame timeOut;
 
         public int Gold;
         public int Key;
@@ -40,26 +43,42 @@ namespace DarkJimmy
                 countDown = value;
             }
         }
-   
+
+        private int startTime;
+        private int startGold;
+
         private SystemManager system;
         private CloudSaveManager csm;
-
+        private Platform platform;
         public bool IsStartGame { get; set; } = false;
-        public bool IsEndGame { get; set; } = false;
+        public bool IsWon { get; set; } = false;
+        public bool IsLose { get; set; } = false;
+        public bool IsEndGame { get { return IsWon || IsLose; }}
         public bool CanPlay { get { return IsStartGame && !IsEndGame; } }
         private void Start()
         {
             system = SystemManager.Instance;
             csm = CloudSaveManager.Instance;
 
-            Gold =csm.PlayerDatas.Gold;
+            startGold=Gold =csm.PlayerDatas.Gold;
             
             maxMana= Mana = csm.GetCurrentCharacterData().Mana;
             maxEnergy= Energy = csm.GetCurrentCharacterData().Energy;
             maxJumpCount=JumpCount = csm.GetCurrentCharacterData().JumpCount;
-            CountDown = csm.GetCurrentDefaultLevel().GetLevelTime();
+            startTime = CountDown = csm.GetCurrentDefaultLevel().GetLevelTime();
+
+            GenerateLevel();
         }
 
+        public void GenerateLevel()
+        {
+            Platform _platform = csm.GetCurrentDefaultLevel().GetPlatform();
+
+            if (_platform == null)
+                return;
+          
+            platform = Instantiate(_platform,GameElement.transform);
+        }
         private ref int  GetValue(Stats stats)
         {
             switch (stats)
@@ -127,7 +146,7 @@ namespace DarkJimmy
         }
         public void GenerateGameElement()
         {
-            GameElement.SetActive(true);
+            GameElement.SetActive(true);       
         }
         public float GetMultiple(Stats stats)
         {
@@ -142,31 +161,60 @@ namespace DarkJimmy
         }
         IEnumerator CountDownTimer()
         {
-            while (CountDown>0 && IsStartGame)
+            while (CountDown>0 && CanPlay)
             {
                 CountDown--;
+                if (CountDown < 10)
+                    AudioManager.Instance.PlaySound("Tick Tock");
                 system.updateStats(Stats.Timer,CountDown);
                 yield return new WaitForSeconds(1);
             }
 
             if (CountDown <= 0)
-                IsEndGame = true;
-            else
-                IsStartGame = false;
+            {
+                IsLose = true;
+                timeOut();
+            }
+                
         }
 
-        private void OnDestroy()
+        public int GetValueResult(Result result, out int maxValue)
         {
-            csm.SetLevelKey(GetValue(Stats.Key));
-            SaveData(Stats.Gold);
+            if (result.Equals(Result.Score))
+            {
+                int max = csm.GetCurrentLevel().maxScore;
+                int score= CalculateScore();
+                maxValue = max > score ? max : score;
+                return score;
 
+            }
+            else if (result.Equals(Result.Gold))
+            {
+                maxValue = GetValue(Stats.Gold);
+                return maxValue - startGold;
+            }
+            else if(result.Equals(Result.Time))
+            {
+                maxValue = startTime;
+                return CountDown;
+            }
+            else
+            {
+                maxValue = csm.GetCurrentDefaultLevel().keyCount;
+                return Key;
+            }
         }
+        private int CalculateScore()
+        {
+            return CountDown * 2 + (Gold-startGold) + Key * 10;
+        }
+    
         private void SaveData(Stats stats)
         {
             if (Enum.TryParse(stats.ToString(), out GemType gemType))
                 CloudSaveManager.Instance.SetGem(gemType,GetValue(stats));
         }
-    }
 
+    }
 
 }

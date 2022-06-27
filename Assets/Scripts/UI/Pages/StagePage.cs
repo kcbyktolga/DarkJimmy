@@ -62,7 +62,9 @@ namespace DarkJimmy.UI
 
             SetStageTab();
             SetMoveButton();
-            StartCoroutine(Slide(stageContent,GetPosition[NextIndex]));
+            //StartCoroutine(Slide(stageContent,GetPosition[NextIndex]));
+            Sliding(stageContent,GetPosition[NextIndex]);
+            AudioManager.Instance.PlaySound("Turn Page");
         }
         private void SetStageTab()
         {

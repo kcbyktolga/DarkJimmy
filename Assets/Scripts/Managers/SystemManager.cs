@@ -6,12 +6,13 @@ namespace DarkJimmy
 {
     public class SystemManager : Singleton<SystemManager>
     {
+        public SystemProperty system;
 
         public delegate void UpdateStats(Stats stats, int value);
         public UpdateStats updateStats;
         public UpdateStats updateStatsCapacity;
 
-        public SystemProperty system;
+  
         public GemType GemType { get; set; }
         public Sprite GetLevelSprite(LevelStatus status)
         {
@@ -60,7 +61,6 @@ namespace DarkJimmy
         {
             return isOn ? system.blackAlfa255 : system.blackAlfa0;
         }
-
         public string GetUrlAddress(string address)
         {
             return address switch
@@ -93,6 +93,8 @@ namespace DarkJimmy
     [Serializable]
     public struct SystemProperty
     {
+        [Header("Animation Curves")]
+        public AnimationCurve menuCurve;
         [Header("Button Sprites")]
         public Sprite passed;
         public Sprite active;

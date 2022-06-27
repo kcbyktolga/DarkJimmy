@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
-using UnityEngine.UI;
+using DG.Tweening;
 
 namespace DarkJimmy.UI
 {
@@ -99,7 +99,7 @@ namespace DarkJimmy.UI
         private float _duration = 0.1f;
         [Header("Referances")]
         public Menus menuType;
-        public MenuRank menuRank;
+        public MenuRank menuRank;    
         #endregion
         #region virtual Methods
         public virtual void Start()
@@ -125,6 +125,13 @@ namespace DarkJimmy.UI
             UIManager.Instance.Cancel();
         }
      
+        public virtual void ScaleAnimation()
+        {
+            if (baseTransform == null)
+                return;
+            baseTransform.localScale = 0.95f * Vector2.one;
+            baseTransform.DOScale(Vector2.one, _duration).SetEase(SystemManager.Instance.system.menuCurve);
+        }
         public virtual IEnumerator Animation()
         {
             if (baseTransform == null)
@@ -155,7 +162,13 @@ namespace DarkJimmy.UI
 
         public virtual void OnEnable()
         {
-            StartCoroutine(Animation());
+            // StartCoroutine(Animation());
+            ScaleAnimation();
+        }
+
+        public virtual void OnDestroy()
+        {
+            LanguageManager.onChangedLanguage -= SetPageName;
         }
     }
 }

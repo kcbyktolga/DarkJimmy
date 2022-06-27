@@ -6,23 +6,40 @@ using System;
 
 namespace DarkJimmy
 {
-    public class Collectable : MonoBehaviour
+    public class Collectable : MonoBehaviour,IAnimationEvent
     {
         [SerializeField]
         private Stats stats;
         [SerializeField]
         private int amount;
-        
+      
+
+        private Animator animator;
+        private int onCollect;
+
+        private void Start()
+        {
+            animator = GetComponent<Animator>();
+            onCollect = Animator.StringToHash("Collect");
+        }
+
         private void OnTriggerEnter2D(Collider2D collision)
         {
-            // LocalSaveManager.AddCollectable(stats,amount);
-            //CloudSaveManager.Instance.AddCollectable(state,amount);
+            animator.SetTrigger(onCollect);
 
-            //if(Enum.TryParse(stats.ToString(), out GemType gemType))
-            //    CloudSaveManager.Instance.AddGem(gemType,this.amount);
+            if (stats.Equals(Stats.Timer))
+            {
+                int value = GameSaveManager.Instance.CountDown += amount;
+                SystemManager.Instance.updateStats(stats,value);
+            }
+            else
+                GameSaveManager.Instance.UpdateStatsValue(stats, amount);
 
-            GameSaveManager.Instance.UpdateStatsValue(stats, this.amount);
+        }
 
+        public void AnimationEvent()
+        {
+            gameObject.SetActive(false);
         }
     }
 }

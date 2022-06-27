@@ -92,7 +92,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   button: {fileID: 2955765880369147421}
   buttonName: {fileID: 0}
-  baseTransform: {fileID: 6261826003841957679}
+  baseTransform: {fileID: 5258017306646567525}
 --- !u!114 &2955765880369147421
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -30,12 +30,7 @@ namespace DarkJimmy.Characters
 		public float grabDistance = .4f;        //The reach distance for wall grabs
 		public LayerMask groundLayer;           //Layer of the ground
 
-		[Header("Status Flags")]
-		public bool isOnGround;                 //Is the character on the ground?
-		public bool isJumping;                  //Is character jumping?
-		public bool isHeadBlocked;              //Is character blocked?
-	    public bool wallCheck;                  //Is character hitting wall?;
-		public bool isAlive;
+	
 	}
 }
 

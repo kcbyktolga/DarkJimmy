@@ -26,7 +26,7 @@ namespace DarkJimmy.UI
         private Catalog catalog;
         private SystemManager system;
         private GameSaveManager gsm;
-        private Fader fader;
+        private Fade fader;
 
         private GemType PayType { get; set; }      
         private int Price { get; set; }
@@ -37,7 +37,7 @@ namespace DarkJimmy.UI
             globalData = CloudSaveManager.Instance;
             catalog = globalData.GetDefaultData().Catalog;
             gsm = GameSaveManager.Instance;
-            fader = Fader.Instance;
+            fader = Fade.Instance;
 
             playButton.OnClick(OnPlay);
 
@@ -89,10 +89,7 @@ namespace DarkJimmy.UI
         private void OnPlay()
         {
             if (globalData.CanSpendGem(PayType,Price))
-            {
-                fader.FadeOut();              
-                Invoke(nameof(FadeIn),0.5f);          
-            }
+                fader.FadeOut(FadeInAbc);
             else
             {
                 system.GemType = PayType;
@@ -100,14 +97,19 @@ namespace DarkJimmy.UI
             }
         }
 
-        private void FadeIn()
-        {
+        private void FadeInAbc()
+        {      
             prepareDisplay.SetActive(false);
             gameDisplay.SetActive(true);
-            UIManager.Instance.OpenMenu(Menu.Menus.Starter);
-            gsm.GenerateGameElement();
-            fader.FadeIn();
+            gsm.GenerateGameElement();          
+            fader.FadeIn(OnStarter);
         }
+        void OnStarter()
+        {
+            UIManager.Instance.OpenMenu(Menu.Menus.Starter);
+        }
+    
+
     }
     public enum PowerUp
     {

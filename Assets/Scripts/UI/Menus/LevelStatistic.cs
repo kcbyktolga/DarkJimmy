@@ -1,5 +1,6 @@
 using UnityEngine;
 using TMPro;
+using System.Collections;
 
 namespace DarkJimmy.UI
 {
@@ -45,6 +46,8 @@ namespace DarkJimmy.UI
             currentScoreText.text = LanguageManager.GetText("Current Score");
             maxScoreText.text = LanguageManager.GetText("Max Score");
         }
+
+      
     }
 
 }

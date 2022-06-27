@@ -16,7 +16,7 @@ namespace DarkJimmy.Characters
             throw new System.NotImplementedException();
         }
 
-        public override void Initialize()
+        public override void PlayerConfig()
         {
             throw new System.NotImplementedException();
         }

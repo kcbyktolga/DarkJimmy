@@ -372,3 +372,21 @@
 [0622/112617.301:WARNING:dns_config_service_win.cc(668)] Failed to read DnsConfig.
 [0622/142644.528:WARNING:dns_config_service_win.cc(668)] Failed to read DnsConfig.
 [0622/215911.112:WARNING:dns_config_service_win.cc(668)] Failed to read DnsConfig.
+[0623/104334.851:WARNING:dns_config_service_win.cc(668)] Failed to read DnsConfig.
+[0623/104339.860:WARNING:dns_config_service_win.cc(668)] Failed to read DnsConfig.
+[0623/104344.864:WARNING:dns_config_service_win.cc(668)] Failed to read DnsConfig.
+[0623/110254.834:WARNING:dns_config_service_win.cc(668)] Failed to read DnsConfig.
+[0623/125215.893:WARNING:dns_config_service_win.cc(668)] Failed to read DnsConfig.
+[0623/125221.114:WARNING:dns_config_service_win.cc(668)] Failed to read DnsConfig.
+[0623/150927.839:WARNING:dns_config_service_win.cc(668)] Failed to read DnsConfig.
+[0623/150933.361:WARNING:dns_config_service_win.cc(668)] Failed to read DnsConfig.
+[0623/181005.292:WARNING:dns_config_service_win.cc(668)] Failed to read DnsConfig.
+[0623/195722.205:WARNING:dns_config_service_win.cc(668)] Failed to read DnsConfig.
+[0623/213827.288:WARNING:dns_config_service_win.cc(668)] Failed to read DnsConfig.
+[0623/213833.033:WARNING:dns_config_service_win.cc(668)] Failed to read DnsConfig.
+[0624/035906.830:WARNING:dns_config_service_win.cc(668)] Failed to read DnsConfig.
+[0624/035911.877:WARNING:dns_config_service_win.cc(668)] Failed to read DnsConfig.
+[0624/035917.069:WARNING:dns_config_service_win.cc(668)] Failed to read DnsConfig.
+[0624/041301.816:WARNING:dns_config_service_win.cc(668)] Failed to read DnsConfig.
+[0624/052719.477:WARNING:ipc_message_attachment_set.cc(49)] MessageAttachmentSet destroyed with unconsumed attachments: 0/1
+[0624/052721.508:ERROR:browser_gpu_channel_host_factory.cc(139)] Failed to launch GPU process.

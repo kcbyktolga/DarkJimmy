@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
+using DG.Tweening;
 
 namespace DarkJimmy.UI
 {
@@ -18,7 +19,7 @@ namespace DarkJimmy.UI
         [SerializeField]
         private List<Image> stars;
         [SerializeField]
-        private float duration = 0.01f;    
+        private float duration = 0.1f;    
         [SerializeField]
         private Image background;
         [SerializeField]
@@ -27,7 +28,8 @@ namespace DarkJimmy.UI
         private Sprite passed;
 
         SystemManager system;
-        private void Start()
+        private int starIndex = 0;
+        private void Awake()
         {
             system = SystemManager.Instance;
             levelText.text = LanguageManager.GetText("Level");
@@ -41,34 +43,35 @@ namespace DarkJimmy.UI
             levelIndex.text = $"{index+1}";
 
             if (level.levelStatus.Equals(LevelStatus.Passed))
-                StartCoroutine(ChangeStartColor(level.rankCount));
+            {
+                for (int i = 0; i < level.rankCount; i++)
+                    stars[i].DOColor(system.GetWhiteAlfaColor(true), duration);
+            }
 
             background.sprite = level.levelStatus.Equals(LevelStatus.Passed) ? passed : active;
-
-   
             focus.SetActive(level.levelStatus.Equals(LevelStatus.Active) && !isLocked);
-
         }
-        private IEnumerator ChangeStartColor(int count)
-        {
-            int index = 0;
 
-            while (index < count)
-            {
-                float time = 0;
+        //private IEnumerator ChangeStartColor(int count)
+        //{
+        //    int index = 0;
+
+        //    while (index < count)
+        //    {
+        //        float time = 0;
   
-                while (time <= 1)
-                {
-                    time += Time.deltaTime/duration;
-                    Color color = Color.Lerp(system.GetWhiteAlfaColor(false), system.GetWhiteAlfaColor(true), time);
-                    stars[index].color = color;
-                    yield return null;
-                }
+        //        while (time <= 1)
+        //        {
+        //            time += Time.deltaTime/duration;
+        //            Color color = Color.Lerp(system.GetWhiteAlfaColor(false), system.GetWhiteAlfaColor(true), time);
+        //            stars[index].color = color;
+        //            yield return null;
+        //        }
 
-                index++;
-                yield return null;
-            }
-        }  
+        //        index++;
+        //        yield return null;
+        //    }
+        //}  
 
     }
 }

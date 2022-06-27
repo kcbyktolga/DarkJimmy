@@ -28,7 +28,7 @@ namespace DarkJimmy.UI
 
         void ShowInterstitial()
         {
-            AdManager.Instance.ShowInterstitial();
+           // AdManager.Instance.ShowInterstitial();
         }
     }
 }

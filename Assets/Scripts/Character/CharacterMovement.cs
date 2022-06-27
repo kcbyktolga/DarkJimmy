@@ -15,15 +15,17 @@ namespace DarkJimmy.Characters
         public BoxCollider2D bodyCollider;             //The collider component
         [HideInInspector]
         public Rigidbody2D rigidBody;                  //The rigidbody component
+        public Transform center;
 
+        [Header("Status Flag")]
+        public bool isOnGround;
         #endregion
 
-        public abstract void Initialize();
+        public abstract void PlayerConfig();
         public abstract void PhysicsCheck();
         public abstract void GroundMovement();
         public abstract void MidAirMovement();
         public abstract void FlipCharacterDirection();
-
         public virtual void Move(float horizontal)
         {
             //Calculate the desired velocity based on inputs
@@ -33,7 +35,6 @@ namespace DarkJimmy.Characters
             rigidBody.velocity = new Vector2(xVelocity, rigidBody.velocity.y);
         }
 
-       
         public RaycastHit2D Raycast(Vector2 offset, Vector2 rayDirection, float length, LayerMask mask, Color color)
         {
             //Record the player's position
@@ -55,16 +56,21 @@ namespace DarkJimmy.Characters
             return hit;
         }
 
-        public RaycastHit2D[] Raycast(Vector2 offset, Vector2 rayDirection, float length, LayerMask mask, Color color,int segment)
+        public RaycastHit2D BoxCast(Vector2 multiple,Vector2 rayDirection,float length,LayerMask mask)
         {
+            Vector2 center = bodyCollider.bounds.center;
+            Vector2 size = new Vector2(bodyCollider.bounds.size.x*multiple.x, bodyCollider.bounds.size.y*multiple.y);
+
             //Record the player's position
-            Vector2 pos = transform.position;
 
             //Send out the desired raycasr and record the result
-            RaycastHit2D[] hit = Physics2D.RaycastAll(pos + offset, rayDirection, length, mask);
+
+            RaycastHit2D hit = Physics2D.BoxCast(center, size, 0, rayDirection, length, mask);
+            //Return the results of the raycast
 
             return hit;
         }
+
     }
 }
 

@@ -4,6 +4,7 @@ using UnityEngine.UI;
 using TMPro;
 using UnityEngine.EventSystems;
 using System.Collections;
+using DG.Tweening;
 
 namespace DarkJimmy.UI
 {
@@ -16,7 +17,6 @@ namespace DarkJimmy.UI
 
         private const float clickDuration = 0.05f;
         private const float scaleMultiple = 0.95f;
-        private bool isClick = false;
         private Vector2 originalScale = Vector2.one;
 
 
@@ -47,44 +47,27 @@ namespace DarkJimmy.UI
             if (baseTransform == null)
                 return;
             ClickDownSound();
-            StartCoroutine(Scale(originalScale * scaleMultiple));
-        }
-        public void OnDrag(PointerEventData eventData)
-        {
-            if (baseTransform == null)
-                return;
-
-            if (isClick)
-            {
-                isClick = false;
-                StartCoroutine(Scale(originalScale*scaleMultiple));
-            }
-        }
+            // StartCoroutine(Scale(originalScale * scaleMultiple));
+            Scale(originalScale * scaleMultiple);
+        }  
         public void OnPointerUp(PointerEventData eventData)
         {       
             if (baseTransform == null)
                 return;
             ClickUpSound();
-            StartCoroutine(Scale(originalScale));
+            //StartCoroutine(Scale(originalScale));
+            Scale(originalScale);
 
-        }
-        private IEnumerator Scale(Vector2 endScale)
+        }     
+        private void Scale(Vector2 endScale)
         {
-            float time = 0;
-
-            while (time<=1)
-            {
-                time += Time.fixedDeltaTime / clickDuration;
-                baseTransform.localScale = Vector2.Lerp(baseTransform.localScale,endScale,time);
-                yield return null;
-            }
+            baseTransform.DOScale(endScale, clickDuration);
         }
         private void OnDisable()
         {
             if(baseTransform !=null)
                 baseTransform.localScale = originalScale;
         }
-
 
         public virtual void ClickDownSound()
         {
@@ -94,6 +77,7 @@ namespace DarkJimmy.UI
         {
             AudioManager.Instance.PlaySound("Click Up");
         }
+
     }
 }
 

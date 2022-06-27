@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using DG.Tweening;
 
 namespace DarkJimmy
 {
@@ -15,11 +16,6 @@ namespace DarkJimmy
         private TMP_Text statsName;
 
         private readonly float duration = 0.5f;
-
-        public override void SetAmount(int amount)
-        {
-            this.amount.text = $"{(int)statsSlider.value}/{(int)statsSlider.maxValue}";
-        }
         public override void UpdateStats(Stats stats, int amount)
         {
             if (Stats != stats)
@@ -45,26 +41,35 @@ namespace DarkJimmy
             statsSlider.value = value;
 
             if (amount != null)
-                SetAmount((int)value);
+                SetValue();
         }
         public void SetSliderValues(float value, float maxValue)
         {
-            StartCoroutine(SetSliderValue(value, maxValue));
-        }
-        private IEnumerator SetSliderValue(float value, float maxValue)
-        {
-            statsSlider.maxValue = maxValue;
-            float time = 0;
+           // StartCoroutine(SetSliderValue(value, maxValue));
 
-            while (time <= 1)
-            {
-                time += Time.deltaTime / duration;
-                float percent = Mathf.Lerp(statsSlider.value, value, time);
-                statsSlider.value = percent;
-                SetAmount((int)percent);
-                yield return null;
-            }
+            statsSlider.maxValue = maxValue;
+            float amount = statsSlider.value;
+            statsSlider.DOValue(value, duration).onUpdate += SetValue;
+         
         }
+        private void SetValue()
+        {
+            amount.text = $"{(int)statsSlider.value}/{(int)statsSlider.maxValue}";
+        }
+        //private IEnumerator SetSliderValue(float value, float maxValue)
+        //{
+        //    statsSlider.maxValue = maxValue;
+        //    float time = 0;
+
+        //    while (time <= 1)
+        //    {
+        //        time += Time.deltaTime / duration;
+        //        float percent = Mathf.Lerp(statsSlider.value, value, time);
+        //        statsSlider.value = percent;
+        //        SetAmount((int)percent);
+        //        yield return null;
+        //    }
+        //}
         public void SetStatName(string name)
         {
             statsName.text = LanguageManager.GetText(name);

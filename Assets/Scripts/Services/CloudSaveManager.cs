@@ -10,7 +10,6 @@ using Unity.Services.RemoteConfig;
 
 namespace DarkJimmy
 {
-  
     public class CloudSaveManager : Singleton<CloudSaveManager>
     {
         [Header("References")]
@@ -577,8 +576,7 @@ namespace DarkJimmy
 
                 for (int j = 0; j < Stages[i].levels.Count; j++)
                     keyCount += Stages[i].levels[j].keyCount;
-            }
-            Debug.Log(keyCount);
+            }  
             return keyCount;
         }
 

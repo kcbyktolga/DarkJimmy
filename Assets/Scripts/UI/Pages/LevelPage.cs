@@ -31,18 +31,13 @@ namespace DarkJimmy.UI
                 purchaseButton.OnClick(Purchase);
             }
 
-            bool priority = false;
 
             for (int i = 0; i < globalData.levels.Count; i++)
             {
                 LevelTab levelTab = Instantiate(prefab, container);
 
-
-                if (globalData.levels[i].levelStatus.Equals(LevelStatus.Passive) && !priority && PasedCheck(i))
-                {
+                if (globalData.levels[i].levelStatus.Equals(LevelStatus.Passive)&& PasedCheck(i) && !HasActiveLevel())
                     globalData.levels[i].levelStatus = LevelStatus.Active;
-                    priority = true;
-                }
 
                 levelTab.SetLevelTab(i, globalData.levels[i], globalData.stageIsLocked);
                 tabs.Add(levelTab);
@@ -63,15 +58,10 @@ namespace DarkJimmy.UI
         }
         private void UpdateLevelTab()
         {
-            bool priority = false;
-
             for (int i = 0; i < globalData.levels.Count; i++)
             {
-                if (globalData.levels[i].levelStatus.Equals(LevelStatus.Passive) && !priority && PasedCheck(i))
-                {
+                if (globalData.levels[i].levelStatus.Equals(LevelStatus.Passive) && PasedCheck(i))
                     globalData.levels[i].levelStatus = LevelStatus.Active;
-                    priority = true;
-                }
 
                 tabs[i].SetLevelTab(i, globalData.levels[i], globalData.stageIsLocked);
             }
@@ -105,7 +95,13 @@ namespace DarkJimmy.UI
 
            return globalData.levels[index - 1].levelStatus.Equals(LevelStatus.Passed);
         }
-
+        private bool HasActiveLevel()
+        {
+            foreach (var item in globalData.levels)
+                if (item.levelStatus.Equals(LevelStatus.Active))
+                    return true;
+            return false;
+        }
     }
 }
 

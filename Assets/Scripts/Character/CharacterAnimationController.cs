@@ -54,7 +54,7 @@ namespace DarkJimmy.Characters
         public virtual void Update()
         {
             //Update the Animator with the appropriate values
-            anim.SetBool(groundParamID, movement.data.isOnGround);
+            anim.SetBool(groundParamID, movement.isOnGround);
             anim.SetFloat(fallParamID, rigidBody.velocity.y);
 
             //Use the absolute value of speed so that we only pass in positive numbers

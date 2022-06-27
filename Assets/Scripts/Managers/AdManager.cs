@@ -17,7 +17,6 @@ namespace DarkJimmy
         [SerializeField]
         private List<AdsUnit> Rewardeds;
 
-
         private bool isBannerShowing;
 
         private int interstitialRetryAttempt;
@@ -30,21 +29,21 @@ namespace DarkJimmy
         public override void Awake()
         {
             base.Awake();
-            InitializeAds();        
+            InitializeAds();
         }
+
+     
         public void InitializeAds()
         {
-
             MaxSdkCallbacks.OnSdkInitializedEvent += sdkConfiguration =>
             {
                 InitializeInterstitialAds();
                 InitializeRewardedAds();
-                InitializeBannerAds(); 
+                InitializeBannerAds();
             };
 
             MaxSdk.SetSdkKey(MaxSdkKey);
             MaxSdk.InitializeSdk();
- 
         }
 
         #region Banner Ad 
@@ -302,10 +301,6 @@ namespace DarkJimmy
 
         #endregion
 
-        private void OnDestroy()
-        {
-            Destroy(MaxSdkCallbacks.Instance);
-        }
 
     }
     [Serializable]

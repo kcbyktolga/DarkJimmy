@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using DG.Tweening;
 
 
 namespace DarkJimmy.UI
@@ -62,9 +63,12 @@ namespace DarkJimmy.UI
             if (!islock)
                 globalData.SetCharacterIndex(Index);
 
-            Color endColor = system.GetBlackAlfaColor(islock);
-            StartCoroutine(BlackOut(endColor));
-            StartCoroutine(Moving(endPos));
+            Dimed(islock);
+            //Color endColor = system.GetBlackAlfaColor(islock);
+            // StartCoroutine(BlackOut(endColor));
+            // block.DOColor(endColor, duration);
+            //StartCoroutine(Moving(endPos));
+            Jumping();
 
             prefab.SetSkin(Index);
             SetMoveButton();
@@ -97,6 +101,12 @@ namespace DarkJimmy.UI
                 stats[i].SetStatName(((CharacterProperty)i).ToString());
             }
         }
+        private void Dimed(bool isOn)
+        {
+           // block.color = system.GetBlackAlfaColor(!isOn);
+            Color endColor = system.GetBlackAlfaColor(isOn);
+            block.DOColor(endColor, duration);
+        }
         IEnumerator BlackOut(Color endColor)
         {
             float time = 0;
@@ -127,6 +137,20 @@ namespace DarkJimmy.UI
             }
 
             animator.SetBool(idleParamId,true);
+        }
+        private void Jumping()
+        {
+            animator.SetBool(idleParamId, false);
+            AudioManager.Instance.PlaySound("Jump");
+
+          //  Vector2 endPos = new Vector2(playerT.position.x,this.endPos);
+            playerT.DOJump(playerT.position, 2, 1, duration * 0.5f).OnComplete(OnIdle);
+                
+        }
+
+        private void OnIdle()
+        {
+            animator.SetBool(idleParamId, true);
         }
         private void Purchase()
         {

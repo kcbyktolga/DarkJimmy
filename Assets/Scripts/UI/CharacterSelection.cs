@@ -43,10 +43,6 @@ namespace DarkJimmy.UI
 
             SetCharacterInfo();
 
-            //portrait.sprite = csm.GetDefaultData().CharacterDatas[Index].GetCharacterIcon();
-            //IsLock = globalData.Characters[Index].isLock;
-            //locked.SetActive(IsLock);
-
             playButton.onClick.RemoveAllListeners();
             playButton.onClick.AddListener(OnPlayButton);
 
@@ -56,8 +52,7 @@ namespace DarkJimmy.UI
 
         public override void Move(bool onClick, int amount)
         {
-            // base.Move(onClick, amount);
-
+         
             Index += amount;
             Index = Mathf.Clamp(Index, 0, Count - 1);
 
@@ -92,13 +87,16 @@ namespace DarkJimmy.UI
         {
             if (!IsLock)
             {
-                SceneManager.LoadScene("Game"); // sahne deðiþecek.
+                Fade.Instance.FadeOut(LoadGameScene);
                 return;
             }
 
             Debug.Log("Önce karakteri satýn al aq!");
 
-
+        }
+        private void LoadGameScene()
+        {
+            SceneManager.LoadScene("Game");
         }
         private void OnUpgradeButton()
         {

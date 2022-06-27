@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using DarkJimmy.Characters.Inputs;
+using Cinemachine;
 
 namespace DarkJimmy.Characters
 {
@@ -11,26 +12,24 @@ namespace DarkJimmy.Characters
 		private Transform dustTransform;
 		[SerializeField]
 		private GameObject dust;
-
-		PlayerInput input;
-
-		float wallJumpTime;                     //Variable to hold wall jump duration
-		float jumpTime;                         //Variable to hold jump duration
-		float blockCheckTime;
-		float playerHeight;                     //Height of the player
-
-
-		float originalXScale;                   //Original scale on X axis
-		int direction = 1;                      //Direction player is facing
-
 		public PlayerAnimation anim;
-		public int horizontal = 1;
 
+		[Header("Status Flag")]
+		public bool isAlive;
+		public bool isJumping;
+		public bool isHeadBlocked;
+		public bool isWallSliding;
+
+		private float wallJumpTime;                   
+		private float jumpTime;
+		private float coyoteTime;
+		private float blockCheckTime;
+		private float playerHeight;
+		private float originalXScale;
+		private int direction = 1;                     
+		private int horizontal = 1;
 		private int currentJumpAmount;
-		private float speed;	
-		//private bool isStartGame;
-
-	
+		private bool isPause;
 		private int CurrentJumpAmount
 		{
 			get { return currentJumpAmount; }
@@ -42,101 +41,45 @@ namespace DarkJimmy.Characters
 		}
 		private float Speed
         {
-            get { return speed; }
-            set
-            {
-				speed = value*(0.1f*csm.GetCurrentCharacterData().Speed + data.speed);
-            }
+            get { return gsm.GetMultiple(Stats.Speed) * (0.1f * csm.GetCurrentCharacterData().Speed + data.speed); }
+    //        set
+    //        {
+				//speed = gsm.GetMultiple(Stats.Speed) * (0.1f*csm.GetCurrentCharacterData().Speed + data.speed);
+    //        }
         }
 
-		GameSaveManager gsm;
-		SystemManager system;
-		CloudSaveManager csm;
+		private PlayerInput input;
+		private GameSaveManager gsm;
+		private SystemManager system;
+		private CloudSaveManager csm;
 
 		private void Start()
         {
-			Initialize();         
+			PlayerConfig();
         }
 
         private void Update()
         {
-			if (Input.GetKeyDown(KeyCode.Space))
-				data.isAlive = !data.isAlive;
-
-
-			if (!data.isAlive || !gsm.CanPlay)
+			if (!isAlive || !gsm.CanPlay)
 				return;
 
 			CheckInput();
         }
         private void FixedUpdate()
         {
-	
 			//Check the environment to determine status
 			PhysicsCheck();
 
 			//Process ground and air movements
+
+			if (gsm.IsWon)
+				return;
+
 			GroundMovement();
 			MidAirMovement();
 		}
 
-		public override void PhysicsCheck()
-		{
-			//Start by assuming the player isn't on the ground and the head isn't blocked
-			data.isOnGround = false;
-			data.isHeadBlocked = false;
-	
-			//Cast rays for the left and right foot
-			RaycastHit2D leftCheck = Raycast(new Vector2(-data.footOffset, 0f), Vector2.down, data.groundDistance,data.groundLayer,Color.blue);
-			RaycastHit2D rightCheck = Raycast(new Vector2(data.footOffset, 0f), Vector2.down, data.groundDistance, data.groundLayer, Color.blue);
-
-			//If either ray hit the ground, the player is on the ground
-			data.isOnGround = leftCheck || rightCheck;
-
-			//If on the ground, the player can jump 
-			if (data.isOnGround && rigidBody.velocity.y <= 0)
-            {
-				data.isJumping = false;
-				CurrentJumpAmount = gsm.JumpCount;
-			}
-				
-			//Cast the ray to check above the player's head
-			data.isHeadBlocked = Raycast(new Vector2(0f, bodyCollider.size.y), Vector2.up, data.headClearance, data.groundLayer, Color.yellow);
-
-			//If that ray hits, the player's head is blocked
-			//if (headCheck)
-			//	data.isHeadBlocked = true;
-
-			//Determine the direction of the wall grab attempt
-			Vector2 grabDir = new Vector2(direction, 0f);
-
-			//float forwardGrabDistance = jumpTime < Time.time ? data.grabDistance : data.grabDistance * data.backCheckMultiple;
-			
-			//Check if there is a wall in front of the player with the rays coming out of the top and bottom corners.
-			RaycastHit2D forwardTop = Raycast(new Vector2(data.footOffset * direction, bodyCollider.size.y), grabDir, data.grabDistance, data.groundLayer, Color.cyan);
-			RaycastHit2D forwardBottom = Raycast(new Vector2(data.footOffset * direction, 0), grabDir, data.grabDistance, data.groundLayer, Color.cyan);
-
-			//If there is a wall reverse the direction of the player 
-			if (forwardBottom || forwardTop)
-				horizontal *= -1;
-
-			//Control obstacles within the player's jump distance
-			RaycastHit2D blockedCheck = Raycast(new Vector2(data.footOffset * direction, 0), grabDir, data.blockCheckDistance, data.groundLayer, Color.magenta);
-
-			//If there is an obstacle, increase the distance of the player's back controlling rays for t time.
-			if (blockedCheck && blockCheckTime < Time.time)
-				blockCheckTime = data.blockedCheckDuration + Time.time;
-
-			float backCheckDistance = blockCheckTime > Time.time || jumpTime > Time.time ? data.grabDistance * data.backCheckMultiple : data.grabDistance;
-
-			// iswallSliding check
-			RaycastHit2D backTop = Raycast(new Vector2(-data.footOffset * direction, playerHeight), -direction*Vector2.right, backCheckDistance, data.groundLayer, Color.black);
-			RaycastHit2D backBottom = Raycast(new Vector2(-data.footOffset * direction, 0), -direction*Vector2.right, backCheckDistance, data.groundLayer, Color.blue);
-
-			data.isWallSliding = !data.isOnGround && (backTop || backBottom);
-
-		}
-        public override void Initialize()
+        public override void PlayerConfig()
         {
 			system = SystemManager.Instance;
 			csm = CloudSaveManager.Instance;
@@ -150,41 +93,113 @@ namespace DarkJimmy.Characters
 			originalXScale = transform.localScale.x;
 
 			//Record the player's height from the collider
-			playerHeight = bodyCollider.size.y;
+			playerHeight = bodyCollider.size.y*transform.localScale.y;
 
-			Speed = gsm.GetMultiple(Stats.Speed);
+			//Speed = gsm.GetMultiple(Stats.Speed);
 			CurrentJumpAmount = gsm.JumpCount;
-			data.isAlive = true;
+			isAlive = true;
+			isPause = true;
 
+			//rigidBody.bodyType = !isPause ? RigidbodyType2D.Dynamic : RigidbodyType2D.Static;
+
+			gsm.pause += OnPause;
+			gsm.timeOut += OnDie;
 		}
-        public override void GroundMovement()
-        {
-			float xVelocity = !data.isAlive || !gsm.CanPlay ? 0: Speed * horizontal;
-	
+		public override void PhysicsCheck()
+		{
+			//Start by assuming the player isn't on the ground and the head isn't blocked
+			isOnGround = false;
+			isHeadBlocked = false;
+
+			//Cast rays for the left and right foot
+			//RaycastHit2D leftCheck = Raycast(new Vector2(-data.footOffset, 0f), Vector2.down, data.groundDistance,data.groundLayer,Color.blue);
+			//RaycastHit2D rightCheck = Raycast(new Vector2(data.footOffset, 0f), Vector2.down, data.groundDistance, data.groundLayer, Color.blue);
+
+			isOnGround = BoxCast(0.95f*Vector2.one,Vector2.down,data.groundDistance,data.groundLayer);
+
+			////If either ray hit the ground, the player is on the ground
+			//isOnGround = leftCheck || rightCheck;
+
+			//If on the ground, the player can jump 
+			if (isOnGround && rigidBody.velocity.y <= 0)
+            {
+				isJumping = false;
+				CurrentJumpAmount = gsm.JumpCount;
+			}
+				
+			//Cast the ray to check above the player's head
+			isHeadBlocked = Raycast(new Vector2(0f, playerHeight), Vector2.up, data.headClearance, data.groundLayer, Color.yellow);
+
+			//If that ray hits, the player's head is blocked
+			//if (headCheck)
+			//	data.isHeadBlocked = true;
+
+			//Determine the direction of the wall grab attempt
+			Vector2 grabDir = new Vector2(direction, 0f);
+
+			//float forwardGrabDistance = jumpTime < Time.time ? data.grabDistance : data.grabDistance * data.backCheckMultiple;
+			
+			//Check if there is a wall in front of the player with the rays coming out of the top and bottom corners.
+			//RaycastHit2D forwardTop = Raycast(new Vector2(data.footOffset * direction, playerHeight*0.95f), grabDir, data.grabDistance, data.groundLayer, Color.cyan);
+			//RaycastHit2D forwardBottom = Raycast(new Vector2(data.footOffset * direction, 0), grabDir, data.grabDistance, data.groundLayer, Color.cyan);
+
+			//If there is a wall reverse the direction of the player 
+			//if (forwardBottom || forwardTop)
+			//	horizontal *= -1;
+
+			
+
+			//Control obstacles within the player's jump distance
+			RaycastHit2D blockedCheck = Raycast(new Vector2(data.footOffset * direction, 0), grabDir, data.blockCheckDistance, data.groundLayer, Color.magenta);
+
+			//If there is an obstacle, increase the distance of the player's back controlling rays for t time.
+			if (blockedCheck && blockCheckTime < Time.time)
+				blockCheckTime = data.blockedCheckDuration + Time.time;
+
+            float backCheckDistance = (blockCheckTime > Time.time || jumpTime > Time.time) && (!isWallSliding || !isOnGround) ? data.grabDistance * data.backCheckMultiple : data.grabDistance;
+
+			//// iswallSliding check
+			//RaycastHit2D backTop = Raycast(new Vector2(-data.footOffset * direction, playerHeight), -direction*Vector2.right, backCheckDistance, data.groundLayer, Color.black);
+			//RaycastHit2D backBottom = Raycast(new Vector2(-data.footOffset * direction, 0), -direction*Vector2.right, backCheckDistance, data.groundLayer, Color.blue);
+
+            RaycastHit2D backCheck = BoxCast(new Vector2(1f,0.975f),-grabDir, backCheckDistance, data.groundLayer);
+			
+			isWallSliding = !isOnGround && backCheck; //(backTop || backBottom);
+
+			RaycastHit2D forward = BoxCast(new Vector2(0.95f,0.95f),grabDir, data.grabDistance, data.groundLayer);
+
+			if (forward)
+				horizontal *= -1;
+		}
+		public override void GroundMovement()
+		{
+
+			float xVelocity = gsm.IsLose || !gsm.IsStartGame ? 0 : Speed * horizontal; // !isAlive || 
+
 			//If the sign of the velocity and direction don't match, flip the character
 			if (xVelocity * direction < 0f)
 				FlipCharacterDirection();
 
 			//Apply the desired velocity 
-			if (data.isWallSliding && wallJumpTime < Time.time)
-            {
-                if (input.jumpPressed )
-                {				
+			if (isWallSliding && wallJumpTime <= Time.time)
+			{
+				if (input.jumpPressed)
+				{
 					CurrentJumpAmount = gsm.JumpCount;
-					
-					wallJumpTime = data.coyoteDuration + Time.time;
+
+					wallJumpTime = data.wallJumpDuration + Time.time;
 
 					//...add the jump force to the rigidbody...
-					Vector2 force = new Vector2(direction*5, data.jumpForce);
-					Jump(force,true);
+					Vector2 force = new Vector2(direction * 5, data.jumpForce);
+					Jump(force, true);
 					Dust();
-
+					AudioManager.Instance.PlayMusic("Wall Jump");
 				}
-                else
+				else
 					rigidBody.velocity = new Vector2(-direction * data.wallSlidingSpeed.x, data.wallSlidingSpeed.y);
-			}				
+			}
 			else
-				rigidBody.velocity = new Vector2(xVelocity, rigidBody.velocity.y);		
+				rigidBody.velocity = new Vector2(xVelocity, rigidBody.velocity.y);
 		}
 		public override void MidAirMovement()
 		{
@@ -192,6 +207,17 @@ namespace DarkJimmy.Characters
 			if (rigidBody.velocity.y < data.maxFallSpeed)
 				rigidBody.velocity = new Vector2(rigidBody.velocity.x, data.maxFallSpeed);
 		}
+		private void OnPause()
+        {
+			isPause = !isPause;
+
+			rigidBody.bodyType = !isPause ? RigidbodyType2D.Dynamic : RigidbodyType2D.Static;
+		}
+		private void OnDie()
+        {
+			isAlive = false;		
+        }
+  
 		public override void FlipCharacterDirection()
         {
 			//Turn the character by flipping the direction
@@ -205,6 +231,7 @@ namespace DarkJimmy.Characters
 
 			//Apply the new scale
 			transform.localScale = scale;
+
 		}
 		private bool CanDoubleJump()
         {
@@ -216,50 +243,48 @@ namespace DarkJimmy.Characters
         }
 		private void CheckInput()
         {
-			//If the jump key is pressed AND the player isn't already jumping AND EITHER
-			//the player is on the ground or within the coyote time window...
+			//If the jump key is pressed and the player isn't already jumping and either the player is on the ground
 			if (input.jumpPressed)
 			{
-				if (!data.isJumping && data.isOnGround)
+				if (!isJumping && isOnGround)
 				{
 					//...The player is no longer on the groud and is jumping...
-					data.isOnGround = false;
+					isOnGround = false;
 					//...add the jump force to the rigidbody...
-
 					Vector2 force = new Vector2(0, data.jumpForce);
 					Jump(force,true);
 					Dust();
-
-					//...and tell the Audio Manager to play the jump audio
-					//AudioManager.PlayJumpAudio();
+					AudioManager.Instance.PlaySound("Jump");
 				}
-				else if (data.isJumping && CanDoubleJump() && !data.isWallSliding)
+				else if (isJumping && CanDoubleJump() && !isWallSliding)
 				{
 					CurrentJumpAmount--;
 					gsm.Mana--;
 					system.updateStats(Stats.Mana, gsm.Mana);
 					Vector2 force = new Vector2(0, data.jumpForce * data.jumpForceMultiple);
-
 					Jump(force,CanDoubleJump());
+					AudioManager.Instance.PlaySound("Air Jump");
 				}
 			}
 		}
 		private void Jump(Vector2 force, bool canJump)
         {
 			jumpTime = data.jumpDuration + Time.time;
-			data.isJumping = canJump;
+			isJumping = canJump;
 			rigidBody.velocity = Vector2.zero;
 			//...add the jump force to the rigidbody...
 			rigidBody.AddForce(force, ForceMode2D.Impulse);
-
-			//...and tell the Audio Manager to play the jump audio
-			//AudioManager.PlayJumpAudio();
 		}
 		private void Dust()
         {
 			dust.transform.localScale = new Vector2(-direction * dust.transform.localScale.x, dust.transform.localScale.y);
 			dust.transform.position = dustTransform.position;
 			dust.SetActive(true);
+        }
+
+        private void OnDestroy()
+        {
+			gsm.pause -= OnPause;
         }
 
     }

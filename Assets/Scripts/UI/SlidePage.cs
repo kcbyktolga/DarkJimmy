@@ -39,7 +39,8 @@ namespace DarkJimmy.UI
             }
 
             SetMoveButton();
-            StartCoroutine(Slide(container, GetPosition[NextIndex]));
+            // StartCoroutine(Slide(container, GetPosition[NextIndex]));
+            Sliding(container,GetPosition[NextIndex]);
 
         }
 

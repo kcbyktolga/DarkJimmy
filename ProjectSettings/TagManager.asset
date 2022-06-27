@@ -23,8 +23,8 @@ TagManager:
   - Ground
   - PP
   - Foreground
-  - 
-  - 
+  - Interactable
+  - Obstacle
   - 
   - 
   - 
@@ -47,8 +47,14 @@ TagManager:
   - name: Background
     uniqueID: 752950261
     locked: 0
+  - name: Environment
+    uniqueID: 3374239481
+    locked: 0
   - name: Ground
     uniqueID: 1909970865
+    locked: 0
+  - name: Obstacle
+    uniqueID: 3093580611
     locked: 0
   - name: Player
     uniqueID: 1319747231

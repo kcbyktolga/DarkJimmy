@@ -20,7 +20,7 @@ namespace DarkJimmy.UI
         {
             GameSaveManager.Instance.IsStartGame = true;
             GameSaveManager.Instance.StartCountDownTimer();
-
+            GameSaveManager.Instance.pause();
             UIManager.Instance.GoBack();
         }
     }

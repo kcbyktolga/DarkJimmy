@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Audio;
 using System;
+using DG.Tweening;
 
 namespace DarkJimmy
 {
@@ -10,17 +11,17 @@ namespace DarkJimmy
     {
         [Header("Mixer Groups")]
         [SerializeField]
-        private AudioMixerGroup musicMixer;           //The music mixer group
+        private AudioMixerGroup musicMixer;           
         [SerializeField]
-        private AudioMixerGroup ambientMixer;         //The sound 3D mixer group
+        private AudioMixerGroup ambientMixer;         
         [SerializeField]
-        private AudioMixerGroup playerSoundMixer;     //The sound 3D mixer group
+        private AudioMixerGroup playerSoundMixer;     
         [SerializeField]
-        private AudioMixerGroup sound2DMixer;         //The sound 2D mixer group
+        private AudioMixerGroup sound2DMixer;         
         [SerializeField]
-        private AudioMixerGroup sound3DMixer;         //The sound 3D mixer group
+        private AudioMixerGroup sound3DMixer;         
         [SerializeField]
-        private AudioMixerGroup uýSoundMixer;         //The sound 3D mixer group
+        private AudioMixerGroup uýSoundMixer;        
         [SerializeField]
         private List<SoundGroup> soundGroups;
         [SerializeField]
@@ -32,7 +33,7 @@ namespace DarkJimmy
         private AudioSource sound2DSource;
         private AudioSource sound3DSource;
         private AudioSource uýSoundSource;
-       // private Dictionary<string, List<AudioClip>> soundGroupDictionary = new Dictionary<string, List<AudioClip>>();
+        
         private readonly Dictionary<string, SoundGroup> soundGroupDictionary = new Dictionary<string, SoundGroup>();
 
         public delegate void SetVolume(UI.VolumeType type);
@@ -55,7 +56,6 @@ namespace DarkJimmy
             //SceneManager.onChangedScene += ChangeMusicAndAmbient;
             setVolume += SetSourceStatus;
         }
-
 
         #region Public Methods
         public void SetAdiouManagerSource()
@@ -81,43 +81,38 @@ namespace DarkJimmy
         {
             AudioClip clip = GetClipFromName(soundName.Trim(), out SoundGroupType type);
             AudioSource source = GetAudioSource(type);
-
-            Debug.Log(source);
-            Debug.Log(clip.name);
+            source.clip = clip;
 
             if (!source.enabled)
                 return;
-           
-            source.clip = clip;
-            source.Play();
-    
-        }
-        public void PauseMusic()
+
+            source.Play(); 
+        }   
+        public void StopSource(SoundGroupType type)
         {
-            if (musicSource.enabled && musicSource.isPlaying)
-                musicSource.Pause();
+            AudioSource source = GetAudioSource(type);
 
-            if (ambientSource.enabled && musicSource.isPlaying)
-                ambientSource.Pause();
-
+            if(source.enabled && source.isPlaying)
+                source.Stop();
         }
-        public void PlayMusic()
+        public void PauseSource(SoundGroupType type)
         {
-            if (musicSource.enabled && !musicSource.isPlaying)
-                musicSource.Play();
+            AudioSource source = GetAudioSource(type);
 
-            if (ambientSource.enabled && !musicSource.isPlaying)
-                ambientSource.Play();
+            if (source.enabled && source.isPlaying)
+                source.Pause();
         }
-        public void StopMusic()
+        public void PlaySource(SoundGroupType type)
         {
-            if (musicSource.enabled && musicSource.isPlaying)
-                musicSource.Stop();
+            AudioSource source = GetAudioSource(type);
 
-            if (ambientSource.enabled && musicSource.isPlaying)
-                ambientSource.Stop();
+            if (source.enabled && source.isPlaying)
+                source.Play();
         }
 
+        #endregion
+
+        #region Private Methods
         private void SetSourceStatus(UI.VolumeType volumeType)
         {
             switch (volumeType)
@@ -136,9 +131,6 @@ namespace DarkJimmy
                     break;
             }
         }
-        #endregion
-
-        #region Private Methods
         private AudioClip GetClipFromName(string soundName, out SoundGroupType type)
         {
             type = 0;
@@ -150,34 +142,6 @@ namespace DarkJimmy
             }
             return null;
         }
-        //private AudioClip GetClip()
-        //{
-        //    return musicClips[SceneManager.GetActiveScene().buildIndex];
-        //}
-        //private AudioSource GetAudioSource(ToggleType type)
-        //{
-        //    switch (type)
-        //    {
-        //        default:
-        //        case ToggleType.Music:
-        //            return musicSource;
-        //        case ToggleType.Sound:
-        //            return soundSource;
-        //    }
-        //}
-        //private void Play(Scene e, Scene a)
-        //{
-        //    if (SceneManager.GetActiveScene().buildIndex.Equals(0) || SceneManager.GetActiveScene().buildIndex.Equals(1))
-        //    {
-        //        if (musicSource != null)
-        //            musicSource.Stop();
-
-        //        return;
-        //    }
-
-
-        //    PlayMusic(GetClip());
-        //}
         private void SetSoundGroup()
         {
             foreach (SoundGroup soundGroup in soundGroups)
@@ -185,8 +149,7 @@ namespace DarkJimmy
                 soundGroupDictionary.Add(soundGroup.groupID, soundGroup);
             }
         }
-
-        public void MusicVolumeSet(SoundGroupType type, bool isOn)
+        public void SourceFadeVolume(SoundGroupType type, bool isOn)
         {
             AudioSource source = GetAudioSource(type);
             if (!source.enabled)
@@ -195,18 +158,8 @@ namespace DarkJimmy
             float multiple = isOn ? 2 : 0.5f;
             float volume = source.volume * multiple;
 
-            StartCoroutine (SoundLerp(source,volume));
-        }
-
-        IEnumerator SoundLerp(AudioSource source, float volume)
-        {
-            float time = 0;
-            while (time<=1)
-            {
-                time += Time.deltaTime / 0.5f;
-                source.volume = Mathf.Lerp(source.volume,volume,time);
-                yield return null;
-            }
+            source.DOFade(volume, 0.5f);
+           
         }
         private void SetSource(ref AudioSource source, ref AudioMixerGroup mixerGroup, bool isLoop,UI.VolumeType type)
         {
@@ -216,7 +169,6 @@ namespace DarkJimmy
             source.loop = isLoop;
             source.enabled = LocalSaveManager.GetBoolValue(LocalSaveManager.GetToggleName(type), true);
         }
-
         private AudioSource GetAudioSource(SoundGroupType groupType)
         {
             return groupType switch
@@ -239,7 +191,6 @@ namespace DarkJimmy
         public SoundGroupType groupType;
         public List<AudioClip> group;
     }
-
     public enum SoundGroupType
     {
         Music,

@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using System;
+using DarkJimmy.Objects;
 
 namespace DarkJimmy
 {
@@ -39,6 +40,8 @@ namespace DarkJimmy
         private int stagePrice;
         [SerializeField]
         private GemType payType;
+        [SerializeField]
+        private int keyCount;
 
         [Header("Stage Property")]
         public string stageName;
@@ -53,7 +56,6 @@ namespace DarkJimmy
         {
             return stagePrice;
         }
-
         public GemType GetPayType()
         {
             return payType;
@@ -64,6 +66,8 @@ namespace DarkJimmy
     {
         [SerializeField]
         private int countDownTime;
+        [SerializeField]
+        private Platform platform;
         [Header("Level Property")]
         public string levelName;
         public string levelId;
@@ -76,6 +80,10 @@ namespace DarkJimmy
         public int GetLevelTime()
         {
             return countDownTime;
+        }
+        public Platform GetPlatform()
+        {
+            return platform;
         }
     }
     [Serializable]

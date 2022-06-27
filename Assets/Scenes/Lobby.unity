@@ -3041,10 +3041,19 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 2089192959690537563, guid: 8ed26d7c09adb8b4f8f3f947ef0268ac,
+    - target: {fileID: 1828675025641238, guid: 8ed26d7c09adb8b4f8f3f947ef0268ac, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 224007094086201508, guid: 8ed26d7c09adb8b4f8f3f947ef0268ac,
         type: 3}
       propertyPath: m_RootOrder
       value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 2089192959690537563, guid: 8ed26d7c09adb8b4f8f3f947ef0268ac,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 8536292636079344848, guid: 8ed26d7c09adb8b4f8f3f947ef0268ac,
         type: 3}

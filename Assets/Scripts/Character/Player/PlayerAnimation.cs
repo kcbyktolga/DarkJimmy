@@ -56,15 +56,15 @@ namespace DarkJimmy.Characters
         public virtual void Update()
         {
             //Update the Animator with the appropriate values
-            anim.SetBool(groundParamID, movement.data.isOnGround);
-            anim.SetBool(slideParamID,movement.data.isWallSliding);
+            anim.SetBool(groundParamID, movement.isOnGround);
+            anim.SetBool(slideParamID,movement.isWallSliding);
             anim.SetFloat(fallParamID, rigidBody.velocity.y);
-            anim.SetBool(dieParamID, movement.data.isAlive);
+            anim.SetBool(dieParamID, movement.isAlive);
 
             //Use the absolute value of speed so that we only pass in positive numbers
             anim.SetFloat(speedParamID, Mathf.Abs(rigidBody.velocity.x));
 
-            if (!movement.data.isAlive && !blink.headDie.activeSelf)
+            if (!movement.isAlive && !blink.headDie.activeSelf)
                 blink.headDie.SetActive(true);
 
             BlinkCheck();
@@ -73,10 +73,10 @@ namespace DarkJimmy.Characters
 
         private void BlinkCheck()
         {
-            if (blink.blinkTime > Time.time || !movement.data.isAlive)
+            if (blink.blinkTime > Time.time || !movement.isAlive)
                 return;
 
-            blink.PlayBlink(movement.data.isAlive);
+            blink.PlayBlink(movement.isAlive);
 
            // StartCoroutine(nameof(Blink(movement.data.isAlive)));
 

@@ -24,6 +24,7 @@ namespace DarkJimmy.UI
             for (int i = 0; i < container.childCount; i++)
                 container.GetChild(i).gameObject.SetActive(false);
         }
+
         private IEnumerator ProductsActive()
         {
             yield return new WaitForEndOfFrame();

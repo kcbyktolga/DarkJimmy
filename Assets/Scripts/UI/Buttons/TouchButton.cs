@@ -49,6 +49,11 @@ namespace DarkJimmy.UI
             SetTabButtonName(name);
         }
 
+        private void OnDestroy()
+        {
+            LanguageManager.onChangedLanguage -= SetTouchButtonName;
+        }
+
     }
 
 }

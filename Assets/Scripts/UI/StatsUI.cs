@@ -1,8 +1,5 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
-using UnityEngine.UI;
 using System;
 
 namespace DarkJimmy
@@ -62,6 +59,12 @@ namespace DarkJimmy
                 amount.text = $"{csm.GetCurrentCharacterData().JumpCount}";
             else if (Stats.Equals(Stats.Key) && type.Equals(StatsType.Selectable))
                 amount.text=$"{csm.PlayerDatas.GetAllKeyCount()}";      
+        }
+
+        public virtual void OnDestroy()
+        {
+            system.updateStats -= UpdateStats;
+            system.updateStatsCapacity -= SetStatsPowerUp;
         }
     }
 

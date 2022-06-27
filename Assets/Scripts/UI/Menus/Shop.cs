@@ -13,14 +13,15 @@ namespace DarkJimmy.UI
         {
             base.Start();
 
-            AudioManager.Instance.MusicVolumeSet(SoundGroupType.Music,false);
-            AudioManager.Instance.MusicVolumeSet(SoundGroupType.Ambient, false);
+            AudioManager.Instance.SourceFadeVolume(SoundGroupType.Music,false);
+            AudioManager.Instance.SourceFadeVolume(SoundGroupType.Ambient, false);
         }
 
-        private void OnDestroy()
+        public override void OnDestroy()
         {
-            AudioManager.Instance.MusicVolumeSet(SoundGroupType.Music, true);
-            AudioManager.Instance.MusicVolumeSet(SoundGroupType.Ambient, true);
+            base.OnDestroy();
+            AudioManager.Instance.SourceFadeVolume(SoundGroupType.Music, true);
+            AudioManager.Instance.SourceFadeVolume(SoundGroupType.Ambient, true);
         }
     }
 

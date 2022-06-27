@@ -4,6 +4,7 @@ using UnityEngine;
 using TMPro;
 using System;
 using UnityEngine.UI;
+using DG.Tweening;
 
 namespace DarkJimmy.UI
 {
@@ -18,6 +19,8 @@ namespace DarkJimmy.UI
         private RectTransform wheel;
         [SerializeField]
         private AnimationCurve curve;
+        [SerializeField]
+        private Ease ease;
         [SerializeField]
         private GemType gemType;
         [SerializeField]
@@ -45,7 +48,6 @@ namespace DarkJimmy.UI
         [SerializeField]
         private BaseButton claimButton;
 
-   
         private int Index { get; set; } = 0;
         private int Seed { get { return UnityEngine.Random.Range(0, 100);} }
         private bool IsSpin { get; set; } = false;
@@ -142,6 +144,7 @@ namespace DarkJimmy.UI
                 {
                     csm.SpendGem(gemType, price);
                     StartCoroutine(Spin());
+                    
                 }
                 else
                 {
@@ -158,6 +161,22 @@ namespace DarkJimmy.UI
                 return;
 
             wheel.transform.Rotate(speed*Time.fixedDeltaTime*Vector3.forward);
+        }
+
+        private void Spining()
+        {
+            IsSpin = !IsSpin;
+            purchaseButton.button.interactable = !IsSpin;
+
+            Vector3 startAngle = wheel.localEulerAngles;
+            float targetZ = GetTargetStep(GetRandomElementIndex()) * 45 + 360 * spinDuration * 24;
+            Index = (GetIndex(startAngle.z + targetZ) + 3) % catalog.GetProductLuckySpin.Count;
+            luckyProduct = catalog.GetProductLuckySpin[Index];
+            rewardPopup.SetSlot(luckyProduct);
+            Vector3 targetAngle = new Vector3(startAngle.x, startAngle.y, targetZ);
+
+            wheel.DOLocalRotate(targetAngle, spinDuration,RotateMode.FastBeyond360).SetEase(ease).OnComplete(SpinComplete);
+            
         }
         private IEnumerator Spin()
         {
@@ -211,6 +230,19 @@ namespace DarkJimmy.UI
             IsSpin = !IsSpin;
             purchaseButton.button.interactable =!IsSpin;
         }
+
+        void SpinComplete()
+        {
+            ShuffledElement();
+
+            if (payType != PayType.Free)
+                StartCoroutine(TimeUpdate());
+
+            rewardPopup.gameObject.SetActive(true);
+            IsSpin = !IsSpin;
+            purchaseButton.button.interactable = !IsSpin;
+        }
+
         private IEnumerator SpinColorEffect(bool isOn)
         {
             float time = 0;
@@ -314,7 +346,7 @@ namespace DarkJimmy.UI
             freeGroup.SetActive(IsTimeOut());
             paidGroup.SetActive(!IsTimeOut());
         }
-        private void OnDestroy()
+        public override void OnDestroy()
         {
             if (IsSpin)
                 ClaimReward();

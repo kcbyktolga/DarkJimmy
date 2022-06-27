@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using DG.Tweening;
 
 namespace DarkJimmy.UI
 {
@@ -46,5 +47,11 @@ namespace DarkJimmy.UI
                 yield return null;
             }
         }
+        public virtual void Sliding(RectTransform content, float endPosX)
+        {
+            Vector2 endPos = new Vector2(endPosX,content.anchoredPosition.y);
+            content.DOAnchorPos(endPos, duration);
+        }
+
     }
 }
