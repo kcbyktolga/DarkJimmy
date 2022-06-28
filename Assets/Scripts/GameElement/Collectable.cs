@@ -6,42 +6,27 @@ using System;
 
 namespace DarkJimmy
 {
-    public class Collectable : MonoBehaviour,IAnimationEvent
+    public class Collectable : MonoBehaviour
     {
         [SerializeField]
         private Stats stats;
+      
         [SerializeField]
         private int amount;
-      
 
-        private Animator animator;
-        private int onCollect;
-
+        SystemManager system;
         private void Start()
         {
-            animator = GetComponent<Animator>();
-            onCollect = Animator.StringToHash("Collect");
+            system = SystemManager.Instance;
         }
 
         private void OnTriggerEnter2D(Collider2D collision)
         {
-            animator.SetTrigger(onCollect);
-
-            if (stats.Equals(Stats.Timer))
-            {
-                int value = GameSaveManager.Instance.CountDown += amount;
-                SystemManager.Instance.updateStats(stats,value);
-            }
-            else
-                GameSaveManager.Instance.UpdateStatsValue(stats, amount);
-
-        }
-
-        public void AnimationEvent()
-        {
-            gameObject.SetActive(false);
+            system.updateGMStats(stats,amount);         
         }
     }
+
+    
 }
 
 

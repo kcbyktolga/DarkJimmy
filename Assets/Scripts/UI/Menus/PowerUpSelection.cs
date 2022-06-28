@@ -77,7 +77,7 @@ namespace DarkJimmy.UI
 
             PayType = payType;       
             Price  =  isOn? price : 0;
-            priceText.text = this.Price != 0 ? $"-{price}" : $"{0}";
+            priceText.text = Price != 0 ? $"-{price}" : $"{0}";
 
             if (!isOn)
                 return;
@@ -89,7 +89,7 @@ namespace DarkJimmy.UI
         private void OnPlay()
         {
             if (globalData.CanSpendGem(PayType,Price))
-                fader.FadeOut(FadeInAbc);
+                fader.FadeOut(FadeIn);
             else
             {
                 system.GemType = PayType;
@@ -97,11 +97,11 @@ namespace DarkJimmy.UI
             }
         }
 
-        private void FadeInAbc()
+        private void FadeIn()
         {      
             prepareDisplay.SetActive(false);
             gameDisplay.SetActive(true);
-            gsm.GenerateGameElement();          
+            gsm.ActivateGameElement();         
             fader.FadeIn(OnStarter);
         }
         void OnStarter()

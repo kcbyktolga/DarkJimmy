@@ -27,19 +27,12 @@ namespace DarkJimmy.UI
         public void FadeOut(FaderTransition fadeTransition)
         {
             transition = fadeTransition;
-            if (transition != null)
-                Debug.Log(fadeTransition.Method);
-
             PlayFade(true);
         }
 
         public void FadeIn(FaderTransition fadeTransition)
         {
             transition = fadeTransition;
-
-            if (transition != null)
-                Debug.Log(fadeTransition.Method);
-
             PlayFade(false);
         }
 

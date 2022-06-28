@@ -16,60 +16,51 @@ namespace DarkJimmy
         private TMP_Text statsName;
 
         private readonly float duration = 0.5f;
-        public override void UpdateStats(Stats stats, int amount)
+        public override void Initialize()
+        {
+            if (System.Enum.TryParse(Stats.ToString(), out CharacterProperty property))
+                SyncStateValue(Stats, csm.GetCurrentCharacterData().GetCharacterProperty(property));
+        }
+        public override void SyncStateValue(Stats stats, int amount)
         {
             if (Stats != stats)
                 return;
 
-            SetSliderValues(amount, statsSlider.maxValue);
-        }
-        public override void SetStatsPowerUp(Stats stats, int value)
-        {
-            if(Stats.Equals(stats))
-                SetSliderValues(value, value);
-        }
-        public override void SetStatsValue()
-        {
-            if (Stats.Equals(Stats.Energy))
-                SetSliderMaxValue(csm.GetCurrentCharacterData().Energy);
-            else if (Stats.Equals(Stats.Mana))
-                SetSliderMaxValue(csm.GetCurrentCharacterData().Mana);
-        }
-        private void SetSliderMaxValue(float value)
-        {
-            statsSlider.maxValue = value;
-            statsSlider.value = value;
+            minValue = defaultValue = amount;
 
-            if (amount != null)
-                SetValue();
+            if (Type.Equals(StatsType.Unuseable))
+                SetSliderValues(amount, statsSlider.maxValue);
+            else
+                SetSliderValues(amount, Value);
+
+        }
+        public override void AddPowerUp(Stats stats, int value)
+        {
+            if (Stats != stats)
+                return;
+
+            Value = value;
+
+            SetSliderValues(Value, Value);
+        }
+
+        public override void UpdateGameDisplay(Stats stats, int value)
+        {
+            if (Stats != stats)
+                return;
+
+            SetSliderValues(value,Value);
         }
         public void SetSliderValues(float value, float maxValue)
         {
-           // StartCoroutine(SetSliderValue(value, maxValue));
-
             statsSlider.maxValue = maxValue;
-            float amount = statsSlider.value;
             statsSlider.DOValue(value, duration).onUpdate += SetValue;
-         
+           
         }
         private void SetValue()
         {
             amount.text = $"{(int)statsSlider.value}/{(int)statsSlider.maxValue}";
-        }
-        //private IEnumerator SetSliderValue(float value, float maxValue)
-        //{
-        //    statsSlider.maxValue = maxValue;
-        //    float time = 0;
-
-        //    while (time <= 1)
-        //    {
-        //        time += Time.deltaTime / duration;
-        //        float percent = Mathf.Lerp(statsSlider.value, value, time);
-        //        statsSlider.value = percent;
-        //        SetAmount((int)percent);
-        //        yield return null;
-        //    }
-        //}
+        }   
         public void SetStatName(string name)
         {
             statsName.text = LanguageManager.GetText(name);

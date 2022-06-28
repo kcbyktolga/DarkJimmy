@@ -11,7 +11,6 @@ namespace DarkJimmy
     {
         [SerializeField]
         private GameObject GameElement;
-
         public delegate void JumpCountUpdate(int count);
         public JumpCountUpdate jumpCountUpdate;
 
@@ -60,14 +59,20 @@ namespace DarkJimmy
             system = SystemManager.Instance;
             csm = CloudSaveManager.Instance;
 
-            startGold=Gold =csm.PlayerDatas.Gold;
-            
-            maxMana= Mana = csm.GetCurrentCharacterData().Mana;
-            maxEnergy= Energy = csm.GetCurrentCharacterData().Energy;
-            maxJumpCount=JumpCount = csm.GetCurrentCharacterData().JumpCount;
-            startTime = CountDown = csm.GetCurrentDefaultLevel().GetLevelTime();
-
+            Initialize();
             GenerateLevel();
+
+            system.updatePowerUp += UpdatePoweUp;
+            system.updateGMStats += UpdateGMStats;
+        }
+
+        private void Initialize()
+        {
+            startGold = Gold = csm.PlayerDatas.Gold;
+            maxMana = Mana = csm.GetCurrentCharacterData().Mana;
+            maxEnergy = Energy = csm.GetCurrentCharacterData().Energy;
+            maxJumpCount = JumpCount = csm.GetCurrentCharacterData().JumpCount;
+            startTime = CountDown = csm.GetCurrentDefaultLevel().GetLevelTime();
         }
 
         public void GenerateLevel()
@@ -78,6 +83,42 @@ namespace DarkJimmy
                 return;
           
             platform = Instantiate(_platform,GameElement.transform);
+        }
+        private void UpdatePoweUp(Stats stats, int value)
+        {
+            GetValue(stats) = value < 0 ? GetMaxValue(stats) : GetMaxValue(stats) + value;
+            system.updateStats(stats,GetValue(stats));
+        }
+        private void UpdateGMStats(Stats stats, int value)
+        {
+            if (stats.Equals(Stats.Key) || stats.Equals(Stats.Gold))
+                GetValue(stats) += value;
+            else if (stats.Equals(Stats.Time))
+            {
+                CountDown += value + GetValue(stats);
+                system.updateStats(stats, CountDown);
+                return;
+            }
+                
+            else
+                GetValue(stats) = GetValue(stats) + value > GetMaxValue(stats) ? GetMaxValue(stats) : GetValue(stats) + value;
+
+            system.updateGameDisplay(stats, GetValue(stats));
+        }
+
+        private void SetCapacity()
+        {
+            int count = Enum.GetNames(typeof(Stats)).Length; ;
+
+            for (int i = 0; i < count; i++)
+            {
+                Stats stats = (Stats)i;
+
+                if (stats.Equals(Stats.Key) || stats.Equals(Stats.Gold) || stats.Equals(Stats.Time))
+                    continue;
+
+                GetMaxValue(stats) = GetValue(stats);                   
+            }
         }
         private ref int  GetValue(Stats stats)
         {
@@ -94,7 +135,7 @@ namespace DarkJimmy
                     return ref Energy;
                 case Stats.Mana:
                     return ref Mana;
-                case Stats.Timer:
+                case Stats.Time:
                     return ref Timer;
                 case Stats.JumpCount:
                     return ref JumpCount;
@@ -102,50 +143,26 @@ namespace DarkJimmy
                     return ref Speed;
             }
         }
-        private void SetValue(Stats stats, int value)
+        private ref int GetMaxValue(Stats stats)
         {
-            if (stats.Equals(Stats.Energy))
-                ClampCapacity(stats, value, ref maxEnergy);
-            else if (stats.Equals(Stats.Mana))
-                ClampCapacity(stats, value, ref maxMana);
-            else
-                GetValue(stats) = value;
+            switch (stats)
+            {
+                default:
+                case Stats.Energy:
+                    return ref maxEnergy;
+                case Stats.Mana:
+                    return ref maxMana;
+                case Stats.Time:
+                    return ref maxTime;
+                case Stats.JumpCount:
+                    return ref maxJumpCount;
+                case Stats.Speed:
+                    return ref maxSpeed;
+            }
         }
-        private void SetCapacity(Stats stats,int value, ref int maxCapacity)
+        public void ActivateGameElement()
         {
-            GetValue(stats) += value;
-            maxCapacity = GetValue(stats);
-            system.updateStatsCapacity(stats, maxCapacity);
-        }
-        private void ClampCapacity(Stats stats, int value, ref int maxCapacity)
-        {
-            if (value > maxCapacity)
-                GetValue(stats) = maxCapacity;
-            else
-                GetValue(stats) += value;
-        }
-        public void UpdateStatsValue(Stats stats, int amount)
-        {
-            int value = GetValue(stats) + amount;
-            SetValue(stats,value);
-            system.updateStats(stats,value);
-        }
-        public void UpdateCapacity(Stats stats, int value)
-        {
-            if (stats.Equals(Stats.Energy))
-                SetCapacity(stats, value, ref maxEnergy);
-            else if (stats.Equals(Stats.Mana))
-                SetCapacity(stats, value, ref maxMana);
-            else if (stats.Equals(Stats.JumpCount))
-                SetCapacity(stats, value, ref maxJumpCount);
-            else if (stats.Equals(Stats.Speed))
-                SetCapacity(stats, value, ref maxSpeed);
-            else if (stats.Equals(Stats.Speed))
-                SetCapacity(stats, value, ref maxTime);
-
-        }
-        public void GenerateGameElement()
-        {
+            SetCapacity();
             GameElement.SetActive(true);       
         }
         public float GetMultiple(Stats stats)
@@ -155,6 +172,7 @@ namespace DarkJimmy
             else
                 return GetValue(stats);
         }
+
         public void StartCountDownTimer()
         {
             StartCoroutine(CountDownTimer());
@@ -166,7 +184,8 @@ namespace DarkJimmy
                 CountDown--;
                 if (CountDown < 10)
                     AudioManager.Instance.PlaySound("Tick Tock");
-                system.updateStats(Stats.Timer,CountDown);
+                    system.updateStats(Stats.Time,CountDown);
+
                 yield return new WaitForSeconds(1);
             }
 
@@ -177,7 +196,6 @@ namespace DarkJimmy
             }
                 
         }
-
         public int GetValueResult(Result result, out int maxValue)
         {
             if (result.Equals(Result.Score))
@@ -209,12 +227,6 @@ namespace DarkJimmy
             return CountDown * 2 + (Gold-startGold) + Key * 10;
         }
     
-        private void SaveData(Stats stats)
-        {
-            if (Enum.TryParse(stats.ToString(), out GemType gemType))
-                CloudSaveManager.Instance.SetGem(gemType,GetValue(stats));
-        }
-
     }
 
 }

@@ -142,6 +142,7 @@ namespace DarkJimmy
         {
             return Instance.PlayerDatas.Characters[PlayerDatas.CurrentCharacterIndex];
         }
+   
         public DefaultData GetDefaultData()
         {
             return Instance.systemData;

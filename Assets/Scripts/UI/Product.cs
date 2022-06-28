@@ -139,7 +139,6 @@ namespace DarkJimmy.UI
             purchaseButton.button.interactable = true;
             purchaseButton.OnClick(rewardType, ShowRewardedAd);
         }
-
         private void OnDisable()
         {
             if (payType != PayType.Free)
@@ -147,7 +146,6 @@ namespace DarkJimmy.UI
 
             StopTimer();
         }
-
         private void OnEnable()
         {
             if (payType != PayType.Free)

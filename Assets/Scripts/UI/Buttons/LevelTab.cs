@@ -28,7 +28,7 @@ namespace DarkJimmy.UI
         private Sprite passed;
 
         SystemManager system;
-        private int starIndex = 0;
+ 
         private void Awake()
         {
             system = SystemManager.Instance;

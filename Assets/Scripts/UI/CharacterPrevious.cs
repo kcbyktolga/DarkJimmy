@@ -143,7 +143,6 @@ namespace DarkJimmy.UI
             animator.SetBool(idleParamId, false);
             AudioManager.Instance.PlaySound("Jump");
 
-          //  Vector2 endPos = new Vector2(playerT.position.x,this.endPos);
             playerT.DOJump(playerT.position, 2, 1, duration * 0.5f).OnComplete(OnIdle);
                 
         }
@@ -151,6 +150,8 @@ namespace DarkJimmy.UI
         private void OnIdle()
         {
             animator.SetBool(idleParamId, true);
+            playerT.position = new Vector2(playerT.position.x,originalPosY);
+
         }
         private void Purchase()
         {

@@ -17,17 +17,19 @@ namespace DarkJimmy.UI
 
         private string description;
         private string powerUpName;
-        private float multiple;
+        private float powerValue;
         private bool isSelect;
         private GemType payType;
         private int price;
 
-        GameSaveManager gsm;
+        SystemManager system;
         int k = 0;
-        private void Start()
+
+        private void Awake()
         {
-            gsm = GameSaveManager.Instance;
+            system = SystemManager.Instance;
         }
+     
         public override  void SetTabButton(bool isOn)
         {
             isSelect = isOn ? !isSelect : isOn;
@@ -40,18 +42,18 @@ namespace DarkJimmy.UI
             k = isSelect ? 1 : -1;
 
             if (Enum.TryParse(powerUpType.ToString(), out Stats stats))
-                gsm.UpdateCapacity(stats, (int)(k * multiple));
+                system.updatePowerUp(stats, (int)(k * powerValue));
         }
 
         public void SetPowerUpButton(PowerUpStruct ps)
         {
             powerUpType = ps.powerUpType;
             SetTabIcon(ps.powerUpIcon);
-            buttonName.text = SystemManager.Instance.StringFormat(price = ps.powerUpPrice);
-            priceIcon.sprite = SystemManager.Instance.GetPaySprite(payType = ps.powerUpPayType);
+            buttonName.text = system.StringFormat(price = ps.powerUpPrice);
+            priceIcon.sprite =system.GetPaySprite(payType = ps.powerUpPayType);
             description = ps.powerUpDescription;
             powerUpName = ps.powerUpName;
-            multiple = ps.multiple;
+            powerValue = ps.multiple;
             
         } 
         public string GetDescription(out string header, out bool isOn, out GemType payType, out int price)

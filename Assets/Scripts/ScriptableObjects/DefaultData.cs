@@ -101,9 +101,9 @@ namespace DarkJimmy
         public int JumpCount;
         public int Energy;
         public int Mana;
-        public float Speed;
+        public int Speed;
 
-        public float GetCharacterProperty(CharacterProperty property)
+        public int GetCharacterProperty(CharacterProperty property)
         {
             return property switch
             {

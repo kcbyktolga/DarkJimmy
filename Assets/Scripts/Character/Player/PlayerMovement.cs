@@ -37,7 +37,7 @@ namespace DarkJimmy.Characters
             {
 				currentJumpAmount = value;
 				system.updateStats(Stats.JumpCount, currentJumpAmount);
-            }
+			}
 		}
 		private float Speed
         {
@@ -258,9 +258,8 @@ namespace DarkJimmy.Characters
 				}
 				else if (isJumping && CanDoubleJump() && !isWallSliding)
 				{
-					CurrentJumpAmount--;
-					gsm.Mana--;
-					system.updateStats(Stats.Mana, gsm.Mana);
+					CurrentJumpAmount--;										
+					system.updateGMStats(Stats.Mana,-1);
 					Vector2 force = new Vector2(0, data.jumpForce * data.jumpForceMultiple);
 					Jump(force,CanDoubleJump());
 					AudioManager.Instance.PlaySound("Air Jump");

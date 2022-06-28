@@ -14306,6 +14306,16 @@ PrefabInstance:
       propertyPath: m_Name
       value: Gold
       objectReference: {fileID: 0}
+    - target: {fileID: 5372177705406871617, guid: bc0184df6ad0338488dbf6b927ba9eb6,
+        type: 3}
+      propertyPath: stats
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 5372177705406871617, guid: bc0184df6ad0338488dbf6b927ba9eb6,
+        type: 3}
+      propertyPath: amount
+      value: 10
+      objectReference: {fileID: 0}
     - target: {fileID: 5372177705406871620, guid: bc0184df6ad0338488dbf6b927ba9eb6,
         type: 3}
       propertyPath: m_RootOrder

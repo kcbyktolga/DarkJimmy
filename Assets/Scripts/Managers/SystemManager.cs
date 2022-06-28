@@ -10,7 +10,14 @@ namespace DarkJimmy
 
         public delegate void UpdateStats(Stats stats, int value);
         public UpdateStats updateStats;
-        public UpdateStats updateStatsCapacity;
+        public UpdateStats updatePowerUp;
+        public UpdateStats updateGameDisplay;
+        public UpdateStats updateGMStats;
+        
+
+
+        public delegate void UpdateTransform(Vector2 transform);
+        public UpdateTransform updateTransform;
 
   
         public GemType GemType { get; set; }
