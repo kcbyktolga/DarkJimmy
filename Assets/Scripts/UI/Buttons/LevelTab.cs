@@ -13,26 +13,24 @@ namespace DarkJimmy.UI
         [SerializeField]
         private GameObject focus;
         [SerializeField]
-        private TMP_Text levelIndex;
-        [SerializeField]
         private TMP_Text levelText;
         [SerializeField]
         private List<Image> stars;
         [SerializeField]
-        private float duration = 0.1f;    
+        private float duration = 0.5f;    
         [SerializeField]
-        private Image background;
+        private Image mask;
         [SerializeField]
-        private Sprite active;
+        private Image levelIcon;
         [SerializeField]
-        private Sprite passed;
+        private Image frame;
 
-        SystemManager system;
+        private SystemManager system;
  
         private void Awake()
         {
             system = SystemManager.Instance;
-            levelText.text = LanguageManager.GetText("Level");
+            
         }
         public override void OpenPage()
         {
@@ -40,38 +38,27 @@ namespace DarkJimmy.UI
         }
         public void SetLevelTab(int index, Level level, bool isLocked)
         {
-            levelIndex.text = $"{index+1}";
-
             if (level.levelStatus.Equals(LevelStatus.Passed))
             {
                 for (int i = 0; i < level.rankCount; i++)
                     stars[i].DOColor(system.GetWhiteAlfaColor(true), duration);
             }
 
-            background.sprite = level.levelStatus.Equals(LevelStatus.Passed) ? passed : active;
+            frame.color = system.GetLevelColor(level.levelStatus);
+            mask.enabled = level.levelStatus.Equals(LevelStatus.Passive);
             focus.SetActive(level.levelStatus.Equals(LevelStatus.Active) && !isLocked);
         }
 
-        //private IEnumerator ChangeStartColor(int count)
-        //{
-        //    int index = 0;
+        public void SetLevelImage(Level defaultLevel)
+        {
+            if (defaultLevel.GetLevelIcon() != null)
+                levelIcon.sprite = defaultLevel.GetLevelIcon();
+        }
 
-        //    while (index < count)
-        //    {
-        //        float time = 0;
-  
-        //        while (time <= 1)
-        //        {
-        //            time += Time.deltaTime/duration;
-        //            Color color = Color.Lerp(system.GetWhiteAlfaColor(false), system.GetWhiteAlfaColor(true), time);
-        //            stars[index].color = color;
-        //            yield return null;
-        //        }
-
-        //        index++;
-        //        yield return null;
-        //    }
-        //}  
+        public void SetLevelName(int stageIndex,int levelIndex)
+        {
+            levelText.text = $"{LanguageManager.GetText("Level")} {stageIndex+1}-{levelIndex+1}";
+        }
 
     }
 }

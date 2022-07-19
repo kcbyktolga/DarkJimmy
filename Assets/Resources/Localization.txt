@@ -1,0 +1,90 @@
+,,Deutsch,English,Español,Français,Italiano,Türkçe
+,Settings,Einstellungen,Settings,Ajustes,Réglages,Impostazioni,Ayarlar
+,Shop,Markt,Market,Mercado,Marché,Mercato,Market
+,Stages,Stufen,Stages,Etapas,Étapes,Fasi,Seviyeler
+,Victory,Level abgeschlossen,Level Completed,Nivel completado,Niveau terminé,Livello completato,Seviye Tamamlandı
+,Defeat,Christus nein!,Christ no!,¡Cristo no!,Christ non!,Cristo no!,Hay Aksi!
+,Play,Spielen,Play,Tocar,Jouer,Giocare a,Oyna
+,Pause,Blättern,Paused,Detenido,Interrompu,In pausa,Duraklatıldı
+,PlayService,Service spielen,Play Service,Servicio de juego,Faire un service,Servizio di gioco,Play Servis
+,PrivacyPolicy,Datenschutz-Bestimmungen,Privacy Policy,Política de privacidad,Politique de confidentialité,politica sulla riservatezza,Gizlilik Politikası
+,Languages,Sprachen,Languages,Lengua,Langues,Le lingue,Diller
+,Credits,Credits,Credits,Créditos,Crédits,Crediti,Krediler
+,Free,Frei,Free,Libre,Libre,Gratuito,Ücretsiz
+,Go,Gehen!,Go!,¡Vamos!,Aller!,Andare!,Gİt!
+,Update,Aktualisieren,Update,Actualizar,Mise à jour,Aggiornare,Güncelle
+,Okay,OK!,OK!,¡OK!,D'ACCORD!,OK!,Tamam!
+,Gold,Gold,Gold,Oro,Or,Oro,Altın
+,Golds,Gold,Golds,De oro,Or,Ori,Altınlar
+,Diamond,Diamant,Diamond,Diamante,diamant,Diamante,Elmas
+,Diamonds,Diamanten,Diamonds,Diamantes,Diamants,Diamanti,Elmaslar
+,Offers,Bietet an,Offers,Oferta,Des offres,Offerte,Teklifler
+,Premium,Prämie,Premium,De primera calidad,Prime,Premium,Premium
+,Costumes,Kostüme,Costumes,Disfraces,Costumes,Costumi,Kostümler
+,PurchaseProcess,Der Kauf schlug fehl.,The purchase failed.,La compra falló.,L'achat a échoué.,L'acquisto non è riuscito.,Satın alma başarısız oldu.
+,StageUpProcess,Du hast dein Abenteuerschloss geöffnet!,You opened your adventure lock!,¡Abriste tu bloqueo de aventuras!,Vous avez ouvert votre serrure d'aventure!,Hai aperto la tua serratura dell'avventura!,Macera kilidini açtın!
+,Waiting,Warten Sie mal...,Please wait...,Espere por favor...,S'il vous plaît attendez...,Attendere prego...,Lütfen bekleyin...
+,ConnectedError,Bei der Verbindung gab es einen Fehler. Bitte retoconnect.,There was an error when connecting. Please re -connect.,Hubo un error al conectarse. Por favor re -concede.,Il y a eu une erreur lors de la connexion. S'il vous plaît re -connect.,Si è verificato un errore durante la connessione. Si prega di ri -Connect.,Bağlanırken bir hata oluştu. Lütfen yeniden bağlanın.
+,Disconnect,Sie haben keine Internetverbindung!,You have no internet connection!,¡No tienes conexión a Internet!,Vous n'avez pas de connexion Internet!,Non hai connessione Internet!,İnternet bağlantınız yok!
+,AppUpdate,Neues Update ist verfügbar. Bitte aktualisieren Sie die Anwendung.,New update is available. Please update the application.,Una nueva actualización está disponible. Actualice la aplicación.,Une nouvelle mise à jour est disponible. Veuillez mettre à jour l'application.,È disponibile un nuovo aggiornamento. Si prega di aggiornare l'applicazione.,Yeni güncelleme mevcut. Lütfen uygulamayı güncelleyin.
+,ShopOrientation,Ihr Gleichgewicht reicht nicht aus. Wir wollen in den Laden gehen?,Your balance is not enough. We want to go to the store?,Tu equilibrio no es suficiente. ¿Queremos ir a la tienda?,Votre équilibre ne suffit pas. Nous voulons aller au magasin?,Il tuo equilibrio non è sufficiente. Vogliamo andare al negozio?,Bakiyeniz yeterli değil. Mağazaya gitmek istiyor musnuz?
+,StageLockOrientation,Öffnen Sie zuerst das Schloss des vorherigen Abenteuers!,First open the lock of the previous adventure!,¡Primero abra el bloqueo de la aventura anterior!,Ouvrez d'abord la serrure de l'aventure précédente!,Prima apri il blocco dell'avventura precedente!,İlk olarak önceki maceranın kilidini aç!
+,StageLock,Das Adventure Lock wird geöffnet wenn eine ausreichende Anzahl von Schlüssel erreicht ist.,Adventure lock will be opened when a sufficient number of keys are reached.,El bloqueo de aventuras se abrirá cuando se alcance un número suficiente de llaves.,Le verrouillage de l'aventure sera ouvert lorsqu'un nombre suffisant de clés seront atteints.,L'avventura verrà aperto quando verrà raggiunto un numero sufficiente di chiavi.,Yeterli anahtar sayısına ulaşıldğında macera kilidi açılacak.
+,DataLoading,Quellen sind geladen ...,Sources are loaded ...,Las fuentes están cargadas ...,Les sources sont chargées ...,Le fonti sono caricate ...,Kaynaklar yükleniyor...
+,VersionCheck,Die Version prüft ...,The version is checking ...,La versión está comprobando ...,La version vérifie ...,La versione sta controllando ...,Versiyon kontrol ediliyor...
+,Loading,Wird geladen...,Loading...,Cargando...,Chargement...,Caricamento in corso...,Yükleniyor...
+,Hp,HP,HP,HP,HP,HP,HP
+,Mana,Mana,Mana,Maná,Mana,Mana,Mana
+,Speed,Geschwindigkeit,Speed,Velocidad,La rapidité,Velocità,Hız
+,Remaining,Verbleibende Zeit,Remaining time,Tiempo restante,Temps restant,Tempo rimanente,Kalan Süre
+,SpinNow,Jetzt drehen,Spin Now,Gira ahora,Tourner maintenant,Girare ora,Şimdi Çevir
+,Upgrade,Aktualisierung,Upgrade,Mejora,Mise à niveau,Aggiornamento,Yükselt
+,LuckySpin,Glücksspin,Lucky Spin,Lucky Spin,Spin chanceux,Spin fortunato,Şanslı Dönüş
+,Level,Eben,Level,Nivel,Niveau,Livello,Seviye
+,Key,Taste,Key,Llave,Clé,Chiave,Anahtar
+,CurrentScore,Punktzahl,Score,Puntaje,Score,Punto,Skor
+,MaxScore,Maximale Punktzahl,Max Score,Maximo puntaje,Score maximum,Punteggio massimo,Maks Skor
+,Statistic,Statistiken,Statistics,Estadísticas,Statistiques,Statistiche,İstatistikler
+,ChosePower,Wählten eine Aufnahme,Chose a power up,Elige un encendido,Choisir une puissance,Ha scelto un potenziamento,Bir Güçlendirici Seç
+,ExtraTime,Sterbliche Zeit,Mortal Time,Tiempo mortal,Temps mortel,Tempo mortale,Fani Zaman
+,AntelopePotion,Antilope Trank,Antelope Potion,Poción antílope,Potion d'antilope,Pozione di antilope,Antilop İksiri
+,KangaroPotion,Känguru -Trank,Kangaroo Potion,Poción de canguro,Potion de kangourou,Pozione di canguro,Kanguru İksiri
+,LifePotion,Yükleniyor...,Life Potion,Yükleniyor...,Yükleniyor...,Yükleniyor...,Hayat İksiri
+,ManaPotion,Mana Trank,Mana Potion,Poción de maná,Potion de mana,Pozione di mana,Mana İksiri
+,ExtraTimeDesc,Alle Zeitartikel geben zusätzliche +1 Sekunden an.,All time items give extra +1 seconds.,Los elementos de todos los tiempos dan más +1 segundos.,Tous les éléments de temps donnent +1 secondes supplémentaires.,Gli articoli di tutti i tempi danno +1 secondi extra.,Tüm zaman öğeleri fazladan +1 saniye verir.
+,AntelopePotionDesc,Erhöht die aktuelle Bewegungsrate um 5%.,Increases the current movement rate by 5%.,Aumenta la tasa de movimiento actual en un 5%.,Augmente le taux de mouvement actuel de 5%.,Aumenta il tasso di movimento attuale del 5%.,Mevcut hareket hızını 5% arttırır.
+,KangaroPotionDesc,Es gibt die Fähigkeit extra in der Luft zu springen.,It gives the ability to jump extra while in the air.,Da la capacidad de saltar más mientras está en el aire.,Il donne la possibilité de sauter supplémentaire dans les airs.,Dà la possibilità di saltare extra mentre è in aria.,Havadayken fazladan zıplayabilme yeteneği verir.
+,RockPotionDesc,Erhöht die HP -Kapazität um 5 Einheiten.,Increases HP capacity by 5 units.,Aumenta la capacidad de HP en 5 unidades.,Augmente la capacité HP de 5 unités.,Aumenta la capacità HP di 5 unità.,HP kapasitesini 5 birim arttırır.
+,ManaPotionDesc,Erhöht die Mana -Kapazität um 5 Einheiten.,Increases the mana capacity by 5 units.,Aumenta la capacidad de maná en 5 unidades.,Augmente la capacité de mana de 5 unités.,Aumenta la capacità di mana di 5 unità.,Mana kapasitesini 5 birim arttırır.
+,NotAvailable,Nicht verfügbar.,Not Available.,No disponible.,Indisponible.,Non disponibile.,Müsait değil.
+,TimeOut,Auszeit!,Time Out!,¡Se acabó el tiempo!,Temps libre!,Tempo scaduto!,Zaman Aşımı
+,ForestAdventure,Waldabenteuer,Forest Adventure,Aventura forestal,Aventure forestière,Avventura forestale,Orman Macerası
+,SkeletonAdventure,Skelettabenteuer,Skeleton adventure,Aventura esquelética,Aventure squelette,Avventura scheletro,İskelet Macerası
+,SnowAdventure,Schneeabenteuer,Snow adventure,Aventura de nieve,Aventure de neige,Avventura della neve,Kar Macerası
+,Restart,Neu starten,Restart,Reiniciar,Redémarrer,Ricomincia,Tekrar başlat
+,Start,Anfang,Start,comienzo,Commencer,Inizio,Başla
+,Philosophy,Philosophie,Philosophy,Filosofía,Philosophie,Filosofia,Felsefe Taşı
+,Moonstone,Mondstein,Moonstone,Piedra de la luna,Pierre de lune,Pietra di luna,Ay Taşı
+,PowerCrystal,Leistungskristall,Power Crystal,Cristal De Poder,Cristal De Puissance,Cristallo Di Potenza,Güç Kristali
+,LifeCrystal,Lebenskristall,Life Crystal,Cristal de la vida,Crystal de vie,Crystal di vita,Yaşam Kristali
+,UpgradePay,Upgradekosten,Upgrade cost,Costo de actualización,Coût de mise à niveau,Costo di aggiornamento,Yükseltme Maliyeti
+,RemoveAds,Entfernt Anzeigen,Removes Ads,Elimina los anuncios,Supprime les publicités,Rimuove gli annunci,Reklamları Kaldırır
+,GameBegining,Das Spiel beginnt ...,The game begining...,El juego comienza ...,Le jeu commence ...,Il gioco che inizia ...,Oyun başlıyor...
+,Claim,Beanspruchen,Claim,Reclamar,Prétendre,Reclamo,Ödülü Al
+,Stones,Steine,Stones,Piedras,Des pierres,Pietre,Taşlar
+,Reconnect,Wieder verbinden,Reconnect,Volver a conectar,Reconnecter,Riconnettersi,Tekrar Bağlan
+,UserId,Benutzeridentifikation,User Id,ID de usuario,Identifiant d'utilisateur,ID utente,Kullanıcı Adı
+,TapToStart,Tippe um zu starten!,Tap To Start!,¡Toque para comenzar!,Appuyez pour commencer!,Tocca per iniziare!,Başlamak için dokun!
+,Continue,Fortsetzen,Continue,Continuar,Continuer,Continua,Devam Et
+,CharacterPurchase,Kaufen Sie den Charakter bevor Sie anfangen!,Buy the character before starting!,¡Compre el personaje antes de comenzar!,Achetez le personnage avant de commencer!,Acquista il personaggio prima di iniziare!,Başlamadan önce karakteri satın al!
+,TryReconnect,Es wird wieder miteinander verbunden ...,It is being re -connected ...,Se está volviendo a conectar ...,Il est en cours de connexion ...,Viene ri -connesso ...,Yeniden bağlanılıyor...
+,NoThanks,Nein Danke,No Thanks,No gracias,Non merci,No grazie,Hayır Teşekkürler
+,ILoveGame,ich liebe dieses Spiel,I love this game,me encanta este juego,J'adore ce jeu,amo questo gioco,Bu oyunu beğendim
+,EnjoyingThisGame,Genießen Sie dieses Spiel?,Are you enjoying this game?,¿Estás disfrutando de este juego?,Aimez-vous ce jeu?,Ti stai godendo questo gioco?,Bu oyundan keyif alıyor musun?
+,RateGame,Wie wäre es mit einer Bewertung unseres Spiels?,How about a rating our game?,¿Qué tal una calificación de nuestro juego?,Que diriez-vous d'une note notre jeu?,Che ne dici di una valutazione del nostro gioco?,Oyunumuza bir puan vermeye ne dersin?
+,PowerUpFree,Verdienen Sie kostenloses Power -Up,Earn Free Power Up,Gane el poder gratis,Gagnez la puissance gratuite,Guadagna il potere gratuito,Ücretsiz Güçlendirici Kazan
+,WatchWin,Sehen Sie den Sieg an,Watch Win,Ver ganar,Regarder la victoire,Guarda la vittoria,İzle Kazan
+,Spinning,Spinnen...,Spinning...,Hilado...,Filage...,Filatura...,Dönüyor...
+,sa,stun,hour,hora,heu,ora,sa
+,dk,min,min,mín,min,min,dk
+,sn,sek,sec,seg,sec,sec,sn

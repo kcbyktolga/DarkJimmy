@@ -5,21 +5,31 @@ using UnityEngine;
 namespace DarkJimmy.UI
 {
     public class ShopOreintation : Popup
-    {     
+    {
+       private UIManager uýManager;
+       private SystemManager system;
         public override void Start()
         {
-            base.Start();
+            uýManager = UIManager.Instance;
+            system = SystemManager.Instance;
 
+            base.Start();
+            
             if (popupButton != null)
                 popupButton.SetName(LanguageManager.GetText("Go"));
 
-            popupButton.OnClick(SystemManager.Instance.GemType,Go);
+            popupButton.OnClick(Go);
         }
-        private void Go(GemType type )
+        private void Go()
         {
             GoBack();
-            UIManager.Instance.PageIndex = SystemManager.Instance.GetShopPage(type.ToString());
-            UIManager.Instance.OpenMenu(Menus.Shop);
+
+            //uýManager.PageIndex = system.GetShopPage(type.ToString());
+
+            if (uýManager.GetCurrentMenu() is Shop)
+                system.toPage(uýManager.PageIndex);
+            else
+                uýManager.OpenMenu(Menus.Shop);
         }
     }
 

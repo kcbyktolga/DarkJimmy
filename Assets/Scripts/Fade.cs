@@ -11,74 +11,53 @@ namespace DarkJimmy.UI
         [SerializeField]
         private Image fadeImage;
         [SerializeField]
-        private float duration = 0.5f;
+        private float duration = 1f;
         private SystemManager system;
         private bool isOn;
 
         public delegate void FaderTransition();
-        public FaderTransition transition;
+        public FaderTransition OnTransitionAfter;
+        public FaderTransition OnTransitionBefore;
   
         void Start()
         {
             system = SystemManager.Instance;
-            FadeIn(null);
+            FadeIn(null, null);
         }
  
-        public void FadeOut(FaderTransition fadeTransition)
+        public void FadeOut(FaderTransition onTransitionAfter, FaderTransition onTransitionBefore)
         {
-            transition = fadeTransition;
+            OnTransitionBefore = onTransitionBefore;
+            OnTransitionAfter = onTransitionAfter;
             PlayFade(true);
         }
 
-        public void FadeIn(FaderTransition fadeTransition)
+        public void FadeIn(FaderTransition onTransitionAfter, FaderTransition onTransitionBefore)
         {
-            transition = fadeTransition;
+            OnTransitionBefore = onTransitionBefore;
+            OnTransitionAfter = onTransitionAfter;
             PlayFade(false);
         }
 
 
         private void PlayFade(bool isOn)
-        {         
+        {           
             this.isOn = isOn;
+            AudioManager.Instance.PlaySound("Fade");
             fadeImage.color= system.GetWhiteAlfaColor(isOn);
             Color endColor = system.GetWhiteAlfaColor(!isOn);
-            fadeImage.DOColor(endColor, duration).OnComplete(Set);
+            fadeImage.DOColor(endColor, duration).OnStart(()=> OnTransitionBefore?.Invoke()).OnComplete(Set);
         }
         private void Set()
         {
             fadeImage.raycastTarget = isOn;
+            OnTransitionAfter?.Invoke();
 
-            if (transition != null)
-            {
-                transition.Invoke();
-            }
+            //if (OnTransitionAfter != null)
+            //{
+            //    OnTransitionAfter.Invoke();
+            //}
         }
-
-        //IEnumerator Fade(bool isOn, FaderTransition transition)
-        //{
-        //    float time = 0;
-        //    Color startColor = system.GetWhiteAlfaColor(isOn);
-        //    Color endColor = system.GetWhiteAlfaColor(!isOn);
-
-        //    while (time<=1)
-        //    {
-        //        time += Time.deltaTime / duration;
-        //        fadeImage.color = Color.Lerp(startColor, endColor, time);
-        //        yield return null;
-        //    }
-
-        //    fadeImage.raycastTarget = isOn;
-
-        //    this.transition = transition;
-
-        //    if (this.transition != null)
-        //    {
-        //        this.transition.Invoke();
-        //        this.transition = null;
-        //    }
-
-
-        //}
     }
 
 }

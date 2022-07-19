@@ -14,7 +14,7 @@ namespace DarkJimmy
         private StandardPurchasingModule module;
         private ConfigurationBuilder builder;
         private CloudSaveManager saveManager;
-        private readonly Dictionary<string, ProductStruct> GetProductStruct = new Dictionary<string, ProductStruct>();
+        private readonly Dictionary<string, ProductBase> GetProductStruct = new Dictionary<string, ProductBase>();
 
         private void Start()
         {
@@ -28,18 +28,17 @@ namespace DarkJimmy
 
             for (int i = 0; i < productCatalog.Pages.Count; i++)
             {
-                PageStruct page = productCatalog.Pages[i];
+               ProductPageBase page =productCatalog.Pages[i];
 
                 for (int j = 0; j < page.products.Count; j++)
                 {                  
-                    ProductStruct ps = page.products[j];
+                    ProductBase pb = page.products[j];              
 
-
-                    if (ps.payType.Equals(PayType.Free))
+                    if (!pb.payType.Equals(ProductPayType.Paid))
                         continue;
 
-                    builder.AddProduct(ps.productId,ps.productType);
-                    GetProductStruct.Add(ps.productId,ps);
+                    builder.AddProduct(pb.productId, pb.productType);
+                    GetProductStruct.Add(pb.productId, pb);
                 }
             }
 
@@ -50,8 +49,6 @@ namespace DarkJimmy
         {
             if (product.availableToPurchase && product != null)
                 controller.InitiatePurchase(product);
-
-            // UIManager.Instance.OpenMenu(UI.Menu.Menus.AppUpdate);
         }
         public Product GetProduct(string id)
         {
@@ -75,36 +72,42 @@ namespace DarkJimmy
 
             if (GetProduct(id).availableToPurchase)
             {
-                ProductStruct ps = GetProductStruct[id];
+                ProductBase pb = GetProductStruct[id];
+                ProductOperation(pb.typeOfProduct,pb.amount);
+                if (pb.hasDependProduct)
+                    ProductOperation(pb.dependProduct.typeOfProduct, pb.dependProduct.amount);
 
-                switch (ps.typeOfProduct)
-                {
-                    case TypeofProduct.Gold:
-                        saveManager.AddGem(GemType.Gold, ps.amount);
-                        break;
-                    case TypeofProduct.Diamond:
-                        saveManager.AddGem(GemType.Diamond, ps.amount);
-                        break;
-                    case TypeofProduct.Premium:
-                        saveManager.PlayerDatas.HasPremium = true;
-                        Debug.Log("Hadi iyisin premýum oldun aq :D");
-                        break;
-                    case TypeofProduct.Costume:
-                       // saveManager.Index = ps.amount;
 
-                        break;
-                    case TypeofProduct.Offers:
-                        break;
-                    default:
-                        break;
-                }
 
                 return PurchaseProcessingResult.Complete;
             }
             else
-            {
-                Debug.Log("Burda olmamam lazým");
+            {                
                 return PurchaseProcessingResult.Pending;
+            }
+        }
+
+        public void ProductOperation( TypeofProduct typeOfProduct, int amount)
+        {
+            switch (typeOfProduct)
+            {
+                case TypeofProduct.Gold:
+                    saveManager.AddGem(GemType.Gold, amount);
+                    break;
+                case TypeofProduct.Diamond:
+                    saveManager.AddGem(GemType.Diamond, amount);
+                    break;
+                case TypeofProduct.RemoveAds:
+                    saveManager.PlayerDatas.HasRemoveAds = true;
+                    break;
+                case TypeofProduct.Stones:
+                    
+
+                    break;
+                case TypeofProduct.Offers:
+                    break;
+                default:
+                    break;
             }
         }
     }

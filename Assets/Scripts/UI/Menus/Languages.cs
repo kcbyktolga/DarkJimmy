@@ -14,15 +14,22 @@ namespace DarkJimmy.UI
         private int nextIndex = 0;
         private int previousIndex = 0;
 
-        List<LanguageButton> buttons = new List<LanguageButton>();
+       private readonly List<LanguageButton> buttons = new List<LanguageButton>();
 
         public override void Start()
         {
             base.Start();
             GenerateTabButton();
-            ActivateBase();
+           // ActivateBase();
         }
 
+        public override void ScaleAnimation()
+        {
+            base.ScaleAnimation();
+            AudioManager.Instance.PlaySound("Open Page");
+        }
+
+        
         private void GenerateTabButton()
         {
             int count = Enum.GetNames(typeof(Language)).Length;

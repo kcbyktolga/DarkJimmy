@@ -29,8 +29,16 @@ namespace DarkJimmy.Characters
 		public float groundDistance = .2f;      //Distance character is considered to be on the ground
 		public float grabDistance = .4f;        //The reach distance for wall grabs
 		public LayerMask groundLayer;           //Layer of the ground
+		public LayerMask enemyLayer;            //Layer of the enemy
 
-	
+
+		[Header("Damage Properties")]
+		public Vector2 damageForce;
+		public int damageUnit = 1;
+
+		[Header("Duratios")]
+		public float takeDamageDuration;
+		public float giveDamageDuration;
 	}
 }
 

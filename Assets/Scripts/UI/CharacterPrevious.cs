@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using DG.Tweening;
+using System;
 
 
 namespace DarkJimmy.UI
@@ -31,15 +32,14 @@ namespace DarkJimmy.UI
         private float originalPosY;
 
         int idleParamId;
-        SystemManager system;
-  
+        private SystemManager system;
+    
         public override void Start()
         {
             system = SystemManager.Instance;
             globalData = CloudSaveManager.Instance;
             defaultData = globalData.GetDefaultData();
             Count = defaultData.CharacterDatas.Count;
-
             prefab = FindObjectOfType<CharacterSkinSwap>();
             animator = prefab.GetComponent<Animator>();
             playerT = prefab.transform;
@@ -51,7 +51,7 @@ namespace DarkJimmy.UI
 
             base.Start();
 
-            SetStats(true, globalData.GetCurrentCharacterData());
+            SetStats(globalData.GetCurrentCharacterData());
         }
         public override void Move(bool onClick, int amount)
         {
@@ -86,19 +86,25 @@ namespace DarkJimmy.UI
             //for (int i = 0; i < stats.Count; i++)
             //    stats[i].SetSliderValues(data.GetCharacterProperty((CharacterProperty)i),10);
 
-            SetStats(false, data);
+            SetStats(data);
         }
 
-        private void SetStats( bool init, CharacterData data)
+        private void SetStats(CharacterData data)
         {
-            for (int i = 0; i < stats.Count; i++)
+            //for (int i = 0; i < stats.Count; i++)
+            //{
+            //    stats[i].SetSliderValues(data.GetCurrentCharacterProperty((CharacterProperty)i), data.GetMaxCapacity((CharacterProperty)i));
+
+            //    if (init)
+            //        continue;
+
+            //    stats[i].SetStatName(((CharacterProperty)i).ToString());
+            //}
+
+            for (int i = 0; i < Enum.GetNames(typeof(CharacterProperty)).Length; i++)
             {
-                stats[i].SetSliderValues(data.GetCharacterProperty((CharacterProperty)i), 10);
-
-                if (init)
-                    continue;
-
-                stats[i].SetStatName(((CharacterProperty)i).ToString());
+                if (Enum.TryParse(((CharacterProperty)i).ToString(), out Stats stats))
+                    system.updateStatsMax(stats, data.GetCurrentCharacterProperty((CharacterProperty)i), data.GetMaxCapacity((CharacterProperty)i));
             }
         }
         private void Dimed(bool isOn)
@@ -107,39 +113,10 @@ namespace DarkJimmy.UI
             Color endColor = system.GetBlackAlfaColor(isOn);
             block.DOColor(endColor, duration);
         }
-        IEnumerator BlackOut(Color endColor)
-        {
-            float time = 0;
-            Color currentColor = block.color;
 
-            while (time <= 1)
-            {
-                time += Time.deltaTime / duration;
-                Color color = Color.Lerp(currentColor, endColor, time);
-                block.color = color;
-                yield return null;
-            }
-        }
-        IEnumerator Moving(float endPosY)
-        {
-            AudioManager.Instance.PlaySound("Jump");
-            float time = 0;
-            float currentPosY = endPosY;
-
-            animator.SetBool(idleParamId,false);
-
-            while (time <= 1)
-            {
-                time += Time.deltaTime / (duration*0.25f);
-                float posY = Mathf.Lerp(currentPosY, originalPosY, time);
-                playerT.position = new Vector2(playerT.position.x,posY);
-                yield return null;
-            }
-
-            animator.SetBool(idleParamId,true);
-        }
         private void Jumping()
         {
+            playerT.position = new Vector2(playerT.position.x, originalPosY);
             animator.SetBool(idleParamId, false);
             AudioManager.Instance.PlaySound("Jump");
 
@@ -175,7 +152,8 @@ namespace DarkJimmy.UI
             else
 
             {
-                system.GemType = data.payType;
+                //system.GemType = data.payType;
+                UIManager.Instance.PageIndex = (int)data.payType;
                 UIManager.Instance.OpenMenu(Menu.Menus.ShopOrientation);
                 
             }

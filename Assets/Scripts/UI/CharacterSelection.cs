@@ -18,7 +18,8 @@ namespace DarkJimmy.UI
         private TMP_Text characterLevel;
         [SerializeField]
         private Button playButton;
-       
+        [SerializeField]
+        private TMP_Text playButtonName;    
         [SerializeField]
         private Button upgradeButton;
         [SerializeField]
@@ -40,6 +41,7 @@ namespace DarkJimmy.UI
             Generate();
 
             levelText.text = LanguageManager.GetText("Level");
+            playButtonName.text = LanguageManager.GetText("Play");
 
             SetCharacterInfo();
 
@@ -87,17 +89,14 @@ namespace DarkJimmy.UI
         {
             if (!IsLock)
             {
-                Fade.Instance.FadeOut(LoadGameScene);
+                Fade.Instance.FadeOut(()=> SceneManager.LoadScene("Game"),null);
                 return;
             }
 
-            Debug.Log("Önce karakteri satýn al aq!");
-
+            UIManager.Instance.OpenMenu(Menu.Menus.CharacterPurchase);
+           
         }
-        private void LoadGameScene()
-        {
-            SceneManager.LoadScene("Game");
-        }
+     
         private void OnUpgradeButton()
         {
             if (IsLock)
@@ -115,14 +114,14 @@ namespace DarkJimmy.UI
                 }
                 else
                 {
-                    system.GemType = data.payType;
+                    UIManager.Instance.PageIndex = (int)data.payType;
                     UIManager.Instance.OpenMenu(Menu.Menus.ShopOrientation);
                 }
 
             }
             else
             {
-                //Upgrade..
+                UIManager.Instance.OpenMenu(Menu.Menus.Upgrade);
             }
         }
         public override void OnSelect(int index)

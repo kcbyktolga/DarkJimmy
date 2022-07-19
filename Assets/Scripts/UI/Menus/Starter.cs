@@ -16,6 +16,7 @@ namespace DarkJimmy.UI
         public override void Start()
         {
             base.Start();
+            starterButton.SetTabButtonName("TapToStart");
             starterButton.OnClick(StartGame);
         }
         private void StartGame()

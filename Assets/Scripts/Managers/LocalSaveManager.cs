@@ -7,28 +7,51 @@ namespace DarkJimmy
 {
     public static class LocalSaveManager
     {
+        public static DateTime GetResetTime(string key)
+        {
+            string value = Load(key);
+
+            if (string.IsNullOrEmpty(value))
+            {
+                Save(key, DateTime.Now);
+                return DateTime.Now;
+            }
+            return Convert.ToDateTime(value);
+        }
 
         public static int GetIntValue(string key)
         {
             string value = Load(key);
-            return string.IsNullOrEmpty(value) ? 0 : Convert.ToInt32(value);
+
+            if (string.IsNullOrEmpty(value))
+            {
+                Save(key, 0);
+                return 0;
+            }
+            return Convert.ToInt32(value);
         }
         public static int GetIntValue(string key, int defaultValue)
         {
             string value = Load(key);
-            int _value = string.IsNullOrEmpty(value) ? defaultValue : Convert.ToInt32(value);
 
-            Save(key, _value);
+            if (string.IsNullOrEmpty(value))
+            {
+                Save(key, defaultValue);
+                return defaultValue;
+            }
 
-            return _value;
+            return Convert.ToInt32(value);
         }
         public static bool GetBoolValue(string key)
         {
             string value = Load(key);
 
             if (string.IsNullOrEmpty(value))
+            {
+                Save(key, false);
                 return false;
-
+            }
+                
             return Convert.ToBoolean(value);
         }
         public static bool GetBoolValue(string key, bool defaultValue)
@@ -40,18 +63,29 @@ namespace DarkJimmy
                 Save(key, defaultValue);
                 return defaultValue;
             }
-
             return Convert.ToBoolean(value);
         }
         public static float GetFloatValue(string key)
         {
             string value = Load(key);
-            return string.IsNullOrEmpty(value) ? 0 : Convert.ToSingle(value);
+
+            if (string.IsNullOrEmpty(value))
+            {
+                Save(key, 0);
+                return 0;
+            }
+            return Convert.ToSingle(value);
         }
         public static float GetFloatValue(string key, float defaultValue)
         {
             string value = Load(key);
-            return string.IsNullOrEmpty(value) ? defaultValue : Convert.ToSingle(value);
+
+            if (string.IsNullOrEmpty(value))
+            {
+                Save(key, defaultValue);
+                return defaultValue;
+            }
+            return Convert.ToSingle(value);
         }
         public static void Save<T>(string key, T value)
         {
@@ -64,7 +98,6 @@ namespace DarkJimmy
 
             return PlayerPrefs.GetString(key, string.Empty);
         }
-
         public static string GetToggleName(UI.VolumeType type)
         {
             return $"{type} Toogle";

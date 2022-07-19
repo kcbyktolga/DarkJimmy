@@ -5,83 +5,51 @@ using System.Collections;
 namespace DarkJimmy.Characters
 {
  
-    public class PlayerAnimation : MonoBehaviour
+    public class PlayerAnimation : CharacterAnimation<PlayerMovement>
     {
-        [Header("Property")]
-  
-        PlayerMovement movement;    //Reference to the PlayerMovement script component
-        Rigidbody2D rigidBody;            //Reference to the Rigidbody2D component
+
         PlayerInput input;                //Reference to the PlayerInput script component
-        Animator anim;                    //Reference to the Animator component
         BlinkAnimation blink;
        
         int slideParamID;                 //ID of the isAttackking parameter
-        int groundParamID;                //ID of the isOnGround parameter
-        int speedParamID;                 //ID of the speed parameter
         int fallParamID;                  //ID of the verticalVelocity parameter
-        int dieParamID;
 
-       
-
-        public virtual void Start()
+        public override void Start()
         {
+            base.Start();
 
-            //Get the integer hashes of the parameters. This is much more efficient
-            //than passing strings into the animator
             slideParamID = Animator.StringToHash("isSliding");
-            groundParamID = Animator.StringToHash("isOnGround");
-            speedParamID = Animator.StringToHash("speed");
             fallParamID = Animator.StringToHash("verticalVelocity");
-            dieParamID = Animator.StringToHash("isAlive");
 
-            //Grab a reference to this object's parent transform
-            Transform parent = transform.parent;
-
-            //Get references to the needed components
-            movement = parent.GetComponent<PlayerMovement>();
-            rigidBody = parent.GetComponent<Rigidbody2D>();
-            input = parent.GetComponent<PlayerInput>();
-            anim = GetComponent<Animator>();
+            input = parent.GetComponent<PlayerInput>();          
             blink = GetComponent<BlinkAnimation>();
 
-            //If any of the needed components don't exist...
-            if (movement == null || rigidBody == null || input == null || anim == null)
-            {
-                //...log an error and then remove this component
-                Debug.LogError("A needed component is missing from the player");
-                Destroy(this);
-            }
         }
 
-        public virtual void Update()
+        public override void Update()
         {
-            //Update the Animator with the appropriate values
-            anim.SetBool(groundParamID, movement.isOnGround);
-            anim.SetBool(slideParamID,movement.isWallSliding);
-            anim.SetFloat(fallParamID, rigidBody.velocity.y);
-            anim.SetBool(dieParamID, movement.isAlive);
+            base.Update();
 
-            //Use the absolute value of speed so that we only pass in positive numbers
-            anim.SetFloat(speedParamID, Mathf.Abs(rigidBody.velocity.x));
+            animator.SetBool(slideParamID,movement.isWallSliding);
+            animator.SetFloat(fallParamID, rigidBody.velocity.y);
 
-            if (!movement.isAlive && !blink.headDie.activeSelf)
-                blink.headDie.SetActive(true);
+            //if (!movement.isAlive && !blink.headDie.activeSelf)
+            //    blink.headDie.SetActive(true);
 
-            BlinkCheck();
-
+           // BlinkCheck();
         }
 
         private void BlinkCheck()
         {
+            if (!movement.isAlive && !blink.headDie.activeSelf)
+                blink.headDie.SetActive(true);
+
+
             if (blink.blinkTime > Time.time || !movement.isAlive)
                 return;
 
             blink.PlayBlink(movement.isAlive);
-
-           // StartCoroutine(nameof(Blink(movement.data.isAlive)));
-
         }
-
 
     }
 

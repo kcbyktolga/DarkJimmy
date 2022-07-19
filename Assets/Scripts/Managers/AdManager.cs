@@ -26,6 +26,9 @@ namespace DarkJimmy
         private readonly Dictionary<string, RewardType> GetRewardType = new Dictionary<string, RewardType>();
         public delegate void RewardOnEarned(RewardType reward);
         public RewardOnEarned rewardDelegate;
+
+        public delegate void OnClosedAd();
+        public OnClosedAd onClosed;
         public override void Awake()
         {
             base.Awake();
@@ -39,77 +42,22 @@ namespace DarkJimmy
             {
                 InitializeInterstitialAds();
                 InitializeRewardedAds();
-                InitializeBannerAds();
             };
 
             MaxSdk.SetSdkKey(MaxSdkKey);
             MaxSdk.InitializeSdk();
         }
-
-        #region Banner Ad 
-        private void InitializeBannerAds()
+        private bool CanShowInstersititalAd()
         {
-            // Attach Callbacks
-            MaxSdkCallbacks.Banner.OnAdLoadedEvent += OnBannerAdLoadedEvent;
-            MaxSdkCallbacks.Banner.OnAdLoadFailedEvent += OnBannerAdFailedEvent;
-            MaxSdkCallbacks.Banner.OnAdClickedEvent += OnBannerAdClickedEvent;
-            MaxSdkCallbacks.Banner.OnAdRevenuePaidEvent += OnBannerAdRevenuePaidEvent;
+            if (CloudSaveManager.Instance.PlayerDatas.HasRemoveAds)
+                return false;
 
-            // Banners are automatically sized to 320x50 on phones and 728x90 on tablets.
-            // You may use the utility method `MaxSdkUtils.isTablet()` to help with view sizing adjustments.
-            MaxSdk.CreateBanner(Banner.AdUnit, MaxSdkBase.BannerPosition.TopCenter);
-
-            // Set background or background color for banners to be fully functional.
-            MaxSdk.SetBannerBackgroundColor(Banner.AdUnit, SystemManager.Instance.GetWhiteAlfaColor(false));
-        }
-        public void ToggleBannerVisibility()
-        {
-            if (!isBannerShowing)
-                MaxSdk.ShowBanner(Banner.AdUnit);
+            if (DateTime.Now > LocalSaveManager.GetResetTime("Interstitial"))
+                return true;
             else
-                MaxSdk.HideBanner(Banner.AdUnit);
+                return false;
 
-            isBannerShowing = !isBannerShowing;
         }
-        public void ToggleBannerVisibility(bool isOn)
-        {
-            if (isOn)
-                MaxSdk.ShowBanner(Banner.AdUnit);
-            else
-                MaxSdk.HideBanner(Banner.AdUnit);
-        }
-        private void OnBannerAdLoadedEvent(string adUnitId, MaxSdkBase.AdInfo adInfo)
-        {
-            // Banner ad is ready to be shown.
-            // If you have already called MaxSdk.ShowBanner(BannerAdUnitId) it will automatically be shown on the next ad refresh.
-            Debug.Log("Banner ad loaded");
-        }
-        private void OnBannerAdFailedEvent(string adUnitId, MaxSdkBase.ErrorInfo errorInfo)
-        {
-            // Banner ad failed to load. MAX will automatically try loading a new ad internally.
-            Debug.Log("Banner ad failed to load with error code: " + errorInfo.Code);
-        }
-        private void OnBannerAdClickedEvent(string adUnitId, MaxSdkBase.AdInfo adInfo)
-        {
-            Debug.Log("Banner ad clicked");
-        }
-        private void OnBannerAdRevenuePaidEvent(string adUnitId, MaxSdkBase.AdInfo adInfo)
-        {
-            // Banner ad revenue paid. Use this callback to track user revenue.
-            Debug.Log("Banner ad revenue paid");
-
-            // Ad revenue
-            double revenue = adInfo.Revenue;
-
-            // Miscellaneous data
-            string countryCode = MaxSdk.GetSdkConfiguration().CountryCode; // "US" for the United States, etc - Note: Do not confuse this with currency code which is "USD" in most cases!
-            string networkName = adInfo.NetworkName; // Display name of the network that showed the ad (e.g. "AdColony")
-            string adUnitIdentifier = adInfo.AdUnitIdentifier; // The MAX Ad Unit ID
-            string placement = adInfo.Placement; // The placement this ad's postbacks are tied to
-
-           // TrackAdRevenue(adInfo);
-        }
-        #endregion
 
         #region Interstitial Ad
         private void InitializeInterstitialAds()
@@ -130,12 +78,21 @@ namespace DarkJimmy
         }
         public void ShowInterstitial()
         {
+            if (!CanShowInstersititalAd())
+            {
+                onClosed();
+                return;
+            }
+               
             if (MaxSdk.IsInterstitialReady(Interstitial.AdUnit))
                 MaxSdk.ShowInterstitial(Interstitial.AdUnit);
+
+            DateTime time = DateTime.Now.AddMinutes(CloudSaveManager.Instance.IntersitialAdFrequency);
+            LocalSaveManager.Save("Interstitial", time);
         }
         private void OnInterstitialLoadedEvent(string adUnitId, MaxSdkBase.AdInfo adInfo)
         {
-            Debug.Log("Interstitial loaded");
+           // Debug.Log("Interstitial loaded");
 
             // Reset retry attempt
             interstitialRetryAttempt = 0;
@@ -146,27 +103,27 @@ namespace DarkJimmy
             interstitialRetryAttempt++;
             double retryDelay = Math.Pow(2, Math.Min(6, interstitialRetryAttempt));
 
-            Debug.Log("Interstitial failed to load with error code: " + errorInfo.Code);
+           // Debug.Log("Interstitial failed to load with error code: " + errorInfo.Code);
 
             Invoke(nameof(LoadInterstitial), (float)retryDelay);
         }
         private void InterstitialFailedToDisplayEvent(string adUnitId, MaxSdkBase.ErrorInfo errorInfo, MaxSdkBase.AdInfo adInfo)
         {
             // Interstitial ad failed to display. We recommend loading the next ad
-            Debug.Log("Interstitial failed to display with error code: " + errorInfo.Code);
+            //Debug.Log("Interstitial failed to display with error code: " + errorInfo.Code);
             LoadInterstitial();
         }
         private void OnInterstitialDismissedEvent(string adUnitId, MaxSdkBase.AdInfo adInfo)
         {
             // Interstitial ad is hidden. Pre-load the next ad
-            Debug.Log("Interstitial dismissed");
+            //Debug.Log("Interstitial dismissed");
+            onClosed();
             LoadInterstitial();
         }
         private void OnInterstitialRevenuePaidEvent(string adUnitId, MaxSdkBase.AdInfo adInfo)
         {
             // Interstitial ad revenue paid. Use this callback to track user revenue.
-            Debug.Log("Interstitial revenue paid");
-
+           // Debug.Log("Interstitial revenue paid");          
             // Ad revenue
             double revenue = adInfo.Revenue;
 
@@ -233,10 +190,21 @@ namespace DarkJimmy
                 MaxSdk.ShowRewardedAd(adUnitId);
 
         }
+
+        public bool RewardAdReady(RewardType rewardType)
+        {
+            string adUnitId = GetRewardUnitID(rewardType);
+
+            if (string.IsNullOrEmpty(adUnitId))
+                return false;
+
+            return MaxSdk.IsRewardedAdReady(adUnitId);
+        }
+
         private void OnRewardedAdLoadedEvent(string adUnitId, MaxSdkBase.AdInfo adInfo)
         {
             // Rewarded ad is ready to be shown. MaxSdk.IsRewardedAdReady(rewardedAdUnitId) will now return 'true'
-            Debug.Log("Rewarded ad loaded");
+            //Debug.Log("Rewarded ad loaded");
 
             // Reset retry attempt
             rewardedRetryAttempt = 0;
@@ -248,7 +216,7 @@ namespace DarkJimmy
             double retryDelay = Math.Pow(2, Math.Min(6, rewardedRetryAttempt));
 
       
-            Debug.Log("Rewarded ad failed to load with error code: " + errorInfo.Code);
+            //Debug.Log("Rewarded ad failed to load with error code: " + errorInfo.Code);
 
             // Invoke(nameof(LoadRewardedAd(adUnitId)), (float)retryDelay);
 
@@ -257,35 +225,34 @@ namespace DarkJimmy
         private void OnRewardedAdFailedToDisplayEvent(string adUnitId, MaxSdkBase.ErrorInfo errorInfo, MaxSdkBase.AdInfo adInfo)
         {
             // Rewarded ad failed to display. We recommend loading the next ad
-            Debug.Log("Rewarded ad failed to display with error code: " + errorInfo.Code);
+            //Debug.Log("Rewarded ad failed to display with error code: " + errorInfo.Code);
             LoadRewardedAd(adUnitId);
         }
         private void OnRewardedAdDisplayedEvent(string adUnitId, MaxSdkBase.AdInfo adInfo)
         {
-            Debug.Log("Rewarded ad displayed");
+            //Debug.Log("Rewarded ad displayed");
         }
         private void OnRewardedAdClickedEvent(string adUnitId, MaxSdkBase.AdInfo adInfo)
         {
-            Debug.Log("Rewarded ad clicked");
+            //Debug.Log("Rewarded ad clicked");
         }
         private void OnRewardedAdDismissedEvent(string adUnitId, MaxSdkBase.AdInfo adInfo)
         {
             // Rewarded ad is hidden. Pre-load the next ad
-            Debug.Log("Rewarded ad dismissed");
+          //  Debug.Log("Rewarded ad dismissed");
             LoadRewardedAd(adUnitId);
         }
         private void OnRewardedAdReceivedRewardEvent(string adUnitId, MaxSdk.Reward reward, MaxSdkBase.AdInfo adInfo)
         {
             // Rewarded ad was displayed and user should receive the reward
-            Debug.Log("Rewarded ad received reward");
+            //Debug.Log("Rewarded ad received reward");
 
-            Debug.Log(GetRewardType[adUnitId]);
             rewardDelegate(GetRewardType[adUnitId]);
         }
         private void OnRewardedAdRevenuePaidEvent(string adUnitId, MaxSdkBase.AdInfo adInfo)
         {
             // Rewarded ad revenue paid. Use this callback to track user revenue.
-            Debug.Log("Rewarded ad revenue paid");
+          //  Debug.Log("Rewarded ad revenue paid");
 
             // Ad revenue
             double revenue = adInfo.Revenue;
@@ -300,8 +267,6 @@ namespace DarkJimmy
         }
 
         #endregion
-
-
     }
     [Serializable]
     public class AdsUnit

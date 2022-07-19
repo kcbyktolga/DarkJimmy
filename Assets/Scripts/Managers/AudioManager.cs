@@ -38,6 +38,10 @@ namespace DarkJimmy
 
         public delegate void SetVolume(UI.VolumeType type);
         public SetVolume setVolume;
+        
+        private int FadeCount { get; set; } = 0;
+
+        private Queue<float> lastVolumeValue = new Queue<float>();
         public override void Awake()
         {
             base.Awake();
@@ -106,7 +110,7 @@ namespace DarkJimmy
         {
             AudioSource source = GetAudioSource(type);
 
-            if (source.enabled && source.isPlaying)
+            if (source.enabled && !source.isPlaying)
                 source.Play();
         }
 
@@ -149,17 +153,69 @@ namespace DarkJimmy
                 soundGroupDictionary.Add(soundGroup.groupID, soundGroup);
             }
         }
-        public void SourceFadeVolume(SoundGroupType type, bool isOn)
+        private void SourceFadeVolume(SoundGroupType type, bool isOn)
         {
             AudioSource source = GetAudioSource(type);
+
             if (!source.enabled)
                 return;
 
-            float multiple = isOn ? 2 : 0.5f;
-            float volume = source.volume * multiple;
+            if (!isOn)
+                lastVolumeValue.Enqueue(source.volume);
 
+            float volume = isOn ? lastVolumeValue.Dequeue() : source.volume*0.5f;
+
+            //float volume = Mathf.Clamp01(source.volume * multiple);
             source.DOFade(volume, 0.5f);
-           
+        }
+        private void SourceFadeVolume0(SoundGroupType type, bool isOn)
+        {
+            AudioSource source = GetAudioSource(type);
+
+            if (!source.enabled)
+                return;
+
+            if (!isOn)
+                lastVolumeValue.Enqueue(source.volume);
+
+            float volume = isOn ? lastVolumeValue.Dequeue() : 0;
+           // float volume = Mathf.Clamp01(source.volume * multiple);
+            source.DOFade(volume, 0.5f);
+        }
+
+        public void PlaySources()
+        {
+            PlaySource(SoundGroupType.Music);
+            PlaySource(SoundGroupType.Ambient);
+        }
+        public void PauseSources()
+        {
+            PauseSource(SoundGroupType.Music);
+            PauseSource(SoundGroupType.Ambient);
+        }
+        public void FadeVolume(bool isOn)
+        {
+            if (isOn)
+            {
+                FadeCount--;
+
+                if (FadeCount < 0)
+                    FadeCount = 0;
+            }
+
+            if (FadeCount == 0)
+            {
+                SourceFadeVolume(SoundGroupType.Music, isOn);
+                SourceFadeVolume(SoundGroupType.Ambient, isOn);
+            }
+
+            if (!isOn)
+                FadeCount++;
+        }
+        public void FadeVolume0(bool isOn)
+        {           
+            SourceFadeVolume0(SoundGroupType.Music, isOn);
+            SourceFadeVolume0(SoundGroupType.Ambient, isOn);
         }
         private void SetSource(ref AudioSource source, ref AudioMixerGroup mixerGroup, bool isLoop,UI.VolumeType type)
         {

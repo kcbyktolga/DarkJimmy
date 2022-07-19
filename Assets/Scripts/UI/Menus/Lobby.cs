@@ -22,8 +22,8 @@ namespace DarkJimmy.UI
             // Invoke(nameof(ShowInterstitial), 5);
 
             // remote config den belirlenecek..
-            AudioManager.Instance.PlayMusic("Theme 1");
-            AudioManager.Instance.PlayMusic("Ambient 1");
+            AudioManager.Instance.PlayMusic("Main Theme");
+            AudioManager.Instance.PlayMusic("Jungle Ambient");// Level e göre belirlenecek..
         }
 
         void ShowInterstitial()

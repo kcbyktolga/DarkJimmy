@@ -20,10 +20,10 @@ namespace DarkJimmy.UI
         {
             if (menuType.Equals(Menu.Menus.None))
             {
-                if (SceneManager.GetActiveSceneName().Equals(Menu.Menus.Stages.ToString())&&UIManager.Instance.GetStackCount().Equals(1))
+                if (SceneManager.GetActiveSceneName().Equals(Menu.Menus.Stages.ToString()) && UIManager.Instance.GetStackCount().Equals(1))
                     SceneManager.LoadScene(Menu.Menus.Lobby.ToString());
                 else
-                    UIManager.Instance.GoBack();
+                    Invoke(nameof(Back), clickDuration * 10);
             }             
             else if (menuType.Equals(Menu.Menus.PlayService))
                 PlayService.Instance.LoginGooglePlayGames();
@@ -47,6 +47,11 @@ namespace DarkJimmy.UI
             string name = menuType.Equals(Menu.Menus.None) ? string.Empty : LanguageManager.GetText(menuType.ToString());
 
             SetTabButtonName(name);
+        }
+
+        private void Back()
+        {
+            UIManager.Instance.GoBack();
         }
 
         private void OnDestroy()

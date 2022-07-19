@@ -51,15 +51,18 @@ namespace DarkJimmy.UI
             Mail,
 
             Preparation,
-            Starter
-
+            TapToStart,
+            Policy,
+            CharacterPurchase,
+            RateGame,
+            RewardPopup,
         }
         public enum MenuRank
         {
             Primer,
             Seconder
         }
-        public static Dictionary<Menus, string> MenuPaths = new Dictionary<Menus, string>
+        public static readonly Dictionary<Menus, string> MenuPaths = new Dictionary<Menus, string>
         {
              {Menus.Lobby, "Menus/Lobby"},
              {Menus.Settings, "Menus/Settings"},
@@ -77,7 +80,8 @@ namespace DarkJimmy.UI
              {Menus.LuckySpin, "Menus/LuckySpin"},
              {Menus.Play, "Menus/GameDisplay"},
              {Menus.Preparation, "Menus/Preparation"},
-             {Menus.Starter, "Menus/Starter"},
+             {Menus.TapToStart, "Menus/Starter"},
+             {Menus.Upgrade, "Menus/Upgrade"},
 
             //Popups
              {Menus.PurchaseProcess, "Popups/PurchaseProcessPopup"},
@@ -87,7 +91,12 @@ namespace DarkJimmy.UI
              {Menus.Disconnect, "Popups/DisconnectPopup"},
              {Menus.AppUpdate, "Popups/AppUpdatePopup"},
              {Menus.StageLockOrientation, "Popups/StageLockOrientationPopup"},
-             {Menus.ShopOrientation, "Popups/ShopOrientationPopup"}
+             {Menus.ShopOrientation, "Popups/ShopOrientationPopup"},
+             {Menus.CharacterPurchase, "Popups/CharacterPurchasePopup"},
+             {Menus.PrivacyPolicy, "Popups/PrivacyPolicy"},
+             {Menus.Policy, "Popups/Policy"},
+             {Menus.RateGame, "Popups/RateGamePopup"},
+             {Menus.RewardPopup, "Popups/RewardPopup"}
         };
 
         #endregion
@@ -96,12 +105,15 @@ namespace DarkJimmy.UI
         public Canvas canvas;
         public TMP_Text pageName;
         public RectTransform baseTransform;
-        private float _duration = 0.1f;
+        
+        public  float Duration { get;} = 0.1f;
         [Header("Referances")]
         public Menus menuType;
-        public MenuRank menuRank;    
+        public MenuRank menuRank;
+
         #endregion
         #region virtual Methods
+
         public virtual void Start()
         {
             SetPageName();
@@ -120,55 +132,41 @@ namespace DarkJimmy.UI
         {
             UIManager.Instance.GoBack();
         }
-        public virtual void Cancel()
-        {
-            UIManager.Instance.Cancel();
-        }
-     
+   
         public virtual void ScaleAnimation()
         {
             if (baseTransform == null)
                 return;
+
             baseTransform.localScale = 0.95f * Vector2.one;
-            baseTransform.DOScale(Vector2.one, _duration).SetEase(SystemManager.Instance.system.menuCurve);
+            baseTransform.DOScale(Vector2.one, Duration).SetEase(SystemManager.Instance.GetMenuCurve()).OnComplete(AfterScaleAnimation);     
         }
-        public virtual IEnumerator Animation()
+
+        public virtual void AfterScaleAnimation()
         {
-            if (baseTransform == null)
-                yield break;
-
-            float time = 0;
-            int step = 0;
-            Vector2 start = baseTransform.localScale;
-            Vector2 end = 1.04f * Vector2.one;
-
-            while (step<2)
-            {
-                while (time <= 1)
-                {
-                    time += Time.deltaTime / (_duration * 0.5f);
-                    baseTransform.localScale = Vector2.Lerp(start, end, time);
-                    yield return null;
-                }
-
-                step++;
-                start = baseTransform.localScale;
-                end = Vector2.one;
-                time = 0;
-            }
+            baseTransform.DOKill();
         }
+   
         #endregion
 
-
         public virtual void OnEnable()
-        {
-            // StartCoroutine(Animation());
+        {         
             ScaleAnimation();
         }
-
         public virtual void OnDestroy()
         {
             LanguageManager.onChangedLanguage -= SetPageName;
+        }
+
+        public virtual void SetVolume(bool isOn)
+        {
+            if (AudioManager.Instance == null)
+                return;
+
+            //audioManager.SourceFadeVolume(SoundGroupType.Music, isOn);
+            // audioManager.SourceFadeVolume(SoundGroupType.Ambient, isOn);
+
+            AudioManager.Instance.FadeVolume(isOn);
         }
     }
 }

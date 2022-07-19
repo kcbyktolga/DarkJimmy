@@ -47,10 +47,7 @@ namespace DarkJimmy
 
             }
         }
-        public void OpenPopup()
-        {
-
-        }
+ 
         public void GoBack()
         {
             if (menuStack.Count.Equals(1))

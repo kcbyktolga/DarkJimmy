@@ -8,28 +8,21 @@ namespace DarkJimmy.UI
 {
     public class LevelResult : MonoBehaviour
     {
-        public Result result;
-        [SerializeField]
-        private Image background;
-        [SerializeField]
-        private TMP_Text resultName;
+        public Result result;  
         [SerializeField]
         private TMP_Text resultValue;
+        [SerializeField]
+        private Image resultIcon;
 
-        private SystemManager system;
         private void Start()
         {
-            system = SystemManager.Instance;
-            resultName.text = $"{LanguageManager.GetText(result.ToString())}:";
+            resultIcon.sprite = SystemManager.Instance.GetResultSprite(result);
         }
         public void SetResultValue(int value, int totalValue)
         {
-            resultValue.text = $"{system.StringFormat(value)}/{system.StringFormat(totalValue)}";
+            resultValue.text = $"{SystemManager.Instance.StringFormat(value)}/{SystemManager.Instance.StringFormat(totalValue)}";
         }
-        public void SetColor(Color color)
-        {
-            background.color = resultName.color = resultValue.color = color;
-        }
+      
     }
 
     public enum Result

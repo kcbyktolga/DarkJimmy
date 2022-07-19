@@ -40,11 +40,11 @@ namespace DarkJimmy.UI
             currentScore.text = $"{level.currentScore}";
             maxScore.text = $"{level.maxScore}";
 
-            headerName.text= LanguageManager.GetText("Statýstýcs");
+            headerName.text= LanguageManager.GetText("Statistic");
             keyCountText.text = LanguageManager.GetText("Key");
             goldCountText.text = LanguageManager.GetText("Gold");
-            currentScoreText.text = LanguageManager.GetText("Current Score");
-            maxScoreText.text = LanguageManager.GetText("Max Score");
+            currentScoreText.text = LanguageManager.GetText("CurrentScore");
+            maxScoreText.text = LanguageManager.GetText("MaxScore");
         }
 
       

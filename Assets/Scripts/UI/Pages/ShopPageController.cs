@@ -18,38 +18,40 @@ namespace DarkJimmy.UI
         private List<ShopProductPage> pages = new List<ShopProductPage>();
   
         private HorizontalLayoutGroup layout;
-
+        private SystemManager system;
 
         private void Start()
         {
+            system = SystemManager.Instance;
             globalData = CloudSaveManager.Instance.GetDefaultData().Catalog;           
             NextIndex = UIManager.Instance.PageIndex;
             layout = container.GetComponent<HorizontalLayoutGroup>();
             Generate();
+            system.toPage += OnSelect;
         }
 
         public override void Generate()
         {
             for (int i = 0; i < globalData.Pages.Count; i++)
             {
-                PageStruct pageStruct = globalData.Pages[i];
+   
+                ProductPageBase pageBase = globalData.Pages[i];
 
                 TabButton tab = Instantiate(prefab, container);
-                tab.SetTabButtonName(pageStruct.pageName);
-                tab.SetTabIcon(pageStruct.pageIcon);
+                tab.SetTabButtonName(pageBase.pageName);
+                tab.SetTabIcon(pageBase.pageIcon);
                 tab.OnClick(i, OnSelect);
                 tabs.Add(tab);
 
                 ShopProductPage page = Instantiate(pagePrefab, pageContent);
                 pages.Add(page);
-                // page.SetPage(pageStruct.pageName);
-
-                for (int j = 0; j < pageStruct.products.Count; j++)
+                
+                for (int j = 0; j < pageBase.products.Count; j++)
                 {
-                    ProductStruct productStruct = pageStruct.products[j];
+                    ProductBase productBase = pageBase.products[j];
                     Product product = Instantiate(productPrefab, page.container);
-                    product.payType = productStruct.payType;
-                    product.SetProduct(productStruct);
+                    product.payType = productBase.payType;
+                    product.SetProduct(productBase);
                     product.gameObject.SetActive(false);
                 }
                 page.gameObject.SetActive(false);
@@ -76,15 +78,15 @@ namespace DarkJimmy.UI
             layout.enabled = true;
             Canvas.ForceUpdateCanvases();
 
+            system.onChangedPage(NextIndex);
            // AudioManager.Instance.PlaySound("Turn Page");
 
         }
 
-       
-
         private void OnDestroy()
         {
             UIManager.Instance.PageIndex = 0;
+            system.toPage -= OnSelect;
         }
     }
 }

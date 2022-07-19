@@ -28,7 +28,7 @@ namespace DarkJimmy
                 .Build();
 
             PlayGamesPlatform.InitializeInstance(config);
-            PlayGamesPlatform.DebugLogEnabled = true;
+            PlayGamesPlatform.DebugLogEnabled = false;
             PlayGamesPlatform.Activate();
         }
 
@@ -52,9 +52,25 @@ namespace DarkJimmy
                 Debug.Log("Unsuccessful login");
             }
 
-            Debug.Log("Login with Google Play Games done. IdToken: " + ((PlayGamesLocalUser)Social.localUser).GetIdToken());
         }
 
+        public void AddScoreToLeaderboard(int totalMaxScore)
+        {
+            if (Instance.signIn)
+            {
+                Social.ReportScore(totalMaxScore, GPGSIds.leaderboard_leaderboard, (success) =>
+                {
+                    if (!success) Debug.LogError("Unable to post highscore");
+                });
+            }
+        }
+
+        public void OpenLeaderboard()
+        {
+            if (Instance.signIn)
+                Social.ShowLeaderboardUI();
+
+        }
     }
 }
 

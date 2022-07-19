@@ -11,11 +11,26 @@ namespace DarkJimmy.UI
         public override void Start()
         {
             base.Start();
-            ActivateBase();
-
-            userId.text = $" User ID: {CloudSaveManager.Instance.UserId}";
+            // ActivateBase();
+            SetText();
+ 
+            LanguageManager.onChangedLanguage +=SetText;
         }
+        public override void ScaleAnimation()
+        {
+            base.ScaleAnimation();
+            AudioManager.Instance.PlaySound("Open Page");
+        }
+        private void SetText()
+        {
+            userId.text = $"{LanguageManager.GetText("UserId")}: {CloudSaveManager.Instance.UserId}";
+        }
+        public override void OnDestroy()
+        {
+            base.OnDestroy();
+            LanguageManager.onChangedLanguage -= SetText;
 
+        }
     }
 
 }

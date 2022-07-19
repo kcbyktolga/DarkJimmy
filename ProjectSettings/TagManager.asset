@@ -25,7 +25,7 @@ TagManager:
   - Foreground
   - Interactable
   - Obstacle
-  - 
+  - EnemyFoot
   - 
   - 
   - 
@@ -56,6 +56,9 @@ TagManager:
   - name: Obstacle
     uniqueID: 3093580611
     locked: 0
+  - name: Enemy
+    uniqueID: 3069306971
+    locked: 0
   - name: Player
     uniqueID: 1319747231
     locked: 0
@@ -70,4 +73,7 @@ TagManager:
     locked: 0
   - name: Foreground
     uniqueID: 1111408575
+    locked: 0
+  - name: Interactable
+    uniqueID: 951036065
     locked: 0

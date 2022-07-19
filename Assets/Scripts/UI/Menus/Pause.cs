@@ -29,14 +29,14 @@ namespace DarkJimmy.UI
             restart.OnClick(Restart);
             resume.OnClick(Resume);
         }
-
+    
         private void Stage()
         {
-            Fade.Instance.FadeOut(LoadStageScene);
+            Fade.Instance.FadeOut(LoadStageScene,null);
         }
         private void Restart()
         {         
-            Fade.Instance.FadeOut(LoadCurrentScene);
+            Fade.Instance.FadeOut(LoadCurrentScene,null);
         }
         private void LoadCurrentScene()
         {
@@ -49,19 +49,11 @@ namespace DarkJimmy.UI
         private void Resume()
         {
             GoBack();
-            UIManager.Instance.OpenMenu(Menus.Starter);
+            UIManager.Instance.OpenMenu(Menus.TapToStart);
             //gsm.StartCountDownTimer();
             audioManager.PlaySound("Pause");
         }
 
-        private void SetVolume(bool isOn)
-        {
-            if (audioManager == null)
-                return;
-
-            audioManager.SourceFadeVolume(SoundGroupType.Music, isOn);
-            audioManager.SourceFadeVolume(SoundGroupType.Ambient, isOn);
-        }
         public override void OnEnable()
         {
             base.OnEnable();

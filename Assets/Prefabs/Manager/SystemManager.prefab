@@ -27,6 +27,7 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -44,25 +45,73 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   type: 0
-  system:
-    passed: {fileID: 21300000, guid: dae4f662c279b66469644fb5037bcb78, type: 3}
-    active: {fileID: 21300000, guid: 0adf4d7eaba1c984f810365659eaf14e, type: 3}
-    passive: {fileID: 21300000, guid: 06c3909134869fd44a0cf3b2b1f7b1b8, type: 3}
-    gold: {fileID: 21300000, guid: c905e6b95b77c844dba2de7c4503f0ef, type: 3}
-    diamond: {fileID: 21300000, guid: 93b017d65c52b7043b45b88319608950, type: 3}
-    key: {fileID: 21300000, guid: e9958a692226a90499bb7001427a427d, type: 3}
+  systemProperty:
+    menuCurve:
+      serializedVersion: 2
+      m_Curve:
+      - serializedVersion: 3
+        time: 0
+        value: 0
+        inSlope: 3.906112
+        outSlope: 3.906112
+        tangentMode: 34
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0.33333334
+      - serializedVersion: 3
+        time: 0.5120181
+        value: 2
+        inSlope: 3.906112
+        outSlope: -2.0492563
+        tangentMode: 69
+        weightedMode: 0
+        inWeight: 0.09549881
+        outWeight: 0.33333334
+      - serializedVersion: 3
+        time: 1
+        value: 1
+        inSlope: -2.0492563
+        outSlope: -2.0492563
+        tangentMode: 34
+        weightedMode: 0
+        inWeight: 0.33333334
+        outWeight: 0
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    passed: {fileID: 21300000, guid: 5efa54f782469604e9020f8e9aec60a9, type: 3}
+    active: {fileID: 21300000, guid: 9db4bf56102ff3a4197054332e856c8b, type: 3}
+    passive: {fileID: 21300000, guid: 60e5908374710374a8fb34d1ec38dc5a, type: 3}
+    gold: {fileID: 21300000, guid: 82813c074e2854877b1382f0e987511b, type: 3}
+    diamond: {fileID: 6161683761483300999, guid: f41a43224cac9734ca5fb8e6ca0aaaca,
+      type: 3}
+    key: {fileID: 21300000, guid: 03128ad38fd0e4b9aa024763b0d8a3cc, type: 3}
+    philosphy: {fileID: 21300000, guid: 5dfb16ae0220748c98c6d5ab5220b70a, type: 3}
+    moonStone: {fileID: 21300000, guid: 6b9e6af9106844252a3315aa549ded76, type: 3}
+    elegantStone: {fileID: 21300000, guid: dd4222b5d95864d99a14bf2020e70194, type: 3}
+    Powercrystal: {fileID: 21300000, guid: 1230a91a23d0849128d2f8c63b5996fe, type: 3}
+    time: {fileID: 21300000, guid: 4973042e6ed5a4333b3298727fa8bebe, type: 3}
+    hp: {fileID: 21300000, guid: 2575ac9d3040dc24794bd9d4348964d1, type: 3}
+    mana: {fileID: 21300000, guid: d99f64223d9577d43a0a761a8eb4e41b, type: 3}
+    speed: {fileID: 21300000, guid: ef2e794d4a43e1141a0b175eeaa2830d, type: 3}
+    hpProp: {fileID: 21300000, guid: 9052f7a0bc8ae4a348c9da24ce2c1c38, type: 3}
+    manaProp: {fileID: 21300000, guid: 3bd72ca3c2cd14673a655c6511fc9f12, type: 3}
+    speedProp: {fileID: 21300000, guid: cd6dbb8d9ca024ef699dd81db2f8fdd7, type: 3}
     goldSprite: {fileID: 21300000, guid: 9db4bf56102ff3a4197054332e856c8b, type: 3}
     diamondSprite: {fileID: 21300000, guid: c6ad4c89277e78945a4a7a5f3d1e5e4e, type: 3}
     offersSprite: {fileID: 21300000, guid: fe483ea8b2e374b48b25cf90141b877e, type: 3}
-    premiumSprite: {fileID: 21300000, guid: 5efa54f782469604e9020f8e9aec60a9, type: 3}
+    stoneSprite: {fileID: 21300000, guid: 5efa54f782469604e9020f8e9aec60a9, type: 3}
     blackAlfa255: {r: 0, g: 0, b: 0, a: 1}
     blackAlfa0: {r: 0, g: 0, b: 0, a: 0}
     whiteAlfa255: {r: 1, g: 1, b: 1, a: 1}
     whiteAlfa0: {r: 1, g: 1, b: 1, a: 0}
-    ApplicationURL: https://play.google.com/store/apps/details?id=com.rhombeusgaming.DarkJimmy
-    WebsiteURL: http://www.rhombeusgaming.com/
-    InstagramURL: https://www.instagram.com/rhombeusgaming/
-    YoutubeeURL: https://www.youtube.com/channel/UCgUMXl7bylbFv36oDuDgLtw
-    PublisherURL: https://play.google.com/store/apps/dev?id=8451792306383085358&hl=en_US&gl=US
-    MailURL: mailto:rhombeusgaming@gmail.com
-  mrecPosition: {x: -611.6602, y: 86.38825}
+    readyAd: {fileID: 21300000, guid: 391584432233c4e0a864435a50a098c5, type: 3}
+    notReadyAd: {fileID: 21300000, guid: 98f9f7e8403544be79c521f974c3ed3c, type: 3}
+    thorpy: {fileID: 21300000, guid: 74d298f2c171d0346a9b01c137e74156, type: 3}
+    ApplicationURL: 
+    WebsiteURL: 
+    InstagramURL: 
+    YoutubeeURL: 
+    PublisherURL: 
+    MailURL: 
+  defaultData: {fileID: 11400000, guid: 473967520a82b444e996831f5caeab56, type: 2}

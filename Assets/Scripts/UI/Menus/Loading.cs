@@ -28,7 +28,6 @@ namespace DarkJimmy.UI
 
             Load(Menus.Lobby,0);
         }
-
         public void Load(Menus menuType, float seconds)
         {        
             StartCoroutine(Skip(menuType.ToString(),seconds));
@@ -37,7 +36,7 @@ namespace DarkJimmy.UI
         {
             yield return new WaitForSeconds(_time);
 
-            string sentence = "Datalar yükleniyor..";
+            string sentence = "DataLoading";
             SetLoadingText(sentence);
 
             float time = duration + Time.time;
@@ -48,15 +47,17 @@ namespace DarkJimmy.UI
             if (!csm.IsSignedIn || !csm.IsLoadedData)
             {
                 UIManager.Instance.OpenMenu(Menus.Disconnect);
-                sentence = "Internet baðlantýsý yok..";
+                sentence = "Disconnect";
                 SetLoadingText(sentence);
             }                  
             else
             {
+               
+                
                 while (string.IsNullOrEmpty(csm.AppVersion))
                     yield return null;
 
-                sentence = "Versiyon kontrol ediliyor..";
+                sentence = "VersionCheck";
                 SetLoadingText(sentence);
                 
                 if (csm.AppVersion !=Application.version)
@@ -66,9 +67,15 @@ namespace DarkJimmy.UI
                     yield break;
                 }
 
+                if (!csm.PlayerDatas.IsAccept)
+                    UIManager.Instance.OpenMenu(Menus.PrivacyPolicy);
+
+                while (!csm.PlayerDatas.IsAccept)
+                    yield return null;
+
                 yield return new WaitForSeconds(1);
 
-                sentence = "Oyun birazdan baþlýyor..";
+                sentence = "GameBegining";
                 SetLoadingText(sentence);
                // AdManager.Instance.InitializeAds();
 
@@ -94,7 +101,7 @@ namespace DarkJimmy.UI
 
         public void SetLoadingText(string sentence)
         {
-            loadingText.text = sentence;
+            loadingText.text = LanguageManager.GetText(sentence);
         }
 
     }

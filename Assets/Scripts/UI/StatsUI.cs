@@ -1,6 +1,8 @@
 using UnityEngine;
 using TMPro;
 using System;
+using UnityEngine.UI;
+using DG.Tweening;
 
 namespace DarkJimmy
 {
@@ -9,11 +11,20 @@ namespace DarkJimmy
         [SerializeField]
         private StatsType type;
         [SerializeField]
-        private  Stats stats;    
+        private  Stats stats;
+        [SerializeField]
+        private Image statsIcon;
+        [SerializeField]
+        private Image background;
+        [SerializeField]
+        private Image frame;
+     
+
         public TMP_Text amount;  
         public Stats Stats
         {
             get { return stats; }
+            set { stats = value; }
         }
         public StatsType Type
         {
@@ -33,15 +44,32 @@ namespace DarkJimmy
             get { return defaultValue; }
             set { defaultValue = value < 0 ? minValue : minValue + value; }
         }
-        public virtual void Start()
+
+        public virtual void Awake()
         {
             system = SystemManager.Instance;
             csm = CloudSaveManager.Instance;
 
-            Initialize();
             system.updateStats += SyncStateValue;
-           // system.updatePowerUp += AddPowerUp;
+            // system.updatePowerUp += AddPowerUp;
             system.updateGameDisplay += UpdateGameDisplay;
+
+        }
+        public virtual void Start()
+        {        
+            Initialize();
+            SetStatsIcon();
+
+           // system.updateStats += SyncStateValue;
+           //// system.updatePowerUp += AddPowerUp;
+           // system.updateGameDisplay += UpdateGameDisplay;
+
+        }
+
+        public virtual void SetStatsIcon()
+        {
+            if (statsIcon != null)
+                statsIcon.sprite = system.GetStatsIcon(Stats);
         }
         public virtual void SyncStateValue(Stats stats,int value)
         {
@@ -79,7 +107,12 @@ namespace DarkJimmy
             {
                 int value = csm.GetGemCount(gemType);         
                 SyncAmount(value);
-            }            
+            }   
+            else if (Enum.TryParse(Stats.ToString(), out Stones stones))
+            {
+                int value = csm.GetStoneCount(stones);
+                SyncAmount(value);
+            }
             else if (Stats.Equals(Stats.JumpCount))
             {
                 int value = csm.GetCurrentCharacterData().JumpCount;
@@ -103,6 +136,15 @@ namespace DarkJimmy
            // system.updatePowerUp -= AddPowerUp;
             system.updateGameDisplay -= UpdateGameDisplay;
         }
+
+        public void StatsColor(Color color,float duration)
+        {
+            amount.DOColor(color,duration);
+            statsIcon.DOColor(color, duration);
+            background.DOColor(color, duration);
+            frame.DOColor(color, duration);
+
+        }
     }
 
     public enum Stats
@@ -110,11 +152,15 @@ namespace DarkJimmy
         Gold,
         Diamond,
         Key,
-        Energy,
+        HP,
         Mana,
         Time,
         JumpCount,
-        Speed
+        Speed,
+        Philosophy,
+        LifeCrystal,
+        PowerCrystal,
+        Moonstone
     }
     public enum StatsType
     {

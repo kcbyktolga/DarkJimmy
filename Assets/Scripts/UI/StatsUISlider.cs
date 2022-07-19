@@ -15,11 +15,37 @@ namespace DarkJimmy
         [SerializeField]
         private TMP_Text statsName;
 
+        private string _statName;
+
         private readonly float duration = 0.5f;
+
+        public override void Awake()
+        {
+            base.Awake();
+            system.updateStatsMax += SetSliderValueAndMax;
+        }
         public override void Initialize()
         {
+            LanguageManager.onChangedLanguage += ChangeName;
+
             if (System.Enum.TryParse(Stats.ToString(), out CharacterProperty property))
-                SyncStateValue(Stats, csm.GetCurrentCharacterData().GetCharacterProperty(property));
+                SyncStateValue(Stats, csm.GetCurrentCharacterData().GetCurrentCharacterProperty(property));
+
+
+            if (property.Equals(CharacterProperty.HP))
+            {
+                Debug.Log(csm.GetCurrentCharacterData().GetCurrentCharacterProperty(property));
+            }
+           
+        }
+        private void SetSliderValueAndMax(Stats stats, int value, int maxValue)
+        {
+            if (Stats != stats)
+                return;
+
+            SetSliderValues(value,maxValue);
+
+            SetStatName(stats.ToString());
         }
         public override void SyncStateValue(Stats stats, int amount)
         {
@@ -54,8 +80,7 @@ namespace DarkJimmy
         public void SetSliderValues(float value, float maxValue)
         {
             statsSlider.maxValue = maxValue;
-            statsSlider.DOValue(value, duration).onUpdate += SetValue;
-           
+            statsSlider.DOValue(value, duration).OnUpdate(SetValue);
         }
         private void SetValue()
         {
@@ -63,7 +88,23 @@ namespace DarkJimmy
         }   
         public void SetStatName(string name)
         {
+            _statName = name;
             statsName.text = LanguageManager.GetText(name);
+        }
+
+        private void ChangeName()
+        {
+            statsName.text = LanguageManager.GetText(_statName);
+        }
+
+        public override void OnDestroy()
+        {
+            base.OnDestroy();
+
+            system.updateStatsMax -= SetSliderValueAndMax;
+            LanguageManager.onChangedLanguage -= ChangeName;
+
+            statsSlider.DOKill();
         }
     }
 

@@ -7,17 +7,31 @@ namespace DarkJimmy
 {
     public class BackgroundManager : MonoBehaviour
     {
-        public BackgroundsType backgroundType;
-        public List<BackgroundElement> backgrounds;
-
+       public List<BackgroundElement> backgrounds;
        [SerializeField] 
        private Transform target;
- 
+
+       private BackgroundsType backgroundType = BackgroundsType.Forest;
+
+        private void Awake()
+        {
+            SystemManager.Instance.onChangedBackground += SetBackgroundType;
+        }
+
         void Start()
         {
             Initialize();
         }
 
+        private void SetBackgroundType(BackgroundsType type)
+        {
+            backgroundType = type;
+            Initialize();
+
+            //if (target.TryGetComponent(out Target _target))
+            //    _target.Move();
+
+        }
         private void Initialize()
         {
             for (int i = 0; i < backgrounds.Count; i++)
@@ -35,6 +49,11 @@ namespace DarkJimmy
         {           
             for (int i = 0; i < backgrounds.Count; i++)
                 backgrounds[i].Move(target);
+        }
+
+        private void OnDestroy()
+        {
+            SystemManager.Instance.onChangedBackground -= SetBackgroundType;
         }
     }
 

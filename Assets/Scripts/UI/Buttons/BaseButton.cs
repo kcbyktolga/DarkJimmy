@@ -15,14 +15,14 @@ namespace DarkJimmy.UI
         [SerializeField]
         private RectTransform baseTransform;
 
-        private const float clickDuration = 0.05f;
+        public const float clickDuration = 0.05f;
         private const float scaleMultiple = 0.95f;
         private Vector2 originalScale = Vector2.one;
 
 
         public virtual void OnClick(Action action)
         {
-            button.onClick.RemoveAllListeners();
+            button.onClick.RemoveAllListeners();          
             button.onClick.AddListener(() => action.Invoke());
         }
         public virtual void OnClick<T>(T type, Action<T> action)
@@ -35,6 +35,8 @@ namespace DarkJimmy.UI
             button.onClick.RemoveAllListeners();
             button.onClick.AddListener(() => action.Invoke(type0, type1));
         }
+
+
         public virtual void SetTabButtonName(string name)
         {
             if(buttonName!=null)
@@ -48,7 +50,7 @@ namespace DarkJimmy.UI
                 return;
             ClickDownSound();
             // StartCoroutine(Scale(originalScale * scaleMultiple));
-            Scale(originalScale * scaleMultiple);
+            Scale(originalScale * scaleMultiple,1,Ease.Linear);
         }  
         public void OnPointerUp(PointerEventData eventData)
         {       
@@ -56,12 +58,19 @@ namespace DarkJimmy.UI
                 return;
             ClickUpSound();
             //StartCoroutine(Scale(originalScale));
-            Scale(originalScale);
+            Scale(originalScale,10,Ease.OutElastic);
 
         }     
-        private void Scale(Vector2 endScale)
+        private void Scale(Vector2 endScale,int mulitple, Ease ease)
         {
-            baseTransform.DOScale(endScale, clickDuration);
+            baseTransform.DOScale(endScale, clickDuration * mulitple).SetEase(ease)
+                 .OnUpdate(DoKill);
+        }
+
+        private void DoKill()
+        {
+            if (baseTransform == null)
+                baseTransform.DOKill();
         }
         private void OnDisable()
         {

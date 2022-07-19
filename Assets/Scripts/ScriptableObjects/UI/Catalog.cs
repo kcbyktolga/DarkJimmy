@@ -11,28 +11,43 @@ namespace DarkJimmy
     [CreateAssetMenu(menuName = "Data/Catalog", fileName = "Catalog")]
     public class Catalog : ScriptableObject
     {
-        public int startIndex = 2;
-        public TabButton tabButton;
-        public List<PageStruct> Pages;
-        public List<PowerUpStruct> GetPowerUps;
-        public List<LuckyProduct> GetProductLuckySpin;
-    
-    
+
+        [SerializeField]
+        private List<ProductPageBase> shopPages;
+        [SerializeField]
+        private List<PowerUpStruct> powerUps;
+        [SerializeField]
+        private List<RewardProduct> luckySpin;
+
+        public List<PowerUpStruct> GetPowerUps
+        {
+            get { return powerUps; }
+        }
+        public List<RewardProduct> GetProductLuckySpin
+        {
+            get { return luckySpin; }
+        }
+        public List<ProductPageBase> Pages
+        {
+            get { return shopPages; }
+        }
+
+
         [ContextMenu("Set Product ID")]
         private void SetProductId()
         {
-            for (int i = startIndex; i < Pages.Count; i++)
+            for (int i = 0; i < Pages.Count; i++)
             {
-                PageStruct ps = Pages[i];
+                ProductPageBase pb = Pages[i];
 
-                for (int j = 0; j < ps.products.Count; j++)
+                for (int j = 0; j < pb.products.Count; j++)
                 {
-                    ProductStruct product = ps.products[j];
+                    ProductBase product = pb.products[j];
 
-                    if (product.payType.Equals(PayType.Free))
+                    if (!product.payType.Equals(ProductPayType.Paid))
                         continue;
 
-                    ps.products[j].productId = $"com.rhombeusgaming.{i}{j}";
+                    product.productId = $"com.rhombeusgaming.{i}{j}";
 
                 }
             }
@@ -41,31 +56,41 @@ namespace DarkJimmy
     }
 
     [Serializable]
-    public struct PageStruct
+    public class ProductBase
     {
-        public string pageName;
-        public Sprite pageIcon;
-        public List<ProductStruct> products;
-    }
-    [Serializable]
-    public class ProductStruct
-    {
-        public TypeofProduct typeOfProduct;
-        public int amount;
-        public string productId;
         public string productName;
-        public string productTitle;
-        public PayType payType;
+        public TypeofProduct typeOfProduct;
+       
+        public Stones stoneType;
+        public ProductPayType payType;
         public ProductType productType;
+        public int amount;
+        public int price;
+        public string productId;
+        public string productTitle;
+        public GemType gemPayType;
         public List<Sprite> productIcon;
+        public bool hasDependProduct = false;
+        public DependProduct dependProduct;
     }
+
     [Serializable]
-    public class LuckyProduct
+    public class DependProduct
+    {       
+        public Sprite productIcon;
+        public TypeofProduct typeOfProduct;
+        public Stones stoneType;
+        public int amount;
+    }
+
+    [Serializable]
+    public class RewardProduct
     {
         public TypeofProduct typeOfProduct;
         public int luckyFactor;
         public int amount;
         public string productName;
+        public Stones stoneType;
         public List<Sprite> productIcon;
     }
 
@@ -82,17 +107,18 @@ namespace DarkJimmy
         public string powerUpDescription;
     }
 
-    public enum PayType
+    public enum ProductPayType
     {
         Free,
-        Paid
+        Paid,
+        Gem
     } 
     public enum TypeofProduct
     {
         Gold,
         Diamond,
-        Premium,
-        Costume,
+        RemoveAds,
+        Stones,
         Offers
     }
 

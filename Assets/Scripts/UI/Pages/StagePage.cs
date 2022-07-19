@@ -11,6 +11,11 @@ namespace DarkJimmy.UI
         private RectTransform stageContent;
         [SerializeField]
         private LevelPage pagePrefab;
+
+        private bool IsOpenStage { get; set; } = false;
+        private int _index;
+        private readonly List<LevelPage> pages = new List<LevelPage>();
+        
     
         public override void Start()
         {
@@ -36,18 +41,46 @@ namespace DarkJimmy.UI
                 page.globalData = globalData.Stages[i];
                 page.localData = CloudSaveManager.Instance.GetDefaultData().Stages[i];
                 page.PageIndex = i;
+                pages.Add(page);
                 
                 GetPosition.Add(_posX);
                 _posX -= UIManager.Instance.GetReferenceResolotion().x;
 
                 page.Generate();
+
+                if (globalData.Stages[i].stageIsLocked)
+                {
+                    if (CloudSaveManager.Instance.PlayerDatas.GetAllKeyCount() >= page.localData.KeyCount)
+                    {
+                        CloudSaveManager.Instance.UnlockStage(i, false);
+                        IsOpenStage = true;
+                        _index = i;
+
+                        Invoke(nameof(StageMove),1);
+                    }
+                }
             }
         }
+
+        private void StageMove()
+        {
+            OnSelect(_index);
+        }
+        private void OpenStage()
+        {
+            pages[NextIndex].UpdateLevelTab();
+            IsOpenStage = false;
+        }
+        
         public override void OnSelect(int index)
         {
             base.OnSelect(index);
             Index = NextIndex;
             Move(false, NextIndex);
+
+            if (IsOpenStage)
+                OpenStage();
+
         }
         public override void Move(bool onClick, int amount)
         {
@@ -60,6 +93,7 @@ namespace DarkJimmy.UI
                 NextIndex = Index;
             }
 
+            SystemManager.Instance.onChangedBackground(CloudSaveManager.Instance.GetDefaultData().Stages[NextIndex].GetBackgroundType());
             SetStageTab();
             SetMoveButton();
             //StartCoroutine(Slide(stageContent,GetPosition[NextIndex]));
@@ -71,7 +105,7 @@ namespace DarkJimmy.UI
             StageTab previousTab = GetTab(PreviousIndex);
             StageTab nextTab = GetTab(NextIndex);
 
-            CloudSaveManager.Instance.WorldIndex = NextIndex;
+            CloudSaveManager.Instance.StageIndex = NextIndex;
 
             previousTab.SetTabButton(false);
             nextTab.SetTabButton(true);

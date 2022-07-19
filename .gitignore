@@ -66,6 +66,7 @@ sysinfo.txt
 *.psd.meta
 *.apk
 *.keystore
+*.mp3
 
 
 # Crashlytics generated file

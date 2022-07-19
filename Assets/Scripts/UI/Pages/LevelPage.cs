@@ -20,7 +20,7 @@ namespace DarkJimmy.UI
 
         public override void Generate()
         {
-            pageName.text = LanguageManager.GetText(globalData.stageName);
+            pageName.text = LanguageManager.GetText(localData.stageName);
 
             lockPanel.SetActive(globalData.stageIsLocked);
 
@@ -40,6 +40,8 @@ namespace DarkJimmy.UI
                     globalData.levels[i].levelStatus = LevelStatus.Active;
 
                 levelTab.SetLevelTab(i, globalData.levels[i], globalData.stageIsLocked);
+                levelTab.SetLevelName(globalData.stageIndex,i);
+                levelTab.SetLevelImage(localData.levels[i]);
                 tabs.Add(levelTab);
                 levelTab.OnClick(i, OnSelect);
             }
@@ -56,8 +58,11 @@ namespace DarkJimmy.UI
             next.OpenPage();
 
         }
-        private void UpdateLevelTab()
+        public void UpdateLevelTab()
         {
+            lockPanel.SetActive(false);
+            CloudSaveManager.Instance.updateStage(globalData);
+
             for (int i = 0; i < globalData.levels.Count; i++)
             {
                 if (globalData.levels[i].levelStatus.Equals(LevelStatus.Passive) && PasedCheck(i))
@@ -74,13 +79,12 @@ namespace DarkJimmy.UI
                 {
                     globalData.stageIsLocked = false;
                     CloudSaveManager.Instance.SpendGem(localData.GetPayType(), localData.GetStagePrice());
-                    lockPanel.SetActive(false);
-                    CloudSaveManager.Instance.updateStage(globalData);
+                    
                     UpdateLevelTab();
                 }
                 else
                 {
-                    SystemManager.Instance.GemType = localData.GetPayType();
+                    UIManager.Instance.PageIndex = (int)localData.GetPayType();
                     UIManager.Instance.OpenMenu(Menu.Menus.ShopOrientation);
                 }
             }

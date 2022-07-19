@@ -12,16 +12,20 @@ namespace DarkJimmy.UI
         public override void Start()
         {
             base.Start();
-
-            AudioManager.Instance.SourceFadeVolume(SoundGroupType.Music,false);
-            AudioManager.Instance.SourceFadeVolume(SoundGroupType.Ambient, false);
         }
-
+     
         public override void OnDestroy()
         {
             base.OnDestroy();
-            AudioManager.Instance.SourceFadeVolume(SoundGroupType.Music, true);
-            AudioManager.Instance.SourceFadeVolume(SoundGroupType.Ambient, true);
+
+            SetVolume(true);          
+        }
+
+        public override void OnEnable()
+        {
+            base.OnEnable();
+
+            SetVolume(false);
         }
     }
 
